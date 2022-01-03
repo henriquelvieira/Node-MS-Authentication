@@ -11,7 +11,11 @@
   "author": "Henrique Lopes Vieira",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.13",
     "@types/node": "^17.0.7",
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "express": "^4.17.2"
   }
 }

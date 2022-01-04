@@ -37,9 +37,9 @@ class UserRepository {
                                                           ) 
                                                    VALUES (
                                                             $1,
-                                                            crypt($2, ' ')
+                                                            crypt($2, 'my_salt')
                                                           )
-                           RETURNING UUID`;
+                                                          RETURNING uuid`;
             const values = [user.username, user.password];
 
             const { rows } = await db.query<{ uuid: string }>(script, values);

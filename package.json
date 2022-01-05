@@ -13,6 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^17.0.7",
     "@types/pg": "^8.6.3",
     "ts-node-dev": "^1.1.8",
@@ -22,6 +23,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "http-status-codes": "^2.2.0",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
     "ts-dotenv": "^0.8.3"
   }

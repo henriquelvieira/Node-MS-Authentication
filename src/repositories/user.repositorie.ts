@@ -26,13 +26,31 @@ class UserRepository {
             const params = [uuid];
 
             const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
-            const [user] = rows;
+            const [user] = rows; //Pegar a primeira linha
             
             return [user];
         } catch (error) {
             throw new DatabaseError('Erro na consulta por ID', error);
         };
     };
+
+    async findUsernameAndPassword(username: String, password: String): Promise<User[]> {
+        try {
+            const query = `SELECT UUID,
+                                  USERNAME                    
+                             FROM APPLICATION_USER
+                            WHERE USERNAME = $1
+                              AND PASSWORD = crypt($2, 'my_salt')`;
+            const params = [username, password];
+
+            const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
+            const [user] = rows; //Pegar a primeira linha
+            
+            return user || null;
+        } catch (error) {
+            throw new DatabaseError('Erro na consulta por username e password', error);
+        }; 
+    };    
 
     async create(user: User): Promise<string> {
         try {
@@ -70,7 +88,7 @@ class UserRepository {
         };
    };
 
-   async remove(uuid: string): Promise<void> {
+    async remove(uuid: string): Promise<void> {
         try {
             const script  = `DELETE APPLICATION_USER WHERE UUID = $1`;
             const params = [uuid];
@@ -79,7 +97,7 @@ class UserRepository {
         } catch (error) {
             throw new DatabaseError('Erro ao Remover o Usuário', error);
         };
-   };   
+    };
 
 
 };

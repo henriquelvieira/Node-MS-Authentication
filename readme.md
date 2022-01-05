@@ -13,7 +13,8 @@ npm install --save-dev @types/pg
 
 npm install --save dotenv
 npm install --save ts-dotenv
-
+npm install --save jsonwebtoken
+npm install --save-dev @types/jsonwebtoken 
 
 --BANCO DE DADOS POSTGRESQL
 https://elephantsql.com

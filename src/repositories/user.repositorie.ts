@@ -5,12 +5,16 @@ import DatabaseError from '../models/errors/database.error.model';
 class UserRepository {
     
     async findAllUsers(): Promise<User[]> {
-        const query = `SELECT UUID,
-                              USERNAME                         
-                         FROM APPLICATION_USER`;
-        
-        const { rows } = await db.query<User>(query);
-        return rows || [];
+        try {
+            const query = `SELECT UUID,
+                                  USERNAME                         
+                             FROM APPLICATION_USER`;            
+            const { rows } = await db.query<User>(query); //Execução da Query
+            
+            return rows || [];
+        } catch (error){
+            throw new DatabaseError('Erro na consulta dos usuários', error);
+        };
     };
 
     async findUserById(uuid: string): Promise<User[]>{
@@ -19,10 +23,11 @@ class UserRepository {
                                   USERNAME                         
                              FROM APPLICATION_USER
                             WHERE UUID = $1`;
-            const values = [uuid];
+            const params = [uuid];
 
-            const { rows } = await db.query<User>(query, values);
+            const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
             const [user] = rows;
+            
             return [user];
         } catch (error) {
             throw new DatabaseError('Erro na consulta por ID', error);
@@ -40,13 +45,14 @@ class UserRepository {
                                                             crypt($2, 'my_salt')
                                                           )
                                                           RETURNING uuid`;
-            const values = [user.username, user.password];
+            const params = [user.username, user.password];
 
-            const { rows } = await db.query<{ uuid: string }>(script, values);
+            const { rows } = await db.query<{ uuid: string }>(script, params); //Execução da Query passando os parâmetros
             const [newUser] = rows;
+            
             return newUser.uuid;
         } catch (error) {
-            throw new DatabaseError('Erro na consulta por ID', error);
+            throw new DatabaseError('Erro ao Gravar o Usuário', error);
         };
    };
 
@@ -56,22 +62,22 @@ class UserRepository {
                                 SET USERNAME = $1
                                     PASSWORD = crypt($2, 'my_salt')
                             WHERE UUID = $3`;
-            const values = [user.username, user.password, user.uuid];
+            const params = [user.username, user.password, user.uuid];
 
-            await db.query(script, values);            
+            await db.query(script, params); //Execução da Query passando os parâmetros            
         } catch (error) {
-            throw new DatabaseError('Erro na consulta por ID', error);
+            throw new DatabaseError('Erro ao Alterar o Usuário', error);
         };
    };
 
-   async delete(uuid: string): Promise<void> {
+   async remove(uuid: string): Promise<void> {
         try {
             const script  = `DELETE APPLICATION_USER WHERE UUID = $1`;
-            const values = [uuid];
+            const params = [uuid];
 
-            await db.query(script, values);            
+            await db.query(script, params); //Execução da Query passando os parâmetros
         } catch (error) {
-            throw new DatabaseError('Erro na consulta por ID', error);
+            throw new DatabaseError('Erro ao Remover o Usuário', error);
         };
    };   
 

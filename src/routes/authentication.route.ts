@@ -10,8 +10,8 @@ import User from '../models/user.model';
 
 async function generateJWTToken(user: User) {
     //Geração do Token JWT
-    const JWTSecretKey = process.env['SECRET_KEY_JWT'] as string;
-    const expirationTimeToken = '2m'; // 1 Minuto
+    const JWTSecretKey = process.env['JWT_SECRET_KEY'] as string;
+    const expirationTimeToken = process.env['JWT_EXPIRATION_TIME_TOKEN'] as string;
     
     const JWTPayload = { username: user.username};        
     const JWTOptions: SignOptions  = {

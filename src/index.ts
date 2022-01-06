@@ -17,14 +17,14 @@ app.use(express.urlencoded( {extended: true} )); //Middleware p/ realizar o pars
 //Configuração das Rotas:
 app.use('/authentication', authenticationRoute); //Rotas de Autenticação
 app.use('/status', jwtAuthenticationMiddleware, statusRoute); //Adição das rotas de Status
-app.use('/user', jwtAuthenticationMiddleware, usersRoute); //Adição das rotas de Usuário
+app.use('/users', jwtAuthenticationMiddleware, usersRoute); //Adição das rotas de Usuário
 
 //Configuração do Handler de Erro
 app.use(errorHanddlerMiddleware); 
 
-app.use('/', (req: Request, res: Response) => {
-    res.json({ message: 'ok' });
-});
+// app.use('/', (req: Request, res: Response) => {
+//     res.json({ message: 'ok' });
+// });
 
 //Inicialização do Servidor:
 app.listen(PORT, () => {

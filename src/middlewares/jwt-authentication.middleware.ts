@@ -21,7 +21,7 @@ async function jwtAuthenticationMiddleware (req: Request, res: Response, next: N
             throw new ForbiddenError('Tipo de autenticação inválido');
         };      
         
-        const JWTsecretKey = process.env['SECRET_KEY_JWT'] as string; 
+        const JWTsecretKey = process.env['JWT_SECRET_KEY'] as string; 
         
         try {
             const tokenPayload = JWT.verify(token, JWTsecretKey); //Verifica se o Token é válido

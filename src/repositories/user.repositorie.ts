@@ -3,7 +3,7 @@ import User from '../models/user.model';
 import DatabaseError from '../models/errors/database.error.model';
 
 class UserRepository {
-    
+
     async findAllUsers(): Promise<User[]> {
         try {
             const query = `SELECT UUID,
@@ -36,12 +36,14 @@ class UserRepository {
 
     async findUsernameAndPassword(username: String, password: String): Promise<User[]> {
         try {
+            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+
             const query = `SELECT UUID,
                                   USERNAME                    
                              FROM APPLICATION_USER
                             WHERE USERNAME = $1
-                              AND PASSWORD = crypt($2, 'my_salt')`;
-            const params = [username, password];
+                              AND PASSWORD = crypt($2, $3)`;
+            const params = [username, password, password_crypt];
 
             const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
             const [user] = rows; //Pegar a primeira linha
@@ -55,16 +57,17 @@ class UserRepository {
 
     async create(user: User): Promise<string> {
         try {
+            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
             const script  = `INSERT INTO APPLICATION_USER (
                                                             USERNAME, 
                                                             PASSWORD
                                                           ) 
                                                    VALUES (
                                                             $1,
-                                                            crypt($2, 'my_salt')
+                                                            crypt($2, $3)
                                                           )
                                                           RETURNING uuid`;
-            const params = [user.username, user.password];
+            const params = [user.username, user.password, password_crypt];
 
             const { rows } = await db.query<{ uuid: string }>(script, params); //Execução da Query passando os parâmetros
             const [newUser] = rows;
@@ -77,11 +80,13 @@ class UserRepository {
 
     async update(user: User): Promise<void> {
         try {
+            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+
             const script  = `UPDATE APPLICATION_USER
                                 SET USERNAME = $1
-                                    PASSWORD = crypt($2, 'my_salt')
+                                    PASSWORD = crypt($2, $3)
                             WHERE UUID = $3`;
-            const params = [user.username, user.password, user.uuid];
+            const params = [user.username, user.password, user.uuid, password_crypt];
 
             await db.query(script, params); //Execução da Query passando os parâmetros            
         } catch (error) {

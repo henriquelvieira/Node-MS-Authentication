@@ -1,8 +1,8 @@
-import express from "express";
+import express, { Request, Response }  from "express";
 require('dotenv').config();
 
 import jwtAuthenticationMiddleware from "./middlewares/jwt-authentication.middleware";
-import errorHandler from "./middlewares/error-handler.middleware";
+import errorHanddlerMiddleware from "./middlewares/error-handler.middleware";
 import authenticationRoute from "./routes/authentication.route";
 import usersRoute from "./routes/user.route";
 import statusRoute from "./routes/status.route";
@@ -15,12 +15,16 @@ app.use(express.json()); //Middleware p/ lidar c/ o JSON no Content-Type
 app.use(express.urlencoded( {extended: true} )); //Middleware p/ realizar o parsing do conteúdo das requisições
 
 //Configuração das Rotas:
-app.use(authenticationRoute); //Rotas de Autenticação
-app.use(jwtAuthenticationMiddleware, statusRoute); //Adição das rotas de Status
-app.use(jwtAuthenticationMiddleware, usersRoute); //Adição das rotas de Usuário
+app.use('/authentication', authenticationRoute); //Rotas de Autenticação
+app.use('/status', jwtAuthenticationMiddleware, statusRoute); //Adição das rotas de Status
+app.use('/user', jwtAuthenticationMiddleware, usersRoute); //Adição das rotas de Usuário
 
 //Configuração do Handler de Erro
-app.use(errorHandler); 
+app.use(errorHanddlerMiddleware); 
+
+app.use('/', (req: Request, res: Response) => {
+    res.json({ message: 'ok' });
+});
 
 //Inicialização do Servidor:
 app.listen(PORT, () => {

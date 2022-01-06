@@ -5,18 +5,26 @@ require('dotenv').config();
 import basicAuthenticationMiddleware from "../middlewares/basic-authentication.middleware";
 import jwtAuthenticationMiddleware from "../middlewares/jwt-authentication.middleware";
 import ForbiddenError from "../models/errors/forbidden.error.model";
+import User from '../models/user.model';
 
-/*
-function generateToken(payload: {}){
+
+async function generateJWTToken(user: User) {
     //Geração do Token JWT
-    const JWTsecretKey = process.env['SECRET_KEY_JWT'] as string;
-    const JWTpayload = { username: user.use };
-    const JWToptions = {subject: user?.uuid};
+    const JWTSecretKey = process.env['SECRET_KEY_JWT'] as string;
+    const expirationTimeToken = '2m'; // 1 Minuto
+    
+    const JWTPayload = { username: user.username};        
+    const JWTOptions: SignOptions  = {
+        subject: user?.uuid, 
+        expiresIn: expirationTimeToken as string
+    };
 
-    const jwt = JWT.sign(JWTpayload, JWTsecretKey, JWToptions); //Gerar o Token em JWT contendo o UUID no Payload
+    //Gerar o Token em JWT contendo o UUID no Payload
+    const jwt = JWT.sign(JWTPayload, JWTSecretKey, JWTOptions);
+
     return jwt;        
 };
-*/
+
 
 const authenticationRoute = Router();
 
@@ -30,18 +38,7 @@ authenticationRoute.post('/token', basicAuthenticationMiddleware,  async (req: R
             throw new ForbiddenError('Usuário não informado!');     
         };
         
-        //Geração do Token JWT
-        const JWTsecretKey = process.env['SECRET_KEY_JWT'] as string;
-        const expirationTimeToken = '1m'; // 1 Minuto
-        
-        const JWTPayload = { username: user.username };        
-        const JWToptions: SignOptions  = {
-            subject: user?.uuid, 
-            expiresIn: expirationTimeToken as string
-        };
-
-        //Gerar o Token em JWT contendo o UUID no Payload
-        const jwt = JWT.sign(JWTPayload, JWTsecretKey, JWToptions); 
+        const jwt = await generateJWTToken(user);
              
         res.status(StatusCodes.OK).json({ token: jwt}); //Retorar o Token gerado 
     } catch (error) {
@@ -51,7 +48,6 @@ authenticationRoute.post('/token', basicAuthenticationMiddleware,  async (req: R
 });
 
 authenticationRoute.post('/token/refresh', jwtAuthenticationMiddleware, (req: Request, res: Response, next: NextFunction) => {
-
     try {
         res.sendStatus(StatusCodes.OK); 
     } catch (error) {

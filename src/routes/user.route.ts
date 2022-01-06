@@ -5,7 +5,7 @@ import userRepositorie from "../repositories/user.repositorie";
 
 const usersRoute = Router();
 
-usersRoute.get('/users', async (req: Request, res: Response, next: NextFunction) => {
+usersRoute.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {  
         const users = await userRepositorie.findAllUsers(); //Classe para realizar o SELECT de todos os usuários
         
@@ -15,7 +15,7 @@ usersRoute.get('/users', async (req: Request, res: Response, next: NextFunction)
     };
 });
 
-usersRoute.get('/users/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
+usersRoute.get('/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
     try {        
         const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
         const userData = await userRepositorie.findUserById(uuid); //Classe para realizar o SELECT do usuário
@@ -27,7 +27,7 @@ usersRoute.get('/users/:uuid', async (req: Request<{ uuid: string }>, res: Respo
     
 });
 
-usersRoute.post('/users', async (req: Request, res: Response, next: NextFunction) => {
+usersRoute.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const newUser = req.body; //Pegar o Body enviado na Request
         const uuid = await userRepositorie.create(newUser); //Classe p/ realizar o Insert
@@ -39,7 +39,7 @@ usersRoute.post('/users', async (req: Request, res: Response, next: NextFunction
 
 });
 
-usersRoute.put('/users/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
+usersRoute.put('/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
     try {
         const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
         const modifiedUser = req.body; //Pegar o Body enviado na Request
@@ -55,7 +55,7 @@ usersRoute.put('/users/:uuid', async (req: Request<{ uuid: string }>, res: Respo
 
 });
 
-usersRoute.delete('/users/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
+usersRoute.delete('/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
     try {
         const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
     

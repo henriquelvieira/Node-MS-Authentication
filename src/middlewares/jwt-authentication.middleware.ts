@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 require('dotenv').config();
 import JWT from 'jsonwebtoken';
 import ForbiddenError from "../models/errors/forbidden.error.model";
-import userRepositorie from "../repositories/user.repositorie";
 
 async function jwtAuthenticationMiddleware (req: Request, res: Response, next: NextFunction){
 
@@ -23,22 +22,30 @@ async function jwtAuthenticationMiddleware (req: Request, res: Response, next: N
         };      
         
         const JWTsecretKey = process.env['SECRET_KEY_JWT'] as string; 
-        const tokenPayload = JWT.verify(token, JWTsecretKey); //Validar se o Token é válido
+        
+        try {
+            const tokenPayload = JWT.verify(token, JWTsecretKey); //Verifica se o Token é válido
 
-        //Valida se o Token é Valido e se contém um sub
-        if (typeof tokenPayload !== 'object' || !tokenPayload.sub){
-            throw new ForbiddenError('Token inválido');    
-        }
+            //Valida se o Token é Valido e se contém um sub
+            if (typeof tokenPayload !== 'object' || !tokenPayload.sub){
+                throw new ForbiddenError('Token inválido');    
+            };
 
-        const uuid = tokenPayload.sub; //Obter o UUID que foi adicionado ao Payload do Token 
+            const uuid = tokenPayload.sub; //Obter o UUID que foi adicionado ao Payload do Token 
 
-        const user = {
-            uuid: uuid,
-            username: tokenPayload.username
+            //Criar um objeto com as informações extraidas do token 
+            const user = {
+                uuid: uuid, 
+                username: tokenPayload.username
+            }; 
+
+            req.user = user; //Adicionar o objeto user dentro da requisição
+            next();
+        } catch (error) {
+            throw new ForbiddenError('Token inválido');  
         };
 
-        req.user = user; //Adicionar o objeto user dentro da requisição
-        next();
+
     } catch (error) {
         next(error);
     }

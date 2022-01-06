@@ -26,7 +26,7 @@ class UserRepository {
             const params = [uuid];
 
             const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
-            const [user] = rows; //Pegar a primeira linha
+            const [user] = rows;
             
             return [user];
         } catch (error) {
@@ -50,6 +50,7 @@ class UserRepository {
         } catch (error) {
             throw new DatabaseError('Erro na consulta por username e password', error);
         }; 
+
     };    
 
     async create(user: User): Promise<string> {

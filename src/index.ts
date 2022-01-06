@@ -22,9 +22,9 @@ app.use('/users', jwtAuthenticationMiddleware, usersRoute); //Adição das rotas
 //Configuração do Handler de Erro
 app.use(errorHanddlerMiddleware); 
 
-// app.use('/', (req: Request, res: Response) => {
-//     res.json({ message: 'ok' });
-// });
+app.use('/', (req: Request, res: Response) => {
+    res.json({ message: 'ok' });
+});
 
 //Inicialização do Servidor:
 app.listen(PORT, () => {

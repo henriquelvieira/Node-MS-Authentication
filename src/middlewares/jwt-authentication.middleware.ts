@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-require('dotenv').config();
-import JWT from 'jsonwebtoken';
+import JWTToken from "../utils/jtw-utils";
 import ForbiddenError from "../models/errors/forbidden.error.model";
 
 async function jwtAuthenticationMiddleware (req: Request, res: Response, next: NextFunction){
@@ -21,16 +20,9 @@ async function jwtAuthenticationMiddleware (req: Request, res: Response, next: N
             throw new ForbiddenError('Tipo de autenticação inválido');
         };      
         
-        const JWTsecretKey = process.env['JWT_SECRET_KEY'] as string; 
-        
         try {
-            const tokenPayload = JWT.verify(token, JWTsecretKey); //Verifica se o Token é válido
-
-            //Valida se o Token é Valido e se contém um sub
-            if (typeof tokenPayload !== 'object' || !tokenPayload.sub){
-                throw new ForbiddenError('Token inválido');    
-            };
-
+            const tokenPayload = JWTToken.validate(token); //Chamada da Classe para validar o Token
+            
             const uuid = tokenPayload.sub; //Obter o UUID que foi adicionado ao Payload do Token 
 
             //Criar um objeto com as informações extraidas do token 
@@ -48,7 +40,7 @@ async function jwtAuthenticationMiddleware (req: Request, res: Response, next: N
 
     } catch (error) {
         next(error);
-    }
+    };
 
 };
 

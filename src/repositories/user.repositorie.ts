@@ -12,7 +12,7 @@ class UserRepository {
             const { rows } = await db.query<User>(query); //Execução da Query
             
             return rows || [];
-        } catch (error){
+        } catch (error) {
             throw new DatabaseError('Erro na consulta dos usuários', error);
         };
     };
@@ -48,7 +48,7 @@ class UserRepository {
             const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
             const [user] = rows; //Pegar a primeira linha
             
-            return user || null;
+            return user || [];
         } catch (error) {
             throw new DatabaseError('Erro na consulta por username e password', error);
         }; 
@@ -83,9 +83,9 @@ class UserRepository {
             const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
 
             const script  = `UPDATE APPLICATION_USER
-                                SET USERNAME = $1
+                                SET USERNAME = $1,
                                     PASSWORD = crypt($2, $3)
-                            WHERE UUID = $3`;
+                              WHERE UUID = $3`;
             const params = [user.username, user.password, user.uuid, password_crypt];
 
             await db.query(script, params); //Execução da Query passando os parâmetros            

@@ -25,7 +25,7 @@ class JWTToken {
     async create(user: User) {
         //Método responsável pela geração do Token JWT
         const JWTSecretKey = this.findSecretKey();
-        
+
         const expirationTimeToken = process.env['JWT_EXPIRATION_TIME_TOKEN'] as string;
         
         const JWTPayload = { username: user.username };        

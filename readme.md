@@ -19,7 +19,7 @@ npm install --save-dev @types/jsonwebtoken
 --BANCO DE DADOS POSTGRESQL
 https://elephantsql.com
 
-ROUTE
+ROUTE:
 --REPOSITORIE
 ---MODEL
 

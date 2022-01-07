@@ -36,7 +36,7 @@ class UserRepository {
         };
     };
 
-    async findUsernameAndPassword(username: String, password: String): Promise<User[]> {
+    async findUsernameAndPassword(username: String, password: String): Promise<User> {
         try {
             const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
 
@@ -51,7 +51,7 @@ class UserRepository {
             const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
             const [user] = rows; //Pegar a primeira linha
             
-            return user || [];
+            return user;
         } catch (error) {
             throw new DatabaseError('Erro na consulta por username e password', error);
         }; 
@@ -81,7 +81,7 @@ class UserRepository {
         } catch (error) {
             throw new DatabaseError('Erro ao Gravar o Usuário', error);
         };
-   };
+    };
 
     async update(user: User): Promise<void> {
         try {
@@ -99,7 +99,7 @@ class UserRepository {
         } catch (error) {
             throw new DatabaseError('Erro ao Alterar o Usuário', error);
         };
-   };
+    };
 
     async remove(uuid: string): Promise<void> {
         try {

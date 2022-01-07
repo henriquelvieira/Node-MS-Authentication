@@ -3,6 +3,7 @@ import {StatusCodes} from 'http-status-codes';
 import basicAuthenticationMiddleware from "../middlewares/basic-authentication.middleware";
 import jwtAuthenticationMiddleware from "../middlewares/jwt-authentication.middleware";
 import ForbiddenError from "../models/errors/forbidden.error.model";
+import refreshTokenRepositorie from "../repositories/refresh-token.repositorie";
 import JWTToken from "../utils/jtw-utils";
 
 
@@ -18,10 +19,11 @@ authenticationRoute.post('/token', basicAuthenticationMiddleware,  async (req: R
             throw new ForbiddenError('Usuário não informado!');     
         };
         
-        //const jwt = await generateJWTToken(user);
-        const jwt = await JWTToken.create(user); //Chamada da classe p/ gerar o Token
-        
-        res.status(StatusCodes.OK).json({ token: jwt}); //Retorar o Token gerado 
+        const jwt = await JWTToken.create(user); //Chamada da classe p/ geração do Token
+        const refreshToken = await refreshTokenRepositorie.create(user.uuid); //Chamada da classe p/ geração do refresh Token
+        const response = { token: jwt, refreshToken: refreshToken};
+
+        res.status(StatusCodes.OK).json(response); //Retorar o Token gerado 
     } catch (error) {
         next(error); //Chamada do Handler de Erro
     };

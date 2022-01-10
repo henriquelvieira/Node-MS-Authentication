@@ -48,6 +48,45 @@
 			"response": []
 		},
 		{
+			"name": "Gerar Refresh Token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basuc",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refresh_token\" : \"b37772ed-8eed-4c72-97f9-d24eb363bf81\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/authentication/refresh-token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"authentication",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Validar Token",
 			"request": {
 				"auth": {
@@ -55,7 +94,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlIiwiaWF0IjoxNjQxNTgxMjM4LCJleHAiOjE2NDE1ODI0MzgsInN1YiI6IjNhY2Q1YTkxLTIyNmEtNDlmYS04NWEyLWQ1NjQ4YWU5Y2FhMiJ9.0eGCcr5BB0t1OXenT6doyT0i5PBsZ4AZVP2y-hwXJLM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlIiwiaWF0IjoxNjQxODM0NzEyLCJleHAiOjE2NDE4MzU5MTIsInN1YiI6IjNhY2Q1YTkxLTIyNmEtNDlmYS04NWEyLWQ1NjQ4YWU5Y2FhMiJ9.Qd0usu3SAhJqueuvddAxf8GV_v2GayPd-q7w0U0VLKY",
 							"type": "string"
 						}
 					]

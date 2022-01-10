@@ -1,12 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import {StatusCodes} from 'http-status-codes';
+import jwtAuthenticationMiddleware from "../middlewares/jwt-authentication.middleware";
 import userRepositorie from "../repositories/user.repositorie";
 import User from "../models/user.model";
 
 
 const usersRoute = Router();
 
-usersRoute.get('/', async (req: Request, res: Response, next: NextFunction) => {
+usersRoute.get('/', jwtAuthenticationMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {  
         const users = await userRepositorie.findAllUsers(); //Classe para realizar o SELECT de todos os usuários
         
@@ -16,7 +17,7 @@ usersRoute.get('/', async (req: Request, res: Response, next: NextFunction) => {
     };
 });
 
-usersRoute.get('/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
+usersRoute.get('/:uuid', jwtAuthenticationMiddleware, async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
     try {        
         const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
         const userData = await userRepositorie.findUserById(uuid); //Classe para realizar o SELECT do usuário
@@ -38,7 +39,7 @@ usersRoute.post('/', async (req: Request, res: Response, next: NextFunction) => 
     };
 });
 
-usersRoute.put('/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
+usersRoute.put('/:uuid', jwtAuthenticationMiddleware, async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
     try {
         const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
         const modifiedUser: User = req.body; //Pegar o Body enviado na Request
@@ -54,7 +55,7 @@ usersRoute.put('/:uuid', async (req: Request<{ uuid: string }>, res: Response, n
     };
 });
 
-usersRoute.delete('/:uuid', async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
+usersRoute.delete('/:uuid', jwtAuthenticationMiddleware, async (req: Request<{ uuid: string }>, res: Response, next: NextFunction) => {
     try {
         const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
     

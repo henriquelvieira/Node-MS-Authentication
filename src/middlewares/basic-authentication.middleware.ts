@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-require('dotenv').config();
 import ForbiddenError from "../models/errors/forbidden.error.model";
 import userRepositorie from "../repositories/user.repositorie";
 

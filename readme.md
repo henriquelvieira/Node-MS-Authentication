@@ -15,6 +15,8 @@ npm install --save dotenv
 npm install --save ts-dotenv
 npm install --save jsonwebtoken
 npm install --save-dev @types/jsonwebtoken 
+npm install --save dayjs
+npm install --save @types/dayjs
 
 --BANCO DE DADOS POSTGRESQL
 https://elephantsql.com

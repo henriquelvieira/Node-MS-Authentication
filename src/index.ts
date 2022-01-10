@@ -16,7 +16,7 @@ app.use(express.urlencoded( {extended: true} )); //Middleware p/ realizar o pars
 //Configuração das Rotas:
 app.use('/authentication', authenticationRoute); //Autenticação
 app.use('/status', jwtAuthenticationMiddleware, statusRoute); //Status
-app.use('/users', jwtAuthenticationMiddleware, usersRoute); //Usuário
+app.use('/users', usersRoute); //Usuário
 
 //Configuração do Handler de Erro:
 app.use(errorHanddlerMiddleware); 

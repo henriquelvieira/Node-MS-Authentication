@@ -4,10 +4,10 @@ import basicAuthenticationMiddleware from "../middlewares/basic-authentication.m
 import jwtAuthenticationMiddleware from "../middlewares/jwt-authentication.middleware";
 import ForbiddenError from "../models/errors/forbidden.error.model";
 import RefreshToken from "../models/refreshToken.model";
-import User from "../models/user.model";
 import refreshTokenRepositorie from "../repositories/refresh-token.repositorie";
 import JWTToken from "../utils/jtw-utils";
-
+import dayjs from 'dayjs';
+import User from "../models/user.model";
 
 const authenticationRoute = Router();
 
@@ -25,7 +25,7 @@ authenticationRoute.post('/token', basicAuthenticationMiddleware,  async (req: R
         
         const newRefreshToken = await refreshTokenRepositorie.generateRefreshToken(user);
         
-        const response = { token: jwt, refreshToken: newRefreshToken};
+        const response = { token: jwt, refresh_token: newRefreshToken};
 
         res.status(StatusCodes.OK).json(response); //Retorar o Token gerado 
     } catch (error) {
@@ -45,21 +45,31 @@ authenticationRoute.post('/refresh-token', async (req: Request, res: Response, n
     
         //Verifica se existe um Refresh Token válido p/ o Usuário
         const refreshTokenUserData = await refreshTokenRepositorie.findRefreshTokenByID(refreshTokenRequest.refresh_token);
-
+        
         if (!refreshTokenUserData){
             throw new ForbiddenError('Refresh Token inválido!'); 
         };
         
         //Geração do novo Token
-        const jwt = await JWTToken.create(refreshTokenUserData);
-       
+        const userData: User = {
+            uuid: refreshTokenUserData.uuid, 
+            username: refreshTokenUserData.username as string
+        };
         
-        let response = {token: jwt}
-        //Apenas se o Refresh Token estiver 
+        const jwt = await JWTToken.create(userData); //Geração Token JWT 
         
-        //const newRefreshToken = await refreshTokenRepositorie.generateRefreshToken(refreshTokenUserData);
+        //Verifica se o Refresh Token está expirado
+        const expiresIn =  refreshTokenUserData.expiresin as number;
+        const refreshTokenExpired = dayjs().isAfter( dayjs.unix(expiresIn) );
         
-        //const response = {refresh_token: newRefreshToken}
+        let response: {};
+
+        if (refreshTokenExpired) {
+            const newRefreshToken = await refreshTokenRepositorie.generateRefreshToken(userData);
+            response = {token: jwt, refresh_token: newRefreshToken}
+        } else {
+            response = {token: jwt};
+        };
 
         res.status(StatusCodes.CREATED).json(response); //Retorar o Token gerado 
     } catch (error) {

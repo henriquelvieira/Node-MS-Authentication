@@ -13,12 +13,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "teste",
+							"value": "{{password}}",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "teste",
+							"value": "{{user}}",
 							"type": "string"
 						}
 					]
@@ -33,12 +33,10 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:3001/authentication/token",
-					"protocol": "http",
+					"raw": "{{base_url}}/authentication/token",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3001",
 					"path": [
 						"authentication",
 						"token"
@@ -64,7 +62,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"refresh_token\" : \"e46081a5-12bf-4835-a018-5c6797382102\"\r\n}",
+					"raw": "{\r\n    \"refresh_token\" : \"bc1359de-46a1-4161-a4fc-dcc0c4dda813\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -72,12 +70,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3001/authentication/refresh-token",
-					"protocol": "http",
+					"raw": "{{base_url}}/authentication/refresh-token",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3001",
 					"path": [
 						"authentication",
 						"refresh-token"
@@ -94,7 +90,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlIiwiaWF0IjoxNjQxODM0NzEyLCJleHAiOjE2NDE4MzU5MTIsInN1YiI6IjNhY2Q1YTkxLTIyNmEtNDlmYS04NWEyLWQ1NjQ4YWU5Y2FhMiJ9.Qd0usu3SAhJqueuvddAxf8GV_v2GayPd-q7w0U0VLKY",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -109,16 +105,68 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:3001/authentication/token/validade",
-					"protocol": "http",
+					"raw": "{{base_url}}/authentication/token/validade",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3001",
 					"path": [
 						"authentication",
 						"token",
 						"validade"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listagem de Status",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/status",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listagem de Usuários",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users"
 					]
 				}
 			},
@@ -132,7 +180,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlIiwiaWF0IjoxNjQxODQ1NDMwLCJleHAiOjE2NDE4NDY2MzAsInN1YiI6IjNhY2Q1YTkxLTIyNmEtNDlmYS04NWEyLWQ1NjQ4YWU5Y2FhMiJ9.pN3S4rR1KtQJ_ZCR8ib8OAEXJdFvRpVWeheU5pXaUsk",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -140,15 +188,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3001/users/03ecfd41-a9ea-4155-8d27-e51c73ad3256",
-					"protocol": "http",
+					"raw": "{{base_url}}/users/3acd5a91-226a-49fa-85a2-d5648ae9caa2",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3001",
 					"path": [
 						"users",
-						"03ecfd41-a9ea-4155-8d27-e51c73ad3256"
+						"3acd5a91-226a-49fa-85a2-d5648ae9caa2"
 					]
 				}
 			},
@@ -170,7 +216,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"teste3\",\r\n    \"password\": \"123456\",\r\n    \"email\": \"teste3@email.com\"\r\n}",
+					"raw": "{\r\n    \"username\": \"teste4\",\r\n    \"password\": \"123456\",\r\n    \"email\": \"teste4@email.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -178,12 +224,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3001/users",
-					"protocol": "http",
+					"raw": "{{base_url}}/users",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3001",
 					"path": [
 						"users"
 					]
@@ -199,7 +243,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlIiwiaWF0IjoxNjQxNTgxMjM4LCJleHAiOjE2NDE1ODI0MzgsInN1YiI6IjNhY2Q1YTkxLTIyNmEtNDlmYS04NWEyLWQ1NjQ4YWU5Y2FhMiJ9.0eGCcr5BB0t1OXenT6doyT0i5PBsZ4AZVP2y-hwXJLM",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
@@ -214,7 +258,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"teste2\",\r\n    \"password\": \"teste\",\r\n    \"email\": \"teste2_2@email.com\"\r\n}",
+					"raw": "{\r\n    \"username\": \"teste2\",\r\n    \"password\": \"teste\",\r\n    \"email\": \"teste22@email.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -222,12 +266,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3001/users/3abf9aa6-8eb6-44e6-9f47-518d25ce1a84",
-					"protocol": "http",
+					"raw": "{{base_url}}/users/3abf9aa6-8eb6-44e6-9f47-518d25ce1a84",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3001",
 					"path": [
 						"users",
 						"3abf9aa6-8eb6-44e6-9f47-518d25ce1a84"
@@ -237,62 +279,80 @@
 			"response": []
 		},
 		{
-			"name": "Listagem de Usuários",
+			"name": "Remover Usuário",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlIiwiaWF0IjoxNjQxODQ1NDMwLCJleHAiOjE2NDE4NDY2MzAsInN1YiI6IjNhY2Q1YTkxLTIyNmEtNDlmYS04NWEyLWQ1NjQ4YWU5Y2FhMiJ9.pN3S4rR1KtQJ_ZCR8ib8OAEXJdFvRpVWeheU5pXaUsk",
+							"value": "{{token}}",
 							"type": "string"
 						}
 					]
 				},
-				"method": "GET",
-				"header": [],
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:3001/users",
-					"protocol": "http",
+					"raw": "{{base_url}}/users/33fefad3-a373-4669-a662-048913da5cc9",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3001",
 					"path": [
-						"users"
+						"users",
+						"33fefad3-a373-4669-a662-048913da5cc9"
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "Listagem de Status",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlIiwiaWF0IjoxNjQxODQ1NDMwLCJleHAiOjE2NDE4NDY2MzAsInN1YiI6IjNhY2Q1YTkxLTIyNmEtNDlmYS04NWEyLWQ1NjQ4YWU5Y2FhMiJ9.pN3S4rR1KtQJ_ZCR8ib8OAEXJdFvRpVWeheU5pXaUsk",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3001/status",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"status"
-					]
-				}
-			},
-			"response": []
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "password",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default"
 		}
 	]
 }

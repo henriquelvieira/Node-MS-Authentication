@@ -1,11 +1,8 @@
-import { Router, Request, Response, NextFunction } from "express";
-import {StatusCodes} from 'http-status-codes';
+import { Router } from "express";
+import statusController from "../controllers/status.controller";
 
 const statusRoute = Router();
 
-statusRoute.get('/', (req: Request, res: Response, next: NextFunction) => {
-    const response = {foo: 'bar'};
-    res.status(StatusCodes.OK).send(response); //Responder a requisição c/ o Status 200
-});
+statusRoute.get('/', statusController.listStatus);
 
 export default statusRoute;

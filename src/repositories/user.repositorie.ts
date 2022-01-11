@@ -18,7 +18,7 @@ class UserRepository {
         };
     };
 
-    async findUserById(uuid: string): Promise<User[]>{
+    async findUserById(uuid: string): Promise<User>{
         try {
             const query = `SELECT UUID,
                                   USERNAME,
@@ -30,7 +30,7 @@ class UserRepository {
             const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
             const [user] = rows;
             
-            return [user];
+            return user;
         } catch (error) {
             throw new DatabaseError('Erro na consulta por ID', error);
         };
@@ -103,7 +103,7 @@ class UserRepository {
 
     async remove(uuid: string): Promise<void> {
         try {
-            const script = `DELETE APPLICATION_USER WHERE UUID = $1`;
+            const script = `DELETE FROM "public"."application_user" WHERE uuid = $1`;
             const params = [uuid];
 
             await db.query(script, params); //Execução da Query passando os parâmetros

@@ -31,12 +31,11 @@ async function jwtAuthenticationMiddleware (req: Request, res: Response, next: N
                 username: tokenPayload.username
             }; 
 
-            req.user = user; //Adicionar o objeto user dentro da requisição
+            req.user = user; //Adiciona o objeto user dentro da requisição
             next();
         } catch (error) {
             throw new ForbiddenError('Token inválido');  
         };
-
 
     } catch (error) {
         next(error);

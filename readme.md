@@ -1,5 +1,3 @@
-#Iniciar o TypeScript
-tsc --init
 
 npm install --save-dev typescript
 npm install --save-dev @types/node 
@@ -17,6 +15,9 @@ npm install --save jsonwebtoken
 npm install --save-dev @types/jsonwebtoken 
 npm install --save dayjs
 npm install --save @types/dayjs
+
+#Iniciar o TypeScript
+tsc --init
 
 --BANCO DE DADOS POSTGRESQL
 https://elephantsql.com

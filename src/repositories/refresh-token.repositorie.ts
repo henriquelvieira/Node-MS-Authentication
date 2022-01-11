@@ -1,4 +1,4 @@
-import db from '../db';
+import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
 import User from '../models/user.model';
 import dayjs from 'dayjs';

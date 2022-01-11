@@ -11,11 +11,11 @@ const PORT = process.env.PORT || 3333;
 
 //Configuração da Aplicação:
 app.use(express.json()); //Middleware p/ lidar c/ o JSON no Content-Type
-app.use(express.urlencoded( {extended: true} )); //Middleware p/ realizar o parsing do conteúdo das requisições
+app.use(express.urlencoded( {extended: true} ) ); //Middleware p/ realizar o parsing do conteúdo das requisições
 
 //Configuração das Rotas:
 app.use('/authentication', authenticationRoute); //Autenticação
-app.use('/status', jwtAuthenticationMiddleware, statusRoute); //Status
+app.use('/status', jwtAuthenticationMiddleware, statusRoute); //Status (todas as rotas são protegidas p/ Middleware jwtAuthenticationMiddleware)
 app.use('/users', usersRoute); //Usuário
 
 //Configuração do Handler de Erro:

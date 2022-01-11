@@ -15,7 +15,7 @@ authenticationRoute.post('/token', basicAuthenticationMiddleware,  async (req: R
     /*Antes do acesso à esta rota será feita a chamada ao Middleware de autenticação*/
     
     try {  
-        const user = req.user; //Pegar o objeto User que está na requisição
+        const user = req.user; //Pega o objeto User que está na requisição e que foi adicionado pelo Middleware basicAuthenticationMiddleware
 
         if (!user) {
             throw new ForbiddenError('Usuário não informado!');     
@@ -50,22 +50,23 @@ authenticationRoute.post('/refresh-token', async (req: Request, res: Response, n
             throw new ForbiddenError('Refresh Token inválido!'); 
         };
         
-        //Geração do novo Token
+        //Montagem do objeto c/ as informações do user para geração do Token
         const userData: User = {
             uuid: refreshTokenUserData.uuid, 
             username: refreshTokenUserData.username as string
         };
         
-        const jwt = await JWTToken.create(userData); //Geração Token JWT 
+        //Geração do novo Token
+        const jwt = await JWTToken.create(userData); 
         
         //Verifica se o Refresh Token está expirado
         const expiresIn =  refreshTokenUserData.expiresin as number;
         const refreshTokenExpired = dayjs().isAfter( dayjs.unix(expiresIn) );
-        
+
         let response: {};
 
         if (refreshTokenExpired) {
-            const newRefreshToken = await refreshTokenRepositorie.generateRefreshToken(userData);
+            const newRefreshToken = await refreshTokenRepositorie.generateRefreshToken(userData); //Geração do Refresh Token
             response = {token: jwt, refresh_token: newRefreshToken}
         } else {
             response = {token: jwt};

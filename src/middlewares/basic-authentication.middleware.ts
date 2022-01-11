@@ -24,6 +24,7 @@ async function basicAuthenticationMiddleware (req: Request, res: Response, next:
         const tokenContent = Buffer.from(token, 'base64').toString('utf-8');
         const [username, password] = tokenContent.split(':');
 
+        //Verifica se o usuário e senha foram informados na requisição
         if (!username || !password) {
             throw new ForbiddenError('Credenciais não Preenchidas');    
         };

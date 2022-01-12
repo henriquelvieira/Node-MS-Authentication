@@ -17,8 +17,8 @@ class userController {
 
     async listUserById (req: Request<{ uuid: string }>, res: Response, next: NextFunction){
         try {        
-            const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
-            const user = await userRepositorie.findUserById(uuid); //Classe para realizar o SELECT do usuário
+            const uuid: string = req.params.uuid; //Pegar o parametro enviado na URL da request
+            const user: User = await userRepositorie.findUserById(uuid); //Classe para realizar o SELECT do usuário
             
             return res.status(StatusCodes.OK).json(user);
         } catch (error) {
@@ -30,7 +30,7 @@ class userController {
         try {
             const newUser: User = req.body; //Pegar o Body enviado na Request
             const uuid = await userRepositorie.create(newUser); //Classe p/ realizar o Insert
-        
+            
             return res.status(StatusCodes.CREATED).json({ uuid });
         } catch (error) {
             next(error); //Chamada do Handler de Erro
@@ -56,7 +56,7 @@ class userController {
     async removeUser (req: Request<{ uuid: string }>, res: Response, next: NextFunction) {
         try {
             const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
-        
+            
             await userRepositorie.remove(uuid); //Classe p/ realizar o DELETE
         
             res.status(StatusCodes.OK).json({uuid});
@@ -64,8 +64,6 @@ class userController {
             next(error); //Chamada do Handler de Erro
         };
     };
-
-
 
 };
 

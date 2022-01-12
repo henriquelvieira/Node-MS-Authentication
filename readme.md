@@ -16,6 +16,11 @@ npm install --save-dev @types/jsonwebtoken
 npm install --save dayjs
 npm install --save @types/dayjs
 
+JEST:
+npm install --save-dev jest @types/jest ts-jest
+jest --init
+
+
 #Iniciar o TypeScript
 tsc --init
 

@@ -36,6 +36,22 @@ class UserRepository {
         };
     };
 
+    async findUserByUsername(username: string): Promise<string>{
+        try {
+            const query = `SELECT UUID                    
+                             FROM APPLICATION_USER
+                            WHERE USERNAME = $1`;
+            const params = [username];
+
+            const { rows } = await db.query<{ uuid: string }>(query, params); //Execução da Query passando os parâmetros
+            const [uuid]= rows;
+            
+            return uuid.uuid;
+        } catch (error) {
+            throw new DatabaseError('Erro na consulta por Username', error);
+        };
+    };
+
     async findUsernameAndPassword(username: String, password: String): Promise<User> {
         try {
             const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
@@ -83,7 +99,7 @@ class UserRepository {
         };
     };
 
-    async update(user: User): Promise<void> {
+    async update(user: User): Promise<Boolean> {
         try {
             const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
 
@@ -99,12 +115,26 @@ class UserRepository {
         } catch (error) {
             throw new DatabaseError('Erro ao Alterar o Usuário', error);
         };
+
+        return true;
     };
 
-    async remove(uuid: string): Promise<void> {
+    async remove(uuid: string): Promise<Boolean> {
         try {
             const script = `DELETE FROM "public"."application_user" WHERE uuid = $1`;
             const params = [uuid];
+
+            await db.query(script, params); //Execução da Query passando os parâmetros
+            return true;
+        } catch (error) {
+            throw new DatabaseError('Erro ao Remover o Usuário', error);
+        };
+    };
+
+    async removeByUsername(username: string): Promise<void> {
+        try {
+            const script = `DELETE FROM "public"."application_user" WHERE username = $1`;
+            const params = [username];
 
             await db.query(script, params); //Execução da Query passando os parâmetros
         } catch (error) {

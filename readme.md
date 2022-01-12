@@ -20,6 +20,7 @@ JEST:
 npm install --save-dev jest @types/jest ts-jest
 jest --init
 
+npm install --save-dev supertest @types/supertest
 
 #Iniciar o TypeScript
 tsc --init

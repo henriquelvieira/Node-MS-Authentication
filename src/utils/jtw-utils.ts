@@ -23,21 +23,29 @@ class JWTToken {
     };
 
     async create(user: User) {
-        //Método responsável pela geração do Token JWT
-        const JWTSecretKey = this.findSecretKey();
+        try{
+            //Método responsável pela geração do Token JWT
+            const JWTSecretKey = this.findSecretKey();
 
-        const expirationTimeToken = process.env['JWT_EXPIRATION_TIME_TOKEN'] as string;
+            if (!user.username){
+                throw new Error('Usuário não informado!');  
+            };
+
+            const expirationTimeToken = process.env['JWT_EXPIRATION_TIME_TOKEN'] as string;
+            
+            const JWTPayload = { username: user.username };        
+            const JWTOptions: SignOptions  = {
+                subject: user?.uuid, 
+                expiresIn: expirationTimeToken as string
+            };
         
-        const JWTPayload = { username: user.username };        
-        const JWTOptions: SignOptions  = {
-            subject: user?.uuid, 
-            expiresIn: expirationTimeToken as string
+            //Gerar o Token em JWT contendo o username e UUID no Payload
+            const jwt = JWT.sign(JWTPayload, JWTSecretKey, JWTOptions);
+        
+            return jwt;       
+        } catch (error)  {
+            throw new ForbiddenError('Falha ao gerar o Token!', error); 
         };
-    
-        //Gerar o Token em JWT contendo o username e UUID no Payload
-        const jwt = JWT.sign(JWTPayload, JWTSecretKey, JWTOptions);
-    
-        return jwt;        
     };
 
 

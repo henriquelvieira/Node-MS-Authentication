@@ -70,6 +70,9 @@ describe("(userController) - Users Controller's", () => {
         const user: User = await userRepositorie.findUserById(uuid);
 
         expect(user).toHaveProperty('uuid');
+        expect(user).toHaveProperty('username');
+        expect(user).toHaveProperty('email');
+        expect(user).not.toHaveProperty('password');
         expect(user.username).toBe(username); 
     });
 
@@ -92,10 +95,10 @@ describe("(userController) - Users Controller's", () => {
         expect(response).toBeTruthy();
     });
 
-    // afterAll(async () => {
-    //     //Remover o usuário de teste
-    //     await userRepositorie.removeByUsername(username); 
-    // });
+    afterAll(async () => {
+        //Remover o usuário de teste
+        await userRepositorie.removeByUsername(username); 
+    });
 
 
 });

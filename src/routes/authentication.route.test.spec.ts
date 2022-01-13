@@ -25,7 +25,6 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
         expect(response.body).toHaveProperty("refresh_token");  
     });
 
-
     it("(POST /authentication/refresh-token) - Should be able generate a new Refresh Token", async () => {
 
         const requestBody = {"refresh_token": refresh_token};

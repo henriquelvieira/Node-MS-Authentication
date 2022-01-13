@@ -22,7 +22,7 @@ class UserRepository {
         try {
             const query = `SELECT UUID,
                                   USERNAME,
-                                  EMAIL                        
+                                  EMAIL                      
                              FROM APPLICATION_USER
                             WHERE UUID = $1`;
             const params = [uuid];

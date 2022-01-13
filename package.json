@@ -7,6 +7,7 @@
     "test": "jest",
     "start": "node ./",
     "build": "tsc -p .",
+    "test-deploy": "jest && node ./",
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify src/server.ts"
   },
   "author": "Henrique Lopes Vieira",

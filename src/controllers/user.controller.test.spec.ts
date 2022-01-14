@@ -44,7 +44,7 @@ describe("(userController) - Users Controller's", () => {
             email: `${username}_new@teste.com.br`
         };
         
-        const response: Boolean = await userRepositorie.update(modifiedUser);
+        const response: boolean = await userRepositorie.update(modifiedUser);
 
         expect(response).toBeTruthy();
     });
@@ -77,7 +77,7 @@ describe("(userController) - Users Controller's", () => {
     });
 
     it ("(listUserById) - Should not be able list a unexisting user", async () => {
-        const uuid: string = 'xxx';
+        const uuid = 'xxx';
 
         await expect(userRepositorie.findUserById(uuid)).rejects.toEqual(
             new DatabaseError('Erro na consulta por ID')
@@ -91,7 +91,7 @@ describe("(userController) - Users Controller's", () => {
 
     it ("(removeUser) - Should be able remove a user", async () => {
         const uuid = await userRepositorie.findUserByUsername(username);
-        const response: Boolean = await userRepositorie.remove(uuid); //Classe p/ realizar o DELETE
+        const response: boolean = await userRepositorie.remove(uuid); //Classe p/ realizar o DELETE
         expect(response).toBeTruthy();
     });
 

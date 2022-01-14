@@ -21,7 +21,7 @@ authenticationRoute.post('/token/validade', jwtAuthenticationMiddleware, (req: R
         res.sendStatus(StatusCodes.OK); 
     } catch (error) {
         next(error); //Chamada do Handler de Erro
-    };
+    }
     
 });
 

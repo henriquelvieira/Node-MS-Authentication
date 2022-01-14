@@ -15,8 +15,8 @@ class UserRepository {
             return rows || [];
         } catch (error) {
             throw new DatabaseError('Erro na consulta dos usuários', error);
-        };
-    };
+        }
+    }
 
     async findUserById(uuid: string): Promise<User>{
         try {
@@ -33,8 +33,8 @@ class UserRepository {
             return user;
         } catch (error) {
             throw new DatabaseError('Erro na consulta por ID', error);
-        };
-    };
+        }
+    }
 
     async findUserByUsername(username: string): Promise<string>{
         try {
@@ -49,10 +49,10 @@ class UserRepository {
             return uuid.uuid;
         } catch (error) {
             throw new DatabaseError('Erro na consulta por Username', error);
-        };
-    };
+        }
+    }
 
-    async findUsernameAndPassword(username: String, password: String): Promise<User> {
+    async findUsernameAndPassword(username: string, password: string): Promise<User> {
         try {
             const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
 
@@ -70,9 +70,9 @@ class UserRepository {
             return user;
         } catch (error) {
             throw new DatabaseError('Erro na consulta por username e password', error);
-        }; 
+        } 
 
-    };    
+    }    
 
     async create(user: User): Promise<string> {
         try {
@@ -96,10 +96,10 @@ class UserRepository {
             return newUser.uuid;
         } catch (error) {
             throw new DatabaseError('Erro ao Gravar o Usuário', error);
-        };
-    };
+        }
+    }
 
-    async update(user: User): Promise<Boolean> {
+    async update(user: User): Promise<boolean> {
         try {
             const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
 
@@ -114,12 +114,12 @@ class UserRepository {
             await db.query(script, params); //Execução da Query passando os parâmetros            
         } catch (error) {
             throw new DatabaseError('Erro ao Alterar o Usuário', error);
-        };
+        }
 
         return true;
-    };
+    }
 
-    async remove(uuid: string): Promise<Boolean> {
+    async remove(uuid: string): Promise<boolean> {
         try {
             const script = `DELETE FROM "public"."application_user" WHERE uuid = $1`;
             const params = [uuid];
@@ -128,8 +128,8 @@ class UserRepository {
             return true;
         } catch (error) {
             throw new DatabaseError('Erro ao Remover o Usuário', error);
-        };
-    };
+        }
+    }
 
     async removeByUsername(username: string): Promise<void> {
         try {
@@ -139,10 +139,10 @@ class UserRepository {
             await db.query(script, params); //Execução da Query passando os parâmetros
         } catch (error) {
             throw new DatabaseError('Erro ao Remover o Usuário', error);
-        };
-    };
+        }
+    }
 
 
-};
+}
 
 export default new UserRepository();

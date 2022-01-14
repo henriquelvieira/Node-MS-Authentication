@@ -12,10 +12,10 @@ function errorHanddlerMiddleware(error: any, req: Request, res: Response, next: 
         errorCode = StatusCodes.BAD_REQUEST;
     } else if (error instanceof ForbiddenError) {
         errorCode = StatusCodes.FORBIDDEN;
-    };
+    }
     
     res.status(errorCode).json({ errorMessage });
-};
+}
 
 export default errorHanddlerMiddleware;
 

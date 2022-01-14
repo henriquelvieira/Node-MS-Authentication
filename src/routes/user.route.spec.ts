@@ -7,9 +7,9 @@ import User from '../models/user.model';
 //Testes de Integração
 describe("(/users) - Users Route's", () => {
 
-    const newUsername: string = 'teste_route';
+    const newUsername = 'teste_route';
     let newUuid: string;
-    const valideUsername: string = 'teste';
+    const valideUsername = 'teste';
     let valideUuid: string;
     let token: string;
 

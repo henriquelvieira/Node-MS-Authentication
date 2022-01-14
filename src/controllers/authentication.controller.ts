@@ -14,8 +14,8 @@ class authenticationController {
             const user = req.user; //Pega o objeto User que está na requisição e que foi adicionado pelo Middleware basicAuthenticationMiddleware
 
             if (!user) {
-                throw new ForbiddenError('Usuário não informado!');     
-            };
+                throw new ForbiddenError('Usuário não informado!')     
+            }
             
             const jwt = await JWTToken.create(user); //Chamada da classe p/ geração do Token
             
@@ -26,8 +26,8 @@ class authenticationController {
             return res.status(StatusCodes.OK).json(response); //Retorar o Token gerado 
         } catch (error) {
             next(error); //Chamada do Handler de Erro
-        };
-    };
+        }
+    }
 
     async createRefreshToken (req: Request, res: Response, next: NextFunction) {
         try {
@@ -36,14 +36,14 @@ class authenticationController {
             
             if (!refreshTokenRequest){
                 throw new ForbiddenError('Refresh Token não informado!');   
-            };
+            }
         
             //Verifica se existe um Refresh Token válido p/ o Usuário
             const refreshTokenUserData = await refreshTokenRepositorie.findRefreshTokenByID(refreshTokenRequest.refresh_token);
             
             if (!refreshTokenUserData){
                 throw new ForbiddenError('Refresh Token inválido!'); 
-            };
+            }
             
             //Montagem do objeto c/ as informações do user para geração do Token
             const userData: User = {
@@ -58,21 +58,21 @@ class authenticationController {
             const expiresIn =  refreshTokenUserData.expiresin as number;
             const refreshTokenExpired = dayjs().isAfter( dayjs.unix(expiresIn) );
     
-            let response: {};
+            let response;
     
             if (refreshTokenExpired) {
                 const newRefreshToken = await refreshTokenRepositorie.generateRefreshToken(userData); //Geração do Refresh Token
                 response = {token: jwt, refresh_token: newRefreshToken}
             } else {
                 response = {token: jwt};
-            };
+            }
     
             return res.status(StatusCodes.CREATED).json(response); //Retorar o Token gerado 
         } catch (error) {
             next(error); //Chamada do Handler 'de Erro
-        };
-    };
+        }
+    }
 
-};
+}
 
 export default new authenticationController();

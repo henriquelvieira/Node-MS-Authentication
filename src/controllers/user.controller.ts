@@ -12,8 +12,8 @@ class userController {
             return res.status(StatusCodes.OK).json({users});
         } catch (error) {
             next(error); //Chamada do Handler de Erro
-        };
-    };
+        }
+    }
 
     async listUserById (req: Request<{ uuid: string }>, res: Response, next: NextFunction){
         try {        
@@ -23,8 +23,8 @@ class userController {
             return res.status(StatusCodes.OK).json(user);
         } catch (error) {
             next(error); //Chamada do Handler de Erro
-        };
-    };
+        }
+    }
 
     async createUser (req: Request, res: Response, next: NextFunction){
         try {
@@ -34,8 +34,8 @@ class userController {
             return res.status(StatusCodes.CREATED).json({ uuid });
         } catch (error) {
             next(error); //Chamada do Handler de Erro
-        };
-    };
+        }
+    }
 
     async modifiedUser (req: Request<{ uuid: string }>, res: Response, next: NextFunction){
         try {
@@ -50,8 +50,8 @@ class userController {
             return res.status(StatusCodes.OK).json(user);
         } catch (error) {
             next(error); //Chamada do Handler de Erro
-        };
-    };
+        }
+    }
 
     async removeUser (req: Request<{ uuid: string }>, res: Response, next: NextFunction) {
         try {
@@ -62,9 +62,9 @@ class userController {
             res.status(StatusCodes.OK).json({uuid});
         } catch (error) {
             next(error); //Chamada do Handler de Erro
-        };
-    };
+        }
+    }
 
-};
+}
 
 export default new userController();

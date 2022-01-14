@@ -25,6 +25,10 @@ npm install --save-dev supertest @types/supertest
 #Iniciar o TypeScript
 tsc --init
 
+
+#ESLINT
+npm install --save-dev @typescript-eslint/eslint-plugin eslint @typescript-eslint/parser
+
 --BANCO DE DADOS POSTGRESQL
 https://elephantsql.com
 

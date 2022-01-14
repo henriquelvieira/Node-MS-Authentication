@@ -10,7 +10,7 @@ async function jwtAuthenticationMiddleware (req: Request, res: Response, next: N
         //Verificar se o header authorization foi informado na requisição
         if (!authorizationHeader) {
             throw new ForbiddenError('Credenciais não informadas')    
-        }; 
+        } 
 
         //Separa a string, pegando o tipo da autenticação e o token
         const [authenticationType, token] = authorizationHeader.split(' '); 
@@ -18,7 +18,7 @@ async function jwtAuthenticationMiddleware (req: Request, res: Response, next: N
         //Verifica se o tipo da autenticação é diferente de Basic e se o token foi informado
         if (authenticationType !== 'Bearer' || !token) {
             throw new ForbiddenError('Tipo de autenticação inválido');
-        };      
+        }      
         
         try {
             const tokenPayload = JWTToken.validate(token); //Chamada da Classe para validar o Token
@@ -35,12 +35,12 @@ async function jwtAuthenticationMiddleware (req: Request, res: Response, next: N
             next();
         } catch (error) {
             throw new ForbiddenError('Token inválido');  
-        };
+        }
 
     } catch (error) {
         next(error);
-    };
+    }
 
-};
+}
 
 export default jwtAuthenticationMiddleware;

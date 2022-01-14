@@ -14,8 +14,8 @@ class RefreshTokenRepository {
             return refreshToken;
         } catch (error) {
             throw new DatabaseError('Erro na geração do Refresh Token', error);
-        };
-    };
+        }
+    }
 
     async findRefreshTokenByID(id: string): Promise<RefreshToken> {
         try {
@@ -33,8 +33,8 @@ class RefreshTokenRepository {
             return refreshToken || null;
         } catch (error) {
             throw new DatabaseError('Erro na consulta do Refresh Token', error);
-        };
-    };
+        }
+    }
 
     async create (user: User): Promise<string> {
         try {
@@ -55,8 +55,8 @@ class RefreshTokenRepository {
             return newRefreshToken.id;
         } catch (error) {
             throw new DatabaseError('Erro ao gerar o Refresh Token', error);
-        };
-    };
+        }
+    }
 
     async remove(uuid: string): Promise<void> {
         try {
@@ -66,9 +66,9 @@ class RefreshTokenRepository {
             await db.query(script, params); //Execução da Query passando os parâmetros
         } catch (error) {
             throw new DatabaseError('Erro ao Remover o Refresh Token', error);
-        };
-    };
+        }
+    }
 
-};
+}
 
 export default new RefreshTokenRepository();

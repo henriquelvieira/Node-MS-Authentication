@@ -7,6 +7,6 @@ class ForbiddenError extends Error {
         super(message);
     }
 
-};
+}
 
 export default ForbiddenError; 

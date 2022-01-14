@@ -7,7 +7,7 @@ class JWTToken {
 
     findSecretKey(): string{
         return process.env['JWT_SECRET_KEY'] as string;  
-    };
+    }
     
     validate(token: string): JWT.JwtPayload {
         const JWTsecretKey = this.findSecretKey(); 
@@ -17,10 +17,10 @@ class JWTToken {
         //Valida se o Token é Valido e se contém um sub
         if (typeof tokenPayload !== 'object' || !tokenPayload.sub){
             throw new ForbiddenError('Token inválido');    
-        };
+        }
 
         return tokenPayload;
-    };
+    }
 
     async create(user: User) {
         try{
@@ -29,7 +29,7 @@ class JWTToken {
 
             if (!user.username){
                 throw new Error('Usuário não informado!');  
-            };
+            }
 
             const expirationTimeToken = process.env['JWT_EXPIRATION_TIME_TOKEN'] as string;
             
@@ -45,11 +45,11 @@ class JWTToken {
             return jwt;       
         } catch (error)  {
             throw new ForbiddenError('Falha ao gerar o Token!', error); 
-        };
-    };
+        }
+    }
 
 
-};
+}
 
 
 export default new JWTToken();

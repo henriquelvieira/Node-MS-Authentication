@@ -52,6 +52,29 @@ class UserRepository {
         }
     }
 
+    async findUserLocked(username: string): Promise<boolean> {
+        try {
+            const query = `SELECT COUNT(*)                    
+                             FROM APPLICATION_USER
+                            WHERE USERNAME = $1
+                              AND LOCKED_AT IS NOT NULL`;
+            const params = [username];
+
+            const { rows } = await db.query<{ count: number }>(query, params); //Execução da Query passando os parâmetros
+            const [response]= rows;
+            
+            if (response.count > 0){
+                return true
+            } else {
+                return false
+            }
+
+        } catch (error) {
+            throw new DatabaseError('Erro na consulta por Username', error);
+        }
+    }
+
+
     async findUsernameAndPassword(username: string, password: string): Promise<User> {
         try {
             const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
@@ -142,6 +165,37 @@ class UserRepository {
         }
     }
 
+    async updateFailedAttempt(username: string): Promise<void> {
+        try {
+            const script = `UPDATE "public"."application_user" 
+                                SET FAILED_ATTEMP = FAILED_ATTEMP + 1,
+                                    LOCKED_AT = CASE 
+                                                 WHEN (FAILED_ATTEMP + 1) >= 3 THEN CURRENT_TIMESTAMP
+                                                 ELSE NULL
+                                                END  
+                              WHERE username = $1`;
+            const params = [username];
+
+            await db.query(script, params); //Execução da Query passando os parâmetros
+        } catch (error) {
+            throw new DatabaseError('Erro ao Registrar a falha de login', error);
+        }
+    }
+
+    async updateSuccessLogin (username: string): Promise<void> {
+        try {
+            const script = `UPDATE "public"."application_user" 
+                                SET FAILED_ATTEMP = 0,
+                                    LOCKED_AT     = NULL,
+                                    LAST_LOGIN_AT = CURRENT_TIMESTAMP
+                              WHERE USERNAME  = $1`;
+            const params = [username];
+
+            await db.query(script, params); //Execução da Query passando os parâmetros
+        } catch (error) {
+            throw new DatabaseError('Erro ao Registrar a falha de login', error);
+        }
+    }
 
 }
 

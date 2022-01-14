@@ -29,10 +29,19 @@ async function basicAuthenticationMiddleware (req: Request, res: Response, next:
             throw new ForbiddenError('Credenciais não Preenchidas');    
         }
 
+        //Validar se o Usuário está bloqueado
+        const userLocked: boolean = await userRepositorie.findUserLocked(username);
+        if (userLocked) {
+            throw new ForbiddenError('Usuário bloqueado');   
+        }
+
         const user = await userRepositorie.findUsernameAndPassword(username, password);//Classe para Validar o usuário e senha
         
         if (!user){
+            await userRepositorie.updateFailedAttempt(username); //Registrar a tentativa incorreta
             throw new ForbiddenError('Usuário ou Senha inválidos');     
+        } else {
+            await userRepositorie.updateSuccessLogin(username); //Registrar o login   
         }
 
         req.user = user; //Adicionar o objeto user dentro da requisição

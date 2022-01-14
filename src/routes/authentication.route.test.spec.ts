@@ -97,7 +97,6 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
         expect(response.status).toBe(403);
     });
 
-
     it("(POST /authentication/token) - Should be able lock a user", async () => {
         
         const passwordBase64 = Buffer.from(`${username}:${password}1213245`).toString('base64'); //Converter a senha para base64

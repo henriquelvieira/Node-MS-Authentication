@@ -29,10 +29,39 @@ tsc --init
 #ESLINT
 npm install --save-dev @typescript-eslint/eslint-plugin eslint @typescript-eslint/parser
 
+npm install --save uuid
+npm install --save-dev @types/uuid
+
 --BANCO DE DADOS POSTGRESQL
 https://elephantsql.com
 
 ROUTE:
 --REPOSITORIE
 ---MODEL
+
+
+Esqueci minha Senha:
+	\forgot-password {username?, email?}	
+
+* Validar se os campos necessários foram enviados na requisição
+* Gerar código de segurança (UUID)
+* Gerar password randomico
+* Gravar código de segurança e nova senha na tabela
+* Enviar por email
+
+import { v4 as uuid } from 'uuid';
+
+
+uuid();
+
+
+Alterar senha:
+	\reset_password {security_code: UUID, password: 123}
+
+* Validar se os campos necessários foram enviados na requisição
+* Validar se o código de segurança é válido (SELECT COUNT pelo security_code)
+* Gravar a nova senha 
+* Desbloquear o usuário
+* Retornar o uuid do usuário
+
 

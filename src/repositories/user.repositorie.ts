@@ -74,6 +74,26 @@ class UserRepository {
         }
     }
 
+    async findValidateSecurityCode(securityCode: string): Promise<boolean> {
+        try {
+            const query = `SELECT COUNT(*)
+                             FROM APPLICATION_USER
+                            WHERE SECURITY_CODE = $1`;
+            const params = [securityCode];
+
+            const { rows } = await db.query<{ count: number }>(query, params); //Execução da Query passando os parâmetros
+            const [response]= rows;
+            
+            if ( Number(response.count) > 0){
+                return true
+            } else {
+                return false
+            }
+
+        } catch (error) {
+            throw new DatabaseError('Erro na consulta por Username', error);
+        }
+    }
 
     async findUsernameAndPassword(username: string, password: string): Promise<User> {
         try {
@@ -185,15 +205,48 @@ class UserRepository {
     async updateSuccessLogin (username: string): Promise<void> {
         try {
             const script = `UPDATE "public"."application_user" 
-                                SET FAILED_ATTEMP = 0,
-                                    LOCKED_AT     = NULL,
-                                    LAST_LOGIN_AT = CURRENT_TIMESTAMP
-                              WHERE USERNAME  = $1`;
+                               SET FAILED_ATTEMP = 0,
+                                   LOCKED_AT     = NULL,
+                                   LAST_LOGIN_AT = CURRENT_TIMESTAMP
+                             WHERE USERNAME  = $1`;
             const params = [username];
 
             await db.query(script, params); //Execução da Query passando os parâmetros
         } catch (error) {
             throw new DatabaseError('Erro ao Registrar a falha de login', error);
+        }
+    }
+
+    async updateforgotPassword (username: string, securityCode: string, passwordSecurity: string): Promise<void> {
+        try {
+            const script = `UPDATE "public"."application_user" 
+                               SET PASSWORD      = $1,
+                                   SECURITY_CODE = $2 
+                             WHERE USERNAME  = $3`;
+            const params = [passwordSecurity, securityCode, username];
+
+            await db.query(script, params); //Execução da Query passando os parâmetros
+        } catch (error) {
+            throw new DatabaseError('Erro ao Solicitar recuperação de senha', error);
+        }
+    }
+
+    async updateResetPassword (securityCode: string, newPassword: string): Promise<void> {
+        try {
+            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+            
+            const script = `UPDATE "public"."application_user" 
+                               SET PASSWORD      = crypt($1, $2),
+                                   SECURITY_CODE = null,
+                                   FAILED_ATTEMP = 0,
+                                   LOCKED_AT     = NULL,
+                                   LAST_LOGIN_AT = CURRENT_TIMESTAMP
+                             WHERE SECURITY_CODE = $3`;
+            const params = [newPassword, password_crypt, securityCode];
+
+            await db.query(script, params); //Execução da Query passando os parâmetros
+        } catch (error) {
+            throw new DatabaseError('Erro ao recuperar a senha', error);
         }
     }
 

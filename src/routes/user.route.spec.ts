@@ -98,6 +98,7 @@ describe("(/users) - Users Route's", () => {
         expect(response.status).toBe(200);
     });  
 
+    
     it("(POST /users) - Should not be able create a new User (User alredy exists)", async () => {
         
         const requestBody = {
@@ -168,7 +169,20 @@ describe("(/users) - Users Route's", () => {
         .send();
 
         expect(response.status).toBe(403);
-    });  
+    }); 
+    
+    // it("(POST /forgot-password) - Should be able recover the password", async () => {
+    //     const requestBody = {
+    //         "username": valideUsername
+    //     };        
+        
+    //     const response = await request(app)
+    //     .post(`/users/forgot-password`)
+    //     .set('Content-Type', 'application/json') 
+    //     .send(requestBody);
+
+    //     expect(response.status).toBe(201);
+    // });
 
     afterAll(async () => {
         await userRepositorie.removeByUsername(newUsername); //Remover o usuário criando pelo teste

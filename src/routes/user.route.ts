@@ -14,4 +14,8 @@ usersRoute.put('/:uuid', jwtAuthenticationMiddleware, userController.modifiedUse
 
 usersRoute.delete('/:uuid', jwtAuthenticationMiddleware, userController.removeUser);
 
+usersRoute.post('/forgot-password', userController.forgotPassword);
+
+usersRoute.post('/reset-password', userController.resetPassword);
+
 export default usersRoute;

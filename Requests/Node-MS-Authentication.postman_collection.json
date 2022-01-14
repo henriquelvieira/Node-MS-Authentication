@@ -236,6 +236,78 @@
 			"response": []
 		},
 		{
+			"name": "Esqueci minha senha",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"teste4\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/forgot-password",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recuperar senha",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"security_code\": \"b92vlcya6c\",\r\n    \"new_password\": \"teste\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/reset-password",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"reset-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Alterar Usuário",
 			"request": {
 				"auth": {
@@ -258,7 +330,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"teste2\",\r\n    \"password\": \"teste\",\r\n    \"email\": \"teste22@email.com\"\r\n}",
+					"raw": "{\r\n    \"username\": \"teste\",\r\n    \"password\": \"teste\",\r\n    \"email\": \"teste1@email.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -266,13 +338,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/users/3abf9aa6-8eb6-44e6-9f47-518d25ce1a84",
+					"raw": "{{base_url}}/users/3acd5a91-226a-49fa-85a2-d5648ae9caa2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"users",
-						"3abf9aa6-8eb6-44e6-9f47-518d25ce1a84"
+						"3acd5a91-226a-49fa-85a2-d5648ae9caa2"
 					]
 				}
 			},

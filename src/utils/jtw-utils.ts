@@ -1,11 +1,13 @@
 import JWT, { SignOptions } from 'jsonwebtoken';
 import User from '../models/user.model';
 import ForbiddenError from "../models/errors/forbidden.error.model";
-require('dotenv').config();
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 class JWTToken {
 
-    findSecretKey(): string{
+    private findSecretKey(): string{
         return process.env['JWT_SECRET_KEY'] as string;  
     }
     

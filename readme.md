@@ -10,6 +10,7 @@ npm install --save pg
 npm install --save-dev @types/pg
 
 npm install --save dotenv
+npm install --dev-save @types/dotenv
 npm install --save ts-dotenv
 npm install --save jsonwebtoken
 npm install --save-dev @types/jsonwebtoken 
@@ -31,6 +32,8 @@ npm install --save-dev @typescript-eslint/eslint-plugin eslint @typescript-eslin
 
 npm install --save uuid
 npm install --save-dev @types/uuid
+
+npm install --save-dev prettier
 
 --BANCO DE DADOS POSTGRESQL
 https://elephantsql.com

@@ -3,7 +3,9 @@ import DatabaseError from '../models/errors/database.error.model';
 import User from '../models/user.model';
 import dayjs from 'dayjs';
 import RefreshToken from '../models/refreshToken.model';
-require('dotenv').config();
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 class RefreshTokenRepository {
 

@@ -4,6 +4,11 @@ import DatabaseError from '../models/errors/database.error.model';
 
 class UserRepository {
 
+    private getPasswordCrypt(): string{
+        const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+        return password_crypt;
+    }
+
     async findAllUsers(): Promise<User[]> {
         try {
             const query = `SELECT UUID,
@@ -79,12 +84,7 @@ class UserRepository {
             const { rows } = await db.query<{ count: number }>(query, params); //Execução da Query passando os parâmetros
             const [response]= rows;
             
-            if (response.count > 0){
-                return true
-            } else {
-                return false
-            }
-
+            return Number(response.count) > 0 ? true : false;
         } catch (error) {
             throw new DatabaseError('Erro na consulta por Username', error);
         }
@@ -124,7 +124,7 @@ class UserRepository {
 
     async findUsernameAndPassword(username: string, password: string): Promise<User> {
         try {
-            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+            const password_crypt = this.getPasswordCrypt();
 
             const query = `SELECT UUID,
                                   USERNAME,
@@ -146,7 +146,7 @@ class UserRepository {
 
     async create(user: User): Promise<string> {
         try {
-            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+            const password_crypt = this.getPasswordCrypt();
             const script = `INSERT INTO APPLICATION_USER (
                                                            USERNAME, 
                                                            PASSWORD,
@@ -171,7 +171,7 @@ class UserRepository {
 
     async update(user: User): Promise<boolean> {
         try {
-            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+            const password_crypt = this.getPasswordCrypt();
 
             const script = `UPDATE APPLICATION_USER
                                SET USERNAME = $1,
@@ -246,7 +246,7 @@ class UserRepository {
 
     async updateforgotPassword (username: string, securityCode: string, passwordSecurity: string): Promise<void> {
         try {
-            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+            const password_crypt = this.getPasswordCrypt();
 
             const script = `UPDATE "public"."application_user" 
                                SET PASSWORD      = crypt($1, $2),
@@ -262,7 +262,7 @@ class UserRepository {
 
     async updateResetPassword (securityCode: string, newPassword: string): Promise<void> {
         try {
-            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+            const password_crypt = this.getPasswordCrypt();
             
             const script = `UPDATE "public"."application_user" 
                                SET PASSWORD      = crypt($1, $2),

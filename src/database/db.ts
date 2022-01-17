@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
-require('dotenv').config();
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const connectionString = process.env['POSTGRESQL_CONNECTIONSTRING'] as string;
 const db = new Pool( {connectionString} );

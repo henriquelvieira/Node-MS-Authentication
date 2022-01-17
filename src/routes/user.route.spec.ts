@@ -120,7 +120,6 @@ describe("(/users) - Users Route's", () => {
         expect(response.status).toBe(200);        
     });
 
-
     it("(DELETE /users/UUID) - Should be able remover a user by uuid", async () => {
         const response = await request(app)
         .delete(`/users/${newUuid}`)
@@ -131,7 +130,6 @@ describe("(/users) - Users Route's", () => {
         expect(response.status).toBe(200);
     });  
 
-    
     it("(POST /users) - Should not be able create a new User (User alredy exists)", async () => {
         
         const requestBody = {
@@ -219,7 +217,6 @@ describe("(/users) - Users Route's", () => {
 
         expect(securityCode.length).toEqual(0);
     });  
-    
     
     it("(POST /users/reset-password) - Should not be able reset the password with a invalide Security Code", async () => {        
         const securityCode = 'abcdev';

@@ -5,6 +5,7 @@
   "main": "./dist/server.js",
   "scripts": {
     "test": "jest",
+    "test:functional": "jest --projects ./src/routes --runInBand",
     "start": "node ./",
     "build": "tsc -p .",
     "deploy": "tsc -p . && node ./",

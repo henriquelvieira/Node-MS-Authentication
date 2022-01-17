@@ -88,6 +88,39 @@ describe("(/users) - Users Route's", () => {
         expect(response.body).not.toHaveProperty('password');
     });    
 
+    it("(POST /users/forgot-password) - Should be able recover the password", async () => {
+        const requestBody = {
+            "username": newUsername
+        };        
+        
+        const response = await request(app)
+        .post(`/users/forgot-password`)
+        .set('Content-Type', 'application/json') 
+        .send(requestBody);
+
+        const securityCode = await userRepositorie.findSecurityCode(newUsername);
+        expect(response.status).toBe(200);
+        expect(securityCode.length).toBeGreaterThan(0);
+    });
+
+    it("(POST /users/reset-password) - Should be able reset the password", async () => {
+        
+        const securityCode = await userRepositorie.findSecurityCode(newUsername);
+
+        const requestBody = {
+            "security_code": securityCode,
+            "new_password": "teste1"
+        };     
+        
+        const response = await request(app)
+        .post(`/users/reset-password`)
+        .set('Content-Type', 'application/json') 
+        .send(requestBody);
+
+        expect(response.status).toBe(200);        
+    });
+
+
     it("(DELETE /users/UUID) - Should be able remover a user by uuid", async () => {
         const response = await request(app)
         .delete(`/users/${newUuid}`)
@@ -171,18 +204,38 @@ describe("(/users) - Users Route's", () => {
         expect(response.status).toBe(403);
     }); 
     
-    // it("(POST /forgot-password) - Should be able recover the password", async () => {
-    //     const requestBody = {
-    //         "username": valideUsername
-    //     };        
+    it("(POST /users/forgot-password) - Should not be able recover the password with a invalide user", async () => {
+        const requestBody = {
+            "username": newUsername+'123'
+        };        
         
-    //     const response = await request(app)
-    //     .post(`/users/forgot-password`)
-    //     .set('Content-Type', 'application/json') 
-    //     .send(requestBody);
+        const response = await request(app)
+        .post(`/users/forgot-password`)
+        .set('Content-Type', 'application/json') 
+        .send(requestBody);
 
-    //     expect(response.status).toBe(201);
-    // });
+        const securityCode = await userRepositorie.findSecurityCode(newUsername+'123');
+        expect(response.status).toBe(200);
+
+        expect(securityCode.length).toEqual(0);
+    });  
+    
+    
+    it("(POST /users/reset-password) - Should not be able reset the password with a invalide Security Code", async () => {        
+        const securityCode = 'abcdev';
+
+        const requestBody = {
+            "security_code": securityCode,
+            "new_password": "teste1"
+        };     
+        
+        const response = await request(app)
+        .post(`/users/reset-password`)
+        .set('Content-Type', 'application/json') 
+        .send(requestBody);
+
+        expect(response.status).toBe(403);        
+    });    
 
     afterAll(async () => {
         await userRepositorie.removeByUsername(newUsername); //Remover o usuário criando pelo teste

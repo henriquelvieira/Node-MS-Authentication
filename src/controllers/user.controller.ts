@@ -77,15 +77,19 @@ class userController {
                 throw new ForbiddenError('Usuário ou E-mail não informado')
             }
 
-            //Gerar código de segurança e nova senha
-            const securityCode: string = generateRandomUtil.randomCode();
-            const securityPassword: string = generateRandomUtil.randomCode();
+            const userExists: boolean = await userRepositorie.findUserExists(userData.username);
 
-            await userRepositorie.updateforgotPassword(userData.username, securityCode, securityPassword);
+            if (userExists) {
+                //Gerar código de segurança e nova senha
+                const securityCode: string = await generateRandomUtil.randomCode();
+                const securityPassword: string = await generateRandomUtil.randomCode();
+
+                await userRepositorie.updateforgotPassword(userData.username, securityCode, securityPassword);
+            }
 
             //TO DO: ENVIAR CÓDIGO GERADO POR EMAIL
             
-            res.status(StatusCodes.OK).json();
+            res.status(StatusCodes.OK).json(); //Retornar sempre OK por segurança, mesmo quando o usuário não exista, isto impedirá a detecção de quais usuários existem ou não no banco
         } catch (error) {
             next(error); //Chamada do Handler de Erro
         }

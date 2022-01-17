@@ -52,6 +52,22 @@ class UserRepository {
         }
     }
 
+    async findUserExists(username: string): Promise<boolean> {
+        try {
+            const query = `SELECT COUNT(*)                    
+                             FROM APPLICATION_USER
+                            WHERE USERNAME = $1`;
+            const params = [username];
+
+            const { rows } = await db.query<{ count: number }>(query, params); //Execução da Query passando os parâmetros
+            const [response]= rows;
+            
+            return Number(response.count) > 0 ? true : false;
+        } catch (error) {
+            throw new DatabaseError('Erro na consulta por Username', error);
+        }
+    }    
+
     async findUserLocked(username: string): Promise<boolean> {
         try {
             const query = `SELECT COUNT(*)                    
@@ -84,14 +100,25 @@ class UserRepository {
             const { rows } = await db.query<{ count: number }>(query, params); //Execução da Query passando os parâmetros
             const [response]= rows;
             
-            if ( Number(response.count) > 0){
-                return true
-            } else {
-                return false
-            }
-
+            return Number(response.count) > 0 ? true : false;
         } catch (error) {
             throw new DatabaseError('Erro na consulta por Username', error);
+        }
+    }
+
+    async findSecurityCode(username: string): Promise<string> {
+        try {
+            const query = `SELECT SECURITY_CODE
+                             FROM APPLICATION_USER
+                            WHERE USERNAME = $1`;
+            const params = [username];
+
+            const { rows } = await db.query<{ security_code : string }>(query, params); //Execução da Query passando os parâmetros
+            const [response]= rows;            
+            return response ? response.security_code : ''; 
+
+        } catch (error) {
+            throw new DatabaseError('Erro na consulta do SECURITY_CODE', error);
         }
     }
 
@@ -219,11 +246,13 @@ class UserRepository {
 
     async updateforgotPassword (username: string, securityCode: string, passwordSecurity: string): Promise<void> {
         try {
+            const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+
             const script = `UPDATE "public"."application_user" 
-                               SET PASSWORD      = $1,
-                                   SECURITY_CODE = $2 
-                             WHERE USERNAME  = $3`;
-            const params = [passwordSecurity, securityCode, username];
+                               SET PASSWORD      = crypt($1, $2),
+                                   SECURITY_CODE = $3 
+                             WHERE USERNAME  = $4`;
+            const params = [passwordSecurity, password_crypt, securityCode, username];
 
             await db.query(script, params); //Execução da Query passando os parâmetros
         } catch (error) {

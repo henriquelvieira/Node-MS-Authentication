@@ -4,7 +4,7 @@ import DatabaseError from '../models/errors/database.error.model';
 
 class UserRepository {
 
-    private getPasswordCrypt(): string{
+    private getPasswordCrypt(): string {
         const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
         return password_crypt;
     }

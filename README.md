@@ -37,6 +37,11 @@ npm install --save-dev @types/uuid
 
 npm install --save-dev prettier
 
+npm install --save pino
+npm install --save-dev @types/pino
+npm install --save-dev pino-pretty
+
+
 --BANCO DE DADOS POSTGRESQL
 https://elephantsql.com
 
@@ -68,5 +73,3 @@ Alterar senha:
 * Gravar a nova senha 
 * Desbloquear o usuário
 * Retornar o uuid do usuário
-
-

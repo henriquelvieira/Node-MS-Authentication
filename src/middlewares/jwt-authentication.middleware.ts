@@ -5,7 +5,7 @@ import ForbiddenError from "../models/errors/forbidden.error.model";
 async function jwtAuthenticationMiddleware (req: Request, res: Response, next: NextFunction){
 
     try {
-        const authorizationHeader = req.headers['authorization'];
+        const authorizationHeader = req.headers['authorization']; //Pegar o header da Requisição com a autorização
 
         //Verificar se o header authorization foi informado na requisição
         if (!authorizationHeader) {

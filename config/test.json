@@ -1,0 +1,13 @@
+{
+  "App": {
+    "port": 3001,
+    "jwt": {
+      "tokenExpiresIn": "20m",
+      "refreshTokenExpiresIn": "2 hour"
+    },
+    "logger": {
+      "enabled": true,
+      "level": "info"
+    }
+  }
+}

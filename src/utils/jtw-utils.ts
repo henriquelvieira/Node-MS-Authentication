@@ -1,12 +1,12 @@
 import JWT, { SignOptions } from 'jsonwebtoken';
 import User from '../models/user.model';
 import ForbiddenError from "../models/errors/forbidden.error.model";
+import config from 'config';
 import * as dotenv from "dotenv";
-
 dotenv.config();
 
 class JWTToken {
-
+  
     private findSecretKey(): string{
         return process.env['JWT_SECRET_KEY'] as string;  
     }
@@ -33,7 +33,7 @@ class JWTToken {
                 throw new Error('Usuário não informado!');  
             }
 
-            const expirationTimeToken = process.env['JWT_EXPIRATION_TIME_TOKEN'] as string;
+            const expirationTimeToken = config.get('App.jwt.tokenExpiresIn') as string;
             
             const JWTPayload = { username: user.username };        
             const JWTOptions: SignOptions  = {

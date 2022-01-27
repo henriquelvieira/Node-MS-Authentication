@@ -34,6 +34,7 @@
   "author": "Henrique Lopes Vieira",
   "license": "MIT",
   "devDependencies": {
+    "@types/config": "^0.0.41",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.4.0",
     "@types/jsonwebtoken": "^8.5.6",
@@ -55,6 +56,7 @@
   },
   "dependencies": {
     "@types/dotenv": "^8.2.0",
+    "config": "^3.3.7",
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",

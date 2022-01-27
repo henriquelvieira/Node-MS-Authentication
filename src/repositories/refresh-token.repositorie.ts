@@ -3,9 +3,7 @@ import DatabaseError from '../models/errors/database.error.model';
 import User from '../models/user.model';
 import dayjs from 'dayjs';
 import RefreshToken from '../models/refreshToken.model';
-import * as dotenv from "dotenv";
-
-dotenv.config();
+import config from 'config';
 
 class RefreshTokenRepository {
 
@@ -41,7 +39,7 @@ class RefreshTokenRepository {
     async create (user: User): Promise<string> {
         try {
             //Buscar o tempo de Expiração do Token de Refresh
-            const expirationTime = process.env['REFRESH_TOKEN_EXPIRATION_TIME'] as string;
+            const expirationTime = config.get('App.jwt.refreshTokenExpiresIn') as string;
             const [expirationTimeValue, expirationTimeUnit] = expirationTime.split(' ');
 
 

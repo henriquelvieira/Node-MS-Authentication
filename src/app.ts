@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import jwtAuthenticationMiddleware from './middlewares/jwt-authentication.middleware';
-import errorHanddlerMiddleware from './middlewares/error-handler.middleware';
+import errorHandlerMiddleware from './middlewares/error-handler.middleware';
 import authenticationRoute from './routes/authentication.route';
 import usersRoute from './routes/user.route';
 import statusRoute from './routes/status.route';
@@ -17,7 +17,7 @@ app.use('/status', jwtAuthenticationMiddleware, statusRoute); //Status (todas as
 app.use('/users', usersRoute); //Usuário
 
 //Configuração do Handler de Erro:
-app.use(errorHanddlerMiddleware);
+app.use(errorHandlerMiddleware);
 
 app.use('/', (req: Request, res: Response) => {
   res.json({ message: 'ok' });

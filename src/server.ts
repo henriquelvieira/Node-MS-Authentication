@@ -5,7 +5,7 @@ import authenticationRoute from './routes/authentication.route';
 import usersRoute from './routes/user.route';
 import statusRoute from './routes/status.route';
 import logger from './logger';
-
+import expressPino from 'express-pino-logger';
 
 class SetupServer {
   
@@ -15,20 +15,10 @@ class SetupServer {
     this.app = express();
   }
   
-  public async init(): Promise<void> {
-    this.setupExpress();
-    this.setupControllers();
-    this.setupErrorHandlers();
-
-    this.app.use('/', (req: Request, res: Response) => {
-        res.json({ message: 'ok' });
-    });    
-
-  }
-
   private setupExpress(): void {
     this.app.use(express.json()); //Middleware p/ lidar c/ o JSON no Content-Type
     this.app.use(express.urlencoded({ extended: true })); //Middleware p/ realizar o parsing do conteúdo das requisições
+    // this.app.use(expressPino({logger}));
   }
   
   private setupControllers(): void {
@@ -39,6 +29,17 @@ class SetupServer {
 
   private setupErrorHandlers(): void {
     this.app.use(errorHandlerMiddleware);
+  }
+
+  public async init(): Promise<void> {
+    this.setupExpress();
+    this.setupControllers();
+    this.setupErrorHandlers();
+
+    this.app.use('/', (req: Request, res: Response) => {
+        res.json({ message: 'ok' });
+    });    
+
   }
 
   public start(): void {

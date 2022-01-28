@@ -45,6 +45,12 @@ npm install --save-dev pino-pretty
 npm install --save config
 npm install --save-dev @types/config
 
+
+npm install --save express-pino-logger
+npm install --save-dev @types/express-pino-logger
+
+
+
 --BANCO DE DADOS POSTGRESQL
 https://elephantsql.com
 

@@ -49,6 +49,8 @@ npm install --save-dev @types/config
 npm install --save express-pino-logger
 npm install --save-dev @types/express-pino-logger
 
+npm install --save cors
+npm install --save-dev @types/cors
 
 
 --BANCO DE DADOS POSTGRESQL

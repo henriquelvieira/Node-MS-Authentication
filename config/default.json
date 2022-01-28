@@ -5,6 +5,9 @@
         "tokenExpiresIn": "20m",
         "refreshTokenExpiresIn": "2 hour"
       },
+      "cors": {
+        "origin": "*"
+      },
       "logger": {
         "enabled": true,
         "level": "info"

@@ -1,8 +1,9 @@
-import { app } from '../app';
 import request from 'supertest';
 import userRepositorie from '../repositories/user.repositorie';
 import JWTToken from "../utils/jtw-utils";
 import User from '../models/user.model';
+import SetupServer from '../server';
+import config from 'config';
 
 //Testes de Integração
 describe("(/users) - Users Route's", () => {
@@ -12,8 +13,15 @@ describe("(/users) - Users Route's", () => {
     const valideUsername = 'teste';
     let valideUuid: string;
     let token: string;
+    let app: any;
+   
 
     beforeAll(async () => {
+        
+        const server = new SetupServer(config.get('App.port'));
+        await server.init();
+        app = server.getApp();
+
         await userRepositorie.removeByUsername(newUsername); //Remover o usuário criando pelo teste
 
         //Gerar um Token valido p/ os testes

@@ -1,6 +1,7 @@
-import { app } from '../app';
 import request from 'supertest';
 import userRepositorie from '../repositories/user.repositorie';
+import SetupServer from '../server';
+import config from 'config';
 
 //Testes de Integração
 describe("(/authenticationRoute) - Authentication Route's", () => {
@@ -9,8 +10,13 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
     const password = 'teste';
     let refresh_token: string;
     let token: string;
+    let app: any;
 
     beforeAll(async () => {
+        const server = new SetupServer(config.get('App.port'));
+        await server.init();
+        app = server.getApp();        
+        
         //Desbloquear o usuário
         await userRepositorie.updateSuccessLogin(username); 
     });

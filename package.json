@@ -2,12 +2,12 @@
   "name": "ms-authentication",
   "version": "1.0.0",
   "description": "Microservice criado em Node.js e Typescript",
-  "main": "./dist/server.js",
+  "main": "./dist/app.js",
   "scripts": {
     "test": "jest",
     "test:functional": "jest --projects ./src/routes --runInBand",
     "start": "node ./",
-    "start:local": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/server.ts | pino-pretty -c",
+    "start:local": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/app.ts | pino-pretty -c",
     "build": "tsc -p .",
     "deploy": "tsc -p . && node ./",
     "test:start": "jest && node ./",
@@ -15,7 +15,7 @@
     "lint:fix": "eslint ./src --ext .ts --fix",
     "style:check": "prettier --check src/**/*.ts",
     "style:fix": "prettier --write src/**/*.ts",
-    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify src/server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify src/app.ts"
   },
   "repository": {
     "type": "git",

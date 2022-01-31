@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import config from 'config';
 
+
 dotenv.config();
 
 describe("(env) - Environment Variables", () => {
@@ -9,23 +10,23 @@ describe("(env) - Environment Variables", () => {
         const PORT = Number(config.get('App.port'));
         const connectionString = process.env['POSTGRESQL_CONNECTIONSTRING'] as string;
         const expirationTime = config.get('App.jwt.refreshTokenExpiresIn') as string;
-        const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
-        const jwt_secret_key = process.env['JWT_SECRET_KEY'] as string;  
+        const password_crypt = process.env[config.get('App.envs.PostgreSQL.passwordCRYPT') as string] as string;
+        const jwt_secret_key = process.env[config.get('App.envs.JWT.SecretKey') as string] as string;  
         const expirationTimeToken = config.get('App.jwt.tokenExpiresIn') as string;
         
         expect(config.get('App.port')).toBeDefined();
         expect(PORT).toBeGreaterThan(0);
 
-        expect(process.env['POSTGRESQL_CONNECTIONSTRING']).toBeDefined();
+        expect(process.env[config.get('App.envs.PostgreSQL.connectionString') as string]).toBeDefined();
         expect(connectionString.length).toBeGreaterThan(0);
 
         expect(config.get('App.jwt.refreshTokenExpiresIn')).toBeDefined();
         expect(expirationTime.length).toBeGreaterThan(0);
 
-        expect(process.env['POSTGRESQL_PASSWORD_CRYPT']).toBeDefined();
+        expect(process.env[config.get('App.envs.PostgreSQL.passwordCRYPT') as string]).toBeDefined();
         expect(password_crypt.length).toBeGreaterThan(0);
 
-        expect(process.env['JWT_SECRET_KEY']).toBeDefined();
+        expect(process.env[config.get('App.envs.JWT.SecretKey') as string]).toBeDefined();
         expect(jwt_secret_key.length).toBeGreaterThan(0);
 
         expect(config.get('App.jwt.tokenExpiresIn')).toBeDefined();

@@ -5,9 +5,9 @@ import authenticationRoute from './routes/authentication.route';
 import usersRoute from './routes/user.route';
 import statusRoute from './routes/status.route';
 import logger from './logger';
-import expressPino from 'express-pino-logger';
 import cors from 'cors';
 import config from 'config';
+// import expressPino from 'express-pino-logger';
 
 class SetupServer {
   
@@ -58,10 +58,3 @@ class SetupServer {
 }
 
 export default SetupServer; 
-
-
-
-
-
-
-

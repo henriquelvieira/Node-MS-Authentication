@@ -8,7 +8,7 @@ dotenv.config();
 class JWTToken {
   
     private findSecretKey(): string{
-        return process.env['JWT_SECRET_KEY'] as string;  
+        return process.env[config.get('App.envs.JWT.SecretKey') as string] as string;  
     }
     
     validate(token: string): JWT.JwtPayload {

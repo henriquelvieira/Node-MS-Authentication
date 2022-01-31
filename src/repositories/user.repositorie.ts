@@ -1,11 +1,12 @@
 import db from '../database/db';
 import User from '../models/user.model';
 import DatabaseError from '../models/errors/database.error.model';
+import config from 'config';
 
 class UserRepository {
 
     private getPasswordCrypt(): string {
-        const password_crypt = process.env['POSTGRESQL_PASSWORD_CRYPT'] as string;
+        const password_crypt = process.env[config.get('App.envs.PostgreSQL.passwordCRYPT') as string] as string;
         return password_crypt;
     }
 

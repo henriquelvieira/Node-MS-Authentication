@@ -8,6 +8,7 @@ import logger from './logger';
     const server = new SetupServer(config.get('App.port'));
     await server.init();
     server.start();
+        
   } catch (error) {
     logger.error(`Falha ao iniciar o servidor ${error}`);
   }

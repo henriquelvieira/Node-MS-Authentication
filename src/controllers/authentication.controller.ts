@@ -7,9 +7,9 @@ import RefreshToken from "../models/refreshToken.model";
 import User from "../models/user.model";
 import dayjs from 'dayjs';
 
-class authenticationController {
+class AuthenticationController {
 
-    async createToken (req: Request, res: Response, next: NextFunction){        
+    public async createToken (req: Request, res: Response, next: NextFunction){        
         try {  
             const user = req.user; //Pega o objeto User que está na requisição e que foi adicionado pelo Middleware basicAuthenticationMiddleware
 
@@ -29,7 +29,7 @@ class authenticationController {
         }
     }
 
-    async createRefreshToken (req: Request, res: Response, next: NextFunction) {
+    public async createRefreshToken (req: Request, res: Response, next: NextFunction) {
         try {
             //Verifica se o Refresh Token foi informadom na requisição
             const refreshTokenRequest: RefreshToken = req.body;
@@ -75,4 +75,4 @@ class authenticationController {
 
 }
 
-export default new authenticationController();
+export default AuthenticationController;

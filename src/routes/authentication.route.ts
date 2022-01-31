@@ -2,9 +2,10 @@ import { Router, Request, Response, NextFunction } from "express";
 import {StatusCodes} from 'http-status-codes';
 import basicAuthenticationMiddleware from "../middlewares/basic-authentication.middleware";
 import jwtAuthenticationMiddleware from "../middlewares/jwt-authentication.middleware";
-import authenticationController from "../controllers/authentication.controller";
+import AuthenticationController from "../controllers/authentication.controller";
 
 const authenticationRoute = Router();
+const authenticationController = new AuthenticationController();
 
 /*Antes do acesso à esta rota será feita a chamada ao Middleware de autenticação*/
 authenticationRoute.post('/token', basicAuthenticationMiddleware, authenticationController.createToken);

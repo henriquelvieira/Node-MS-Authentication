@@ -1,5 +1,5 @@
 import request from 'supertest';
-import userRepositorie from '../repositories/user.repositorie';
+import UserRepository from '../repositories/user.repositorie';
 import SetupServer from '../server';
 import config from 'config';
 
@@ -18,7 +18,7 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
         app = server.getApp();        
         
         //Desbloquear o usuário
-        await userRepositorie.updateSuccessLogin(username); 
+        await UserRepository.updateSuccessLogin(username); 
     });
     
     it("(POST /authentication/token) - Should be able generate a new Token", async () => {
@@ -134,7 +134,7 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
 
     afterAll(async () => {
         //Desbloquear o usuário
-        await userRepositorie.updateSuccessLogin(username); 
+        await UserRepository.updateSuccessLogin(username); 
     });
 
 });

@@ -1,7 +1,7 @@
 import User from "../models/user.model";
 import JWTToken from "../utils/jtw-utils";
 import refreshTokenRepositorie from "../repositories/refresh-token.repositorie";
-import userRepositorie from "../repositories/user.repositorie";
+import UserRepository from "../repositories/user.repositorie";
 import RefreshToken from "../models/refreshToken.model";
 import ForbiddenError from "../models/errors/forbidden.error.model";
 import DatabaseError from "../models/errors/database.error.model";
@@ -13,7 +13,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
     let newRefreshToken: string;
 
     beforeAll(async () => {
-        uuid = await userRepositorie.findUserByUsername(username); //Remover o usuário de teste
+        uuid = await UserRepository.findUserByUsername(username); //Remover o usuário de teste
     });
 
     it("(createToken) - Should be able generate a new token", async () => {

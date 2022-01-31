@@ -1,8 +1,9 @@
 import { Router } from "express";
 import jwtAuthenticationMiddleware from "../middlewares/jwt-authentication.middleware";
-import userController from "../controllers/user.controller";
+import UserController from "../controllers/user.controller";
 
 const usersRoute = Router();
+const userController = new UserController(); 
 
 usersRoute.get('/', jwtAuthenticationMiddleware, userController.listUsers);
 

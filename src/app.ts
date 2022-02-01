@@ -1,6 +1,8 @@
 import config from 'config';
 import SetupServer from './server';
 import logger from './logger';
+import db from './database/db';
+
 
 (async (): Promise<void> => {
   
@@ -11,6 +13,7 @@ import logger from './logger';
         
   } catch (error) {
     logger.error(`Falha ao iniciar o servidor ${error}`);
+    db.end();
   }
 
 }

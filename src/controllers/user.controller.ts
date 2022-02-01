@@ -9,7 +9,6 @@ import generateRandomUtil from "../utils/randons.util";
 
 class UserController {
 
-
     public async listUsers (req: Request, res: Response, next: NextFunction) {
         try {  
             const users = await UserRepository.findAllUsers(); //Classe para realizar o SELECT de todos os usuários
@@ -43,8 +42,15 @@ class UserController {
     }
 
     public async modifiedUser (req: Request<{ uuid: string }>, res: Response, next: NextFunction){
+        
         try {
             const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
+            // const uuid_token = req.user.username;
+            
+            // if (uuid !== uuid_token) {
+            //     throw new ForbiddenError('Não é possível alterar outro usuário')
+            // }
+            
             const modifiedUser: User = req.body; //Pegar o Body enviado na Request
             modifiedUser.uuid = uuid; //Adicionar o UUID ao JSON enviado na requisição
         

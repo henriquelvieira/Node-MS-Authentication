@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import {StatusCodes} from 'http-status-codes';
 
-class statusController {
+class StatusController {
 
     public listStatus (req: Request, res: Response) {
         const response = {foo: 'bar'};
@@ -11,4 +11,4 @@ class statusController {
 
 }
 
-export default new statusController();
+export default StatusController;

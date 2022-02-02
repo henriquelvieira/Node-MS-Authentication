@@ -1,7 +1,8 @@
 import { Router } from "express";
-import statusController from "../controllers/status.controller";
+import StatusController from "../controllers/status.controller";
 
 const statusRoute = Router();
+const statusController = new StatusController();  
 
 statusRoute.get('/', statusController.listStatus);
 

@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
 
-class generateRandom {
+class GenerateRandom {
 
     UUID(): string{
         return uuid().toString();
@@ -13,4 +13,4 @@ class generateRandom {
 
 }
 
-export default new generateRandom();
+export default GenerateRandom;

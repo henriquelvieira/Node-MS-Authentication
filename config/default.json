@@ -10,7 +10,8 @@
       },
       "logger": {
         "enabled": true,
-        "level": "info"
+        "level": "info",
+        "enabled_log_reqs": true
       },
       "envs": {
         "PostgreSQL": {

@@ -15,7 +15,7 @@
     "lint:fix": "eslint ./src --ext .ts --fix",
     "style:check": "prettier --check src/**/*.ts",
     "style:fix": "prettier --write src/**/*.ts",
-    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify src/app.ts"
+    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify src/app.ts | pino-pretty -c"
   },
   "repository": {
     "type": "git",

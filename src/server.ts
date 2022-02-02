@@ -7,7 +7,7 @@ import statusRoute from './routes/status.route';
 import logger from './logger';
 import cors from 'cors';
 import config from 'config';
-// import expressPino from 'express-pino-logger';
+import expressPino from 'express-pino-logger';
 
 class SetupServer {
   
@@ -20,7 +20,12 @@ class SetupServer {
   private setupExpress(): void {
     this.app.use(express.json()); //Middleware p/ lidar c/ o JSON no Content-Type
     this.app.use(express.urlencoded({ extended: true })); //Middleware p/ realizar o parsing do conteúdo das requisições
-    // this.app.use(expressPino({logger}));
+    
+    const enableLogReqs =  config.get('App.logger.enabled_log_reqs') as boolean;
+    if (enableLogReqs) {
+      this.app.use(expressPino({logger}));
+    }
+
     this.app.use(cors({origin: config.get('App.cors.origin')} )); //Permitir CORS
   }
   

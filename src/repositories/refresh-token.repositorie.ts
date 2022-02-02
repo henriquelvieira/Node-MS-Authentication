@@ -7,7 +7,7 @@ import config from 'config';
 
 class RefreshTokenRepository {
 
-    async generateRefreshToken(user: User): Promise<string>{
+    public async generateRefreshToken(user: User): Promise<string>{
         try {
             await this.remove(user.uuid as string); //Chamada da classe p/ remover os Refresh Token's do usuário
             const refreshToken = await this.create(user); //Chamada da classe p/ geração do refresh Token
@@ -17,7 +17,7 @@ class RefreshTokenRepository {
         }
     }
 
-    async findRefreshTokenByID(id: string): Promise<RefreshToken> {
+    public async findRefreshTokenByID(id: string): Promise<RefreshToken> {
         try {
             const query = `SELECT UUID,
                                   USERNAME,
@@ -36,7 +36,7 @@ class RefreshTokenRepository {
         }
     }
 
-    async create (user: User): Promise<string> {
+    private async create (user: User): Promise<string> {
         try {
             //Buscar o tempo de Expiração do Token de Refresh
             const expirationTime = config.get('App.jwt.refreshTokenExpiresIn') as string;
@@ -58,7 +58,7 @@ class RefreshTokenRepository {
         }
     }
 
-    async remove(uuid: string): Promise<void> {
+    private async remove(uuid: string): Promise<void> {
         try {
             const script = `DELETE FROM "public"."refresh_token" WHERE UUID = $1`;
             const params = [uuid];
@@ -71,4 +71,4 @@ class RefreshTokenRepository {
 
 }
 
-export default new RefreshTokenRepository();
+export default RefreshTokenRepository;

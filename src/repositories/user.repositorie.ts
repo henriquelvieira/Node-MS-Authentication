@@ -10,7 +10,7 @@ class UserRepository {
         return password_crypt;
     }
 
-    async findAllUsers(): Promise<User[]> {
+    public async findAllUsers(): Promise<User[]> {
         try {
             const query = `SELECT UUID,
                                   USERNAME,
@@ -24,7 +24,7 @@ class UserRepository {
         }
     }
 
-    async findUserById(uuid: string): Promise<User>{
+    public async findUserById(uuid: string): Promise<User>{
         try {
             const query = `SELECT UUID,
                                   USERNAME,
@@ -42,7 +42,7 @@ class UserRepository {
         }
     }
 
-    async findUserByUsername(username: string): Promise<string>{
+    public async findUserByUsername(username: string): Promise<string>{
         try {
             const query = `SELECT UUID                    
                              FROM APPLICATION_USER
@@ -58,7 +58,7 @@ class UserRepository {
         }
     }
 
-    async findUserExists(username: string): Promise<boolean> {
+    public async findUserExists(username: string): Promise<boolean> {
         try {
             const query = `SELECT COUNT(*)                    
                              FROM APPLICATION_USER
@@ -74,7 +74,7 @@ class UserRepository {
         }
     }    
 
-    async findUserLocked(username: string): Promise<boolean> {
+    public async findUserLocked(username: string): Promise<boolean> {
         try {
             const query = `SELECT COUNT(*)                    
                              FROM APPLICATION_USER
@@ -91,7 +91,7 @@ class UserRepository {
         }
     }
 
-    async findValidateSecurityCode(securityCode: string): Promise<boolean> {
+    public async findValidateSecurityCode(securityCode: string): Promise<boolean> {
         try {
             const query = `SELECT COUNT(*)
                              FROM APPLICATION_USER
@@ -107,7 +107,7 @@ class UserRepository {
         }
     }
 
-    async findSecurityCode(username: string): Promise<string> {
+    public async findSecurityCode(username: string): Promise<string> {
         try {
             const query = `SELECT SECURITY_CODE
                              FROM APPLICATION_USER
@@ -123,7 +123,7 @@ class UserRepository {
         }
     }
 
-    async findUsernameAndPassword(username: string, password: string): Promise<User> {
+    public async findUsernameAndPassword(username: string, password: string): Promise<User> {
         try {
             const password_crypt = this.getPasswordCrypt();
 
@@ -145,7 +145,7 @@ class UserRepository {
 
     }    
 
-    async create(user: User): Promise<string> {
+    public async create(user: User): Promise<string> {
         try {
             const password_crypt = this.getPasswordCrypt();
             const script = `INSERT INTO APPLICATION_USER (
@@ -170,7 +170,7 @@ class UserRepository {
         }
     }
 
-    async update(user: User): Promise<boolean> {
+    public async update(user: User): Promise<boolean> {
         try {
             const password_crypt = this.getPasswordCrypt();
 
@@ -190,7 +190,7 @@ class UserRepository {
         return true;
     }
 
-    async remove(uuid: string): Promise<boolean> {
+    public async remove(uuid: string): Promise<boolean> {
         try {
             const script = `DELETE FROM "public"."application_user" WHERE uuid = $1`;
             const params = [uuid];
@@ -202,7 +202,7 @@ class UserRepository {
         }
     }
 
-    async removeByUsername(username: string): Promise<void> {
+    public async removeByUsername(username: string): Promise<void> {
         try {
             const script = `DELETE FROM "public"."application_user" WHERE username = $1`;
             const params = [username];
@@ -213,7 +213,7 @@ class UserRepository {
         }
     }
 
-    async updateFailedAttempt(username: string): Promise<void> {
+    public async updateFailedAttempt(username: string): Promise<void> {
         try {
             const script = `UPDATE "public"."application_user" 
                                 SET FAILED_ATTEMP = FAILED_ATTEMP + 1,
@@ -230,7 +230,7 @@ class UserRepository {
         }
     }
 
-    async updateSuccessLogin (username: string): Promise<void> {
+    public async updateSuccessLogin (username: string): Promise<void> {
         try {
             const script = `UPDATE "public"."application_user" 
                                SET FAILED_ATTEMP = 0,
@@ -245,7 +245,7 @@ class UserRepository {
         }
     }
 
-    async updateforgotPassword (username: string, securityCode: string, passwordSecurity: string): Promise<void> {
+    public async updateforgotPassword (username: string, securityCode: string, passwordSecurity: string): Promise<void> {
         try {
             const password_crypt = this.getPasswordCrypt();
 
@@ -261,7 +261,7 @@ class UserRepository {
         }
     }
 
-    async updateResetPassword (securityCode: string, newPassword: string): Promise<void> {
+    public async updateResetPassword (securityCode: string, newPassword: string): Promise<void> {
         try {
             const password_crypt = this.getPasswordCrypt();
             

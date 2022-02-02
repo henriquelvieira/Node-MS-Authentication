@@ -4,8 +4,7 @@ import ForbiddenError from "../models/errors/forbidden.error.model";
 import ForgotPassword from "../models/forgotPassword.model";
 import User from "../models/user.model";
 import UserRepository from "../repositories/user.repositorie";
-import generateRandomUtil from "../utils/randons.util";
-
+import GenerateRandom from "../utils/randons.util";
 
 class UserController {
 
@@ -87,9 +86,11 @@ class UserController {
             const userExists: boolean = await UserRepository.findUserExists(userData.username);
 
             if (userExists) {
+                const generateRandom = new GenerateRandom();
+                
                 //Gerar código de segurança e nova senha
-                const securityCode: string = await generateRandomUtil.randomCode();
-                const securityPassword: string = await generateRandomUtil.randomCode();
+                const securityCode: string = generateRandom.randomCode();
+                const securityPassword: string = generateRandom.randomCode();
 
                 await UserRepository.updateforgotPassword(userData.username, securityCode, securityPassword);
             }

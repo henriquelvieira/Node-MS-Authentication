@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import {StatusCodes} from 'http-status-codes';
 import ForbiddenError from "../models/errors/forbidden.error.model";
 import JWTToken from "../utils/jtw-utils";
-import refreshTokenRepositorie from "../repositories/refresh-token.repositorie";
+import RefreshTokenRepository from "../repositories/refresh-token.repositorie";
 import RefreshToken from "../models/refreshToken.model";
 import User from "../models/user.model";
 import dayjs from 'dayjs';
@@ -19,7 +19,8 @@ class AuthenticationController {
             
             const jwt = await JWTToken.create(user); //Chamada da classe p/ geração do Token
             
-            const newRefreshToken = await refreshTokenRepositorie.generateRefreshToken(user);
+            const refreshTokenRepository = new RefreshTokenRepository();
+            const newRefreshToken = await refreshTokenRepository.generateRefreshToken(user);
             
             const response = { token: jwt, refresh_token: newRefreshToken};
 
@@ -37,9 +38,11 @@ class AuthenticationController {
             if (!refreshTokenRequest){
                 throw new ForbiddenError('Refresh Token não informado!');   
             }
+
+            const refreshTokenRepository = new RefreshTokenRepository();
         
             //Verifica se existe um Refresh Token válido p/ o Usuário
-            const refreshTokenUserData = await refreshTokenRepositorie.findRefreshTokenByID(refreshTokenRequest.refresh_token);
+            const refreshTokenUserData = await refreshTokenRepository.findRefreshTokenByID(refreshTokenRequest.refresh_token);
             
             if (!refreshTokenUserData){
                 throw new ForbiddenError('Refresh Token inválido!'); 
@@ -61,7 +64,7 @@ class AuthenticationController {
             let response;
     
             if (refreshTokenExpired) {
-                const newRefreshToken = await refreshTokenRepositorie.generateRefreshToken(userData); //Geração do Refresh Token
+                const newRefreshToken = await refreshTokenRepository.generateRefreshToken(userData); //Geração do Refresh Token
                 response = {token: jwt, refresh_token: newRefreshToken}
             } else {
                 response = {token: jwt};

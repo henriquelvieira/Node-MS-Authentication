@@ -1,6 +1,6 @@
 import User from "../models/user.model";
 import JWTToken from "../utils/jtw-utils";
-import refreshTokenRepositorie from "../repositories/refresh-token.repositorie";
+import RefreshTokenRepository from "../repositories/refresh-token.repositorie";
 import UserRepository from "../repositories/user.repositorie";
 import RefreshToken from "../models/refreshToken.model";
 import ForbiddenError from "../models/errors/forbidden.error.model";
@@ -11,6 +11,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
     const username = 'teste';
     let uuid: string;
     let newRefreshToken: string;
+    const refreshTokenRepository = new RefreshTokenRepository(); 
 
     beforeAll(async () => {
         uuid = await UserRepository.findUserByUsername(username); //Remover o usuário de teste
@@ -19,7 +20,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
     it("(createToken) - Should be able generate a new token", async () => {
         const user: User = {"uuid": uuid, "username": username};
         const token = await JWTToken.create(user); 
-        newRefreshToken = await refreshTokenRepositorie.generateRefreshToken(user);
+        newRefreshToken = await refreshTokenRepository.generateRefreshToken(user);
 
         expect(token.length).toBeGreaterThan(0);
         expect(JWTToken.validate(token)).toHaveProperty("sub");
@@ -32,7 +33,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
         
         const refreshTokenRequest: RefreshToken = {"refresh_token": newRefreshToken};
         
-        const refreshTokenUserData = await refreshTokenRepositorie.findRefreshTokenByID(refreshTokenRequest.refresh_token);
+        const refreshTokenUserData = await refreshTokenRepository.findRefreshTokenByID(refreshTokenRequest.refresh_token);
         
         const userData: User = {
             uuid: refreshTokenUserData.uuid, 
@@ -59,7 +60,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
         
         const refreshTokenRequest: RefreshToken = {"refresh_token": "123456abcd"};    
 
-        await expect(refreshTokenRepositorie.findRefreshTokenByID(refreshTokenRequest.refresh_token)).rejects.toEqual(
+        await expect(refreshTokenRepository.findRefreshTokenByID(refreshTokenRequest.refresh_token)).rejects.toEqual(
             new DatabaseError('Erro na consulta do Refresh Token')
         );
 

@@ -51,6 +51,9 @@ describe("(/users) - Users Route's", () => {
     });
 
     it("(PUT /users) - Should be able modify a valide user", async () => {
+
+        const userValide: User = {"uuid": newUuid, "username": newUsername};
+        const newToken = await JWTToken.create(userValide);
         
         const requestBody = {
             "username": newUsername,
@@ -61,7 +64,7 @@ describe("(/users) - Users Route's", () => {
         const response = await request(app)
         .put(`/users/${newUuid}`)
         .set('Content-Type', 'application/json') 
-        .set('authorization', `Bearer ${token}`) 
+        .set('authorization', `Bearer ${newToken}`) 
         .send(requestBody);
 
         expect(response.status).toBe(200);
@@ -171,7 +174,7 @@ describe("(/users) - Users Route's", () => {
         .set('authorization', `Bearer ${token}`) 
         .send(requestBody);
 
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(403);
         expect(response.body).not.toHaveProperty("uuid");
         expect(response.body).not.toHaveProperty("username");  
         expect(response.body).not.toHaveProperty("email");      

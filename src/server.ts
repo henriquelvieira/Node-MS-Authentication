@@ -6,7 +6,7 @@ import usersRoute from './routes/user.route';
 import statusRoute from './routes/status.route';
 import logger from './logger';
 import cors from 'cors';
-import config from 'config';
+import config, { IConfig } from 'config';
 import expressPino from 'express-pino-logger';
 
 class SetupServer {
@@ -18,15 +18,17 @@ class SetupServer {
   }
   
   private setupExpress(): void {
+    const configs: IConfig = config.get('App');
+    
     this.app.use(express.json()); //Middleware p/ lidar c/ o JSON no Content-Type
     this.app.use(express.urlencoded({ extended: true })); //Middleware p/ realizar o parsing do conteúdo das requisições
     
-    const enableLogReqs =  config.get('App.logger.enabled_log_reqs') as boolean;
+    const enableLogReqs =  configs.get('logger.enabled_log_reqs') as boolean;
     if (enableLogReqs) {
       this.app.use(expressPino({logger}));
     }
 
-    this.app.use(cors({origin: config.get('App.cors.origin')} )); //Permitir CORS
+    this.app.use(cors({origin: configs.get('cors.origin')} )); //Permitir CORS
   }
   
   private setupControllers(): void {

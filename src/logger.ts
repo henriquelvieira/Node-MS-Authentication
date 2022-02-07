@@ -1,7 +1,11 @@
 import pino from 'pino';
-import config from 'config';
+import config, { IConfig } from 'config';
+
+const configs: IConfig = config.get('App.logger');
 
 export default pino({
-    enabled: config.get('App.logger.enabled'),
-    level: config.get('App.logger.level')
+    enabled: configs.get('enabled'),
+    level: configs.get('level')
 });
+
+

@@ -6,6 +6,7 @@ import User from "../models/user.model";
 import UserRepository from "../repositories/user.repositorie";
 import GenerateRandom from "../utils/randons.util";
 
+
 class UserController {
 
     public async listUsers (req: Request, res: Response, next: NextFunction) {

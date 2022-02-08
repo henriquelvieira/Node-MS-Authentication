@@ -11,7 +11,7 @@ class JWTToken {
         return process.env[config.get('App.envs.JWT.SecretKey') as string] as string;  
     }
     
-    validate(token: string): JWT.JwtPayload {
+    public validate(token: string): JWT.JwtPayload {
         const JWTsecretKey = this.findSecretKey(); 
 
         const tokenPayload = JWT.verify(token, JWTsecretKey); //Verifica se o Token é válido
@@ -24,7 +24,7 @@ class JWTToken {
         return tokenPayload;
     }
 
-    async create(user: User) {
+    public async create(user: User) {
         try{
             //Método responsável pela geração do Token JWT
             const JWTSecretKey = this.findSecretKey();
@@ -50,8 +50,6 @@ class JWTToken {
         }
     }
 
-
 }
-
 
 export default new JWTToken();

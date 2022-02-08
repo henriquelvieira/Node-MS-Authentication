@@ -1,3 +1,4 @@
+import express from 'express';
 import request from 'supertest';
 import UserRepository from '../repositories/user.repositorie';
 import SetupServer from '../server';
@@ -10,7 +11,7 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
     const password = 'teste';
     let refresh_token: string;
     let token: string;
-    let app: any;
+    let app: express.Express;
 
     beforeAll(async () => {
         const server = new SetupServer(config.get('App.port'));

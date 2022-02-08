@@ -1,3 +1,4 @@
+import express from 'express';
 import request from 'supertest';
 import UserRepository from '../repositories/user.repositorie';
 import JWTToken from "../utils/jtw-utils";
@@ -13,7 +14,7 @@ describe("(/users) - Users Route's", () => {
     const valideUsername = 'teste';
     let valideUuid: string;
     let token: string;
-    let app: any;
+    let app: express.Express;
    
 
     beforeAll(async () => {

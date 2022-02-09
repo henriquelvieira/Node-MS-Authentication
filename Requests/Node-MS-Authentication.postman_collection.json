@@ -65,7 +65,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"refresh_token\" : \"bc1359de-46a1-4161-a4fc-dcc0c4dda813\"\r\n}",
+							"raw": "{\r\n    \"refreshToken\" : \"464af9ec-80e6-483b-82ea-745cbecf42a0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -247,13 +247,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/3acd5a91-226a-49fa-85a2-d5648ae9caa2",
+							"raw": "{{base_url}}/users/3abf9aa6-8eb6-44e6-9f47-518d25ce1a84",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								"3acd5a91-226a-49fa-85a2-d5648ae9caa2"
+								"3abf9aa6-8eb6-44e6-9f47-518d25ce1a84"
 							]
 						}
 					},

@@ -6,8 +6,8 @@ import config from 'config';
 class UserRepository {
 
     private getPasswordCrypt(): string {
-        const password_crypt = process.env[config.get('App.envs.PostgreSQL.passwordCRYPT') as string] as string;
-        return password_crypt;
+        const passwordCrypt = process.env[config.get('App.envs.PostgreSQL.passwordCRYPT') as string] as string;
+        return passwordCrypt;
     }
 
     public async findAllUsers(): Promise<User[]> {
@@ -125,7 +125,7 @@ class UserRepository {
 
     public async findUsernameAndPassword(username: string, password: string): Promise<User> {
         try {
-            const password_crypt = this.getPasswordCrypt();
+            const passwordCrypt = this.getPasswordCrypt();
 
             const query = `SELECT UUID,
                                   USERNAME,
@@ -133,7 +133,7 @@ class UserRepository {
                              FROM APPLICATION_USER
                             WHERE USERNAME = $1
                               AND PASSWORD = crypt($2, $3)`;
-            const params = [username, password, password_crypt];
+            const params = [username, password, passwordCrypt];
 
             const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
             const [user] = rows; //Pegar a primeira linha
@@ -147,7 +147,7 @@ class UserRepository {
 
     public async create(user: User): Promise<string> {
         try {
-            const password_crypt = this.getPasswordCrypt();
+            const passwordCrypt = this.getPasswordCrypt();
             const script = `INSERT INTO APPLICATION_USER (
                                                            USERNAME, 
                                                            PASSWORD,
@@ -159,7 +159,7 @@ class UserRepository {
                                                            $4
                                                          )
                                                          RETURNING uuid`;
-            const params = [user.username, user.password, password_crypt, user.email];
+            const params = [user.username, user.password, passwordCrypt, user.email];
 
             const { rows } = await db.query<{ uuid: string }>(script, params); //Execução da Query passando os parâmetros
             const [newUser] = rows;
@@ -172,7 +172,7 @@ class UserRepository {
 
     public async update(user: User): Promise<boolean> {
         try {
-            const password_crypt = this.getPasswordCrypt();
+            const passwordCrypt = this.getPasswordCrypt();
 
             const script = `UPDATE APPLICATION_USER
                                SET USERNAME = $1,
@@ -180,7 +180,7 @@ class UserRepository {
                                    EMAIL = $4,
                                    UPDATED_AT = CURRENT_TIMESTAMP
                              WHERE UUID = $5`;
-            const params = [user.username, user.password, password_crypt, user.email, user.uuid];
+            const params = [user.username, user.password, passwordCrypt, user.email, user.uuid];
 
             await db.query(script, params); //Execução da Query passando os parâmetros            
         } catch (error) {
@@ -247,13 +247,13 @@ class UserRepository {
 
     public async updateforgotPassword (username: string, securityCode: string, passwordSecurity: string): Promise<void> {
         try {
-            const password_crypt = this.getPasswordCrypt();
+            const passwordCrypt = this.getPasswordCrypt();
 
             const script = `UPDATE "public"."application_user" 
                                SET PASSWORD      = crypt($1, $2),
                                    SECURITY_CODE = $3 
                              WHERE USERNAME  = $4`;
-            const params = [passwordSecurity, password_crypt, securityCode, username];
+            const params = [passwordSecurity, passwordCrypt, securityCode, username];
 
             await db.query(script, params); //Execução da Query passando os parâmetros
         } catch (error) {
@@ -263,7 +263,7 @@ class UserRepository {
 
     public async updateResetPassword (securityCode: string, newPassword: string): Promise<void> {
         try {
-            const password_crypt = this.getPasswordCrypt();
+            const passwordCrypt = this.getPasswordCrypt();
             
             const script = `UPDATE "public"."application_user" 
                                SET PASSWORD      = crypt($1, $2),
@@ -272,7 +272,7 @@ class UserRepository {
                                    LOCKED_AT     = NULL,
                                    LAST_LOGIN_AT = CURRENT_TIMESTAMP
                              WHERE SECURITY_CODE = $3`;
-            const params = [newPassword, password_crypt, securityCode];
+            const params = [newPassword, passwordCrypt, securityCode];
 
             await db.query(script, params); //Execução da Query passando os parâmetros
         } catch (error) {

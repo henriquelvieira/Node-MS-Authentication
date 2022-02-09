@@ -45,9 +45,9 @@ class UserController {
         
         try {
             const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
-            const uuid_token = req.user.uuid as string;
+            const uuidToken = req.user.uuid as string;
             
-            if (uuid !== uuid_token) {
+            if (uuid !== uuidToken) {
                 throw new ForbiddenError('Não é possível alterar outro usuário')
             }
             

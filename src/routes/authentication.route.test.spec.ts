@@ -9,7 +9,7 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
 
     const username = 'teste';
     const password = 'teste';
-    let refresh_token: string;
+    let refreshToken: string;
     let token: string;
     let app: express.Express;
 
@@ -31,16 +31,16 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
         .set('Content-Type', 'application/json') 
         .set('authorization', `Basic ${passwordBase64}`).send();
 
-        refresh_token = response.body.refresh_token as string;
+        refreshToken = response.body.refreshToken as string;
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty("token");    
-        expect(response.body).toHaveProperty("refresh_token");  
+        expect(response.body).toHaveProperty("refreshToken");  
     });
 
     it("(POST /authentication/refresh-token) - Should be able generate a new Refresh Token", async () => {
 
-        const requestBody = {"refresh_token": refresh_token};
+        const requestBody = {"refreshToken": refreshToken};
 
         const response = await request(app)
         .post('/authentication/refresh-token')
@@ -72,16 +72,16 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
         .set('Content-Type', 'application/json') 
         .set('authorization', `Basic ${passwordBase64}`).send();
 
-        refresh_token = response.body.refresh_token as string;
+        refreshToken = response.body.refreshToken as string;
 
         expect(response.status).toBe(403);
         expect(response.body).not.toHaveProperty("token");    
-        expect(response.body).not.toHaveProperty("refresh_token");  
+        expect(response.body).not.toHaveProperty("refreshToken");  
     });        
 
     it("(POST /authentication/refresh-token) - Should not be able generate a new Refresh Token", async () => {
 
-        const requestBody = {"refresh_token": refresh_token+'1'}; //Refresh Token modificado
+        const requestBody = {"refreshToken": refreshToken+'1'}; //Refresh Token modificado
 
         const response = await request(app)
         .post('/authentication/refresh-token')
@@ -117,7 +117,7 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
             
             expect(response.status).toBe(403);
             expect(response.body).not.toHaveProperty("token");    
-            expect(response.body).not.toHaveProperty("refresh_token"); 
+            expect(response.body).not.toHaveProperty("refreshToken"); 
          }
 
          //Realizar a quarta tentativa com a senha incorreta
@@ -129,7 +129,7 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
          expect(responseFinal.status).toBe(403);
          expect(responseFinal.body.errorMessage).toBe('Usuário bloqueado');
          expect(responseFinal.body).not.toHaveProperty("token");    
-         expect(responseFinal.body).not.toHaveProperty("refresh_token"); 
+         expect(responseFinal.body).not.toHaveProperty("refreshToken"); 
 
     });
 

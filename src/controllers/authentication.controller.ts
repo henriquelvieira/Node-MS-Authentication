@@ -22,7 +22,7 @@ class AuthenticationController {
             const refreshTokenRepository = new RefreshTokenRepository();
             const newRefreshToken = await refreshTokenRepository.generateRefreshToken(user);
             
-            const response = { token: jwt, refresh_token: newRefreshToken};
+            const response = { token: jwt, refreshToken: newRefreshToken};
 
             return res.status(StatusCodes.OK).json(response); //Retorar o Token gerado 
         } catch (error) {
@@ -42,7 +42,7 @@ class AuthenticationController {
             const refreshTokenRepository = new RefreshTokenRepository();
         
             //Verifica se existe um Refresh Token válido p/ o Usuário
-            const refreshTokenUserData = await refreshTokenRepository.findRefreshTokenByID(refreshTokenRequest.refresh_token);
+            const refreshTokenUserData = await refreshTokenRepository.findRefreshTokenByID(refreshTokenRequest.refreshToken);
             
             if (!refreshTokenUserData){
                 throw new ForbiddenError('Refresh Token inválido!'); 
@@ -65,7 +65,7 @@ class AuthenticationController {
     
             if (refreshTokenExpired) {
                 const newRefreshToken = await refreshTokenRepository.generateRefreshToken(userData); //Geração do Refresh Token
-                response = {token: jwt, refresh_token: newRefreshToken}
+                response = {token: jwt, refreshToken: newRefreshToken}
             } else {
                 response = {token: jwt};
             }

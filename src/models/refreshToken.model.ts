@@ -1,5 +1,5 @@
 type RefreshToken = {
-    refresh_token: string;
+    refreshToken: string;
     uuid?: string;
     username?: string;
     expiresin?: number;

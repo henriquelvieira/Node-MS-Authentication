@@ -31,9 +31,9 @@ describe("(authenticationController) - Authentication Controller's", () => {
 
     it("(createRefreshToken) - Should be able generate a new token with a valide refresh token", async () => {
         
-        const refreshTokenRequest: RefreshToken = {"refresh_token": newRefreshToken};
+        const refreshTokenRequest: RefreshToken = {"refreshToken": newRefreshToken};
         
-        const refreshTokenUserData = await refreshTokenRepository.findRefreshTokenByID(refreshTokenRequest.refresh_token);
+        const refreshTokenUserData = await refreshTokenRepository.findRefreshTokenByID(refreshTokenRequest.refreshToken);
         
         const userData: User = {
             uuid: refreshTokenUserData.uuid, 
@@ -58,9 +58,9 @@ describe("(authenticationController) - Authentication Controller's", () => {
 
     it("(createRefreshToken) - Should not be able generate a new token with a invalide refresh token", async () => {
         
-        const refreshTokenRequest: RefreshToken = {"refresh_token": "123456abcd"};    
+        const refreshTokenRequest: RefreshToken = {"refreshToken": "123456abcd"};    
 
-        await expect(refreshTokenRepository.findRefreshTokenByID(refreshTokenRequest.refresh_token)).rejects.toEqual(
+        await expect(refreshTokenRepository.findRefreshTokenByID(refreshTokenRequest.refreshToken)).rejects.toEqual(
             new DatabaseError('Erro na consulta do Refresh Token')
         );
 

@@ -2,15 +2,49 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "plugins": [
-      "@typescript-eslint"
+      "@typescript-eslint",
+      "prettier",
+      "eslint-plugin-import-helpers"
     ],
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
+      "plugin:@typescript-eslint/recommended",
+      "prettier",
+      "plugin:prettier/recommended"
     ],
     "rules": {
       "camelcase": [2, {"properties": "always"}],
-      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }] //Tratar o caso da variável Next
+      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }], //Tratar o caso da variável Next
+      "class-methods-use-this": "off",
+      "no-console": "off",
+      "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+      "no-shadow": "off",
+      "no-useless-constructor": "off",
+      "no-empty-function": "off",
+      "import/prefer-default-export": "off",
+      "no-use-before-define": "off",
+      "@typescript-eslint/no-use-before-define": ["error"],
+      "import-helpers/order-imports": [
+          "warn",
+          {
+              "newlinesBetween": "always",
+              "groups": [
+                  "module",
+                  "/^@shared/",
+                  ["parent", "sibling", "index"]
+              ],
+              "alphabetize": {
+                  "order": "asc",
+                  "ignoreCase": true
+              }
+          }
+      ]
+    },
+    "settings": {
+      "import/resolver": {
+          "typescript": {}
+      }
     }
-}
+      
+  }

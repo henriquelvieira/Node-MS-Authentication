@@ -34,6 +34,7 @@ npm install --save-dev @types/uuid
 
 npm install --save-dev prettier
 npm install --save-dev eslint-config-prettier eslint-plugin-prettier
+npm install --save-dev eslint-plugin-import-helpers eslint-import-resolver-typescript
 
 npm install --save pino
 npm install --save-dev @types/pino

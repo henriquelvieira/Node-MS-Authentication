@@ -1,0 +1,16 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+      "camelcase": [2, {"properties": "always"}],
+      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }] //Tratar o caso da variável Next
+    }
+}

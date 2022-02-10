@@ -1,22 +1,10 @@
 {
   "name": "ms-authentication",
   "version": "1.0.0",
-  "description": "Microservice criado em Node.js e Typescript",
   "main": "./dist/app.js",
-  "scripts": {
-    "start": "node ./",
-    "test": "jest",
-    "test:functional": "jest --projects ./src/routes--runInBand",
-    "test:start": "yarn test && yarn start",
-    "start:local": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/app.ts | pino-pretty -c",
-    "build": "tsc -p .",
-    "deploy": "yarn build && yarn start",
-    "lint": "eslint ./src --ext .ts",
-    "lint:fix": "eslint ./src --ext .ts --fix",
-    "style:check": "prettier --check src/**/*.ts",
-    "style:fix": "prettier --write src/**/*.ts",
-    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify src/app.ts | pino-pretty -c"
-  },
+  "description": "Microservice criado em Node.js e Typescript",
+  "author": "Henrique Lopes Vieira",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/henriquelvieira/Node-MS-Authentication.git"
@@ -31,8 +19,20 @@
   "engines": {
     "node": "16"
   },
-  "author": "Henrique Lopes Vieira",
-  "license": "MIT",
+  "scripts": {
+    "start": "node ./",
+    "test": "jest",
+    "test:functional": "jest --projects ./src/routes--runInBand",
+    "test:start": "yarn test && yarn start",
+    "start:local": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/app.ts | pino-pretty -c",
+    "build": "tsc -p .",
+    "deploy": "yarn lint && yarn style:check && yarn test && yarn build && yarn start",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint ./src --ext .ts --fix",
+    "style:check": "prettier --check src/**/*.ts",
+    "style:fix": "prettier --write src/**/*.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules --no-notify src/app.ts | pino-pretty -c"
+  },
   "devDependencies": {
     "@types/config": "^0.0.41",
     "@types/cors": "^2.8.12",
@@ -48,6 +48,10 @@
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
     "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import-helpers": "^1.2.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.4.7",
     "pino-pretty": "^7.5.1",
     "prettier": "^2.5.1",

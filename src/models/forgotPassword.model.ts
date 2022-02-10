@@ -1,6 +1,6 @@
 type ForgotPassword = {
-    security_code: string;
-    new_password: string;
+  securityCode: string;
+  newPassword: string;
 };
 
 export default ForgotPassword;

@@ -350,7 +350,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"security_code\": \"jrfcw7pes2\",\r\n    \"new_password\": \"teste\"\r\n}",
+							"raw": "{\r\n    \"securityCode\": \"jrfcw7pes2\",\r\n    \"newPassword\": \"teste\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

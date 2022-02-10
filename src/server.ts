@@ -1,4 +1,3 @@
-import config, { IConfig } from 'config';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import expressPino from 'express-pino-logger';
@@ -9,26 +8,26 @@ import jwtAuthenticationMiddleware from './middlewares/jwt-authentication.middle
 import authenticationRoute from './routes/authentication.route';
 import statusRoute from './routes/status.route';
 import usersRoute from './routes/user.route';
+import Configs from './utils/configs';
 
 class SetupServer {
   app: express.Express;
+  readonly configs = Configs.get('App');
 
   constructor(private port = 3333) {
     this.app = express();
   }
 
   private setupExpress(): void {
-    const configs: IConfig = config.get('App');
-
     this.app.use(express.json()); //Middleware p/ lidar c/ o JSON no Content-Type
     this.app.use(express.urlencoded({ extended: true })); //Middleware p/ realizar o parsing do conteúdo das requisições
 
-    const enableLogReqs = configs.get('logger.enabled_log_reqs') as boolean;
+    const enableLogReqs = this.configs.get('logger.enabledLogReqs') as boolean;
     if (enableLogReqs) {
       this.app.use(expressPino({ logger }));
     }
 
-    this.app.use(cors({ origin: configs.get('cors.origin') })); //Permitir CORS
+    this.app.use(cors({ origin: this.configs.get('cors.origin') })); //Permitir CORS
   }
 
   private setupControllers(): void {

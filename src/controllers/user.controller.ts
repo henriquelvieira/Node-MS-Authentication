@@ -5,7 +5,7 @@ import ForbiddenError from '../models/errors/forbidden.error.model';
 import ForgotPassword from '../models/forgotPassword.model';
 import User from '../models/user.model';
 import UserRepository from '../repositories/user.repositorie';
-import GenerateRandom from '../utils/randons.util';
+import GenerateRandom from '../util/randons.util';
 
 class UserController {
   public async listUsers(req: Request, res: Response, next: NextFunction) {

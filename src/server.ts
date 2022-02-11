@@ -8,7 +8,7 @@ import jwtAuthenticationMiddleware from './middlewares/jwt-authentication.middle
 import authenticationRoute from './routes/authentication.route';
 import statusRoute from './routes/status.route';
 import usersRoute from './routes/user.route';
-import Configs from './utils/configs';
+import Configs from './util/configs';
 
 class SetupServer {
   app: express.Express;

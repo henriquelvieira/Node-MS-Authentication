@@ -1,11 +1,12 @@
-import config, { IConfig } from 'config';
 import * as dotenv from 'dotenv';
+
+import Configs from '../util/configs';
 
 dotenv.config();
 
 describe('(env) - Environment Variables', () => {
   it('(PORT) - Should be able load environment variables', () => {
-    const configs: IConfig = config.get('App');
+    const configs = Configs.get('App');
 
     const PORT = Number(configs.get('port'));
     const connectionString = process.env[

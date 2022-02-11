@@ -1,9 +1,9 @@
-import config from 'config';
 import express from 'express';
 import request from 'supertest';
 
 import UserRepository from '../repositories/user.repositorie';
 import SetupServer from '../server';
+import Configs from '../util/configs';
 
 //Testes de Integração
 describe("(/authenticationRoute) - Authentication Route's", () => {
@@ -14,7 +14,8 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
   let app: express.Express;
 
   beforeAll(async () => {
-    const server = new SetupServer(config.get('App.port'));
+    const configs = Configs.get('App');
+    const server = new SetupServer(configs.get('port'));
     await server.init();
     app = server.getApp();
 

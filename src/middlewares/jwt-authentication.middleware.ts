@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import ForbiddenError from '../models/errors/forbidden.error.model';
-import JWTToken from '../utils/jtw-utils';
+import JWTToken from '../util/jtw-utils';
 
 async function jwtAuthenticationMiddleware(
   req: Request,

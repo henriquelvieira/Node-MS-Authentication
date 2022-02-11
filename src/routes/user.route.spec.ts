@@ -1,11 +1,11 @@
-import config from 'config';
 import express from 'express';
 import request from 'supertest';
 
 import User from '../models/user.model';
 import UserRepository from '../repositories/user.repositorie';
 import SetupServer from '../server';
-import JWTToken from '../utils/jtw-utils';
+import Configs from '../util/configs';
+import JWTToken from '../util/jtw-utils';
 
 //Testes de Integração
 describe("(/users) - Users Route's", () => {
@@ -17,7 +17,8 @@ describe("(/users) - Users Route's", () => {
   let app: express.Express;
 
   beforeAll(async () => {
-    const server = new SetupServer(config.get('App.port'));
+    const configs = Configs.get('App');
+    const server = new SetupServer(configs.get('port'));
     await server.init();
     app = server.getApp();
 

@@ -1,7 +1,8 @@
-import config, { IConfig } from 'config';
 import pino from 'pino';
 
-const configs: IConfig = config.get('App.logger');
+import Configs from './util/configs';
+
+const configs = Configs.get('App.logger');
 
 export default pino({
   enabled: configs.get('enabled'),

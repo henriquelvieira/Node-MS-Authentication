@@ -1,7 +1,7 @@
 import db from './database/db';
 import logger from './logger';
 import SetupServer from './server';
-import Configs from './utils/configs';
+import Configs from './util/configs';
 
 (async (): Promise<void> => {
   try {

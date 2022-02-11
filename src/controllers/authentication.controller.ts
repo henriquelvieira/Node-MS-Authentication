@@ -6,7 +6,7 @@ import ForbiddenError from '../models/errors/forbidden.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
 import RefreshTokenRepository from '../repositories/refresh-token.repositorie';
-import JWTToken from '../utils/jtw-utils';
+import JWTToken from '../util/jtw-utils';
 
 class AuthenticationController {
   public async createToken(req: Request, res: Response, next: NextFunction) {

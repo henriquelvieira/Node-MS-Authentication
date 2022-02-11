@@ -1,10 +1,10 @@
-import config from 'config';
 import dayjs from 'dayjs';
 
 import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
+import Configs from '../util/configs';
 
 class RefreshTokenRepository {
   public async generateRefreshToken(user: User): Promise<string> {
@@ -39,9 +39,8 @@ class RefreshTokenRepository {
   private async create(user: User): Promise<string> {
     try {
       //Buscar o tempo de Expiração do Token de Refresh
-      const expirationTime = config.get(
-        'App.jwt.refreshTokenExpiresIn'
-      ) as string;
+      const configs = Configs.get('App.jwt');
+      const expirationTime = configs.get('refreshTokenExpiresIn') as string;
       const [expirationTimeValue, expirationTimeUnit] =
         expirationTime.split(' ');
 

@@ -2,22 +2,22 @@ import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
 import User from '../models/user.model';
 import Configs from '../util/configs';
+import Env from '../util/env';
 
 class UserRepository {
   private getPasswordCrypt(): string {
     const configs = Configs.get('App.envs.PostgreSQL');
-    const passwordCrypt = process.env[
-      configs.get('passwordCRYPT') as string
-    ] as string;
+
+    const passwordCrypt = Env.get(configs.get('passwordCRYPT')) as string;
     return passwordCrypt;
   }
 
   public async findAllUsers(): Promise<User[]> {
     try {
       const query = `SELECT UUID,
-                                  USERNAME,
-                                  EMAIL                         
-                             FROM APPLICATION_USER`;
+                            USERNAME,
+                            EMAIL                         
+                       FROM APPLICATION_USER`;
       const { rows } = await db.query<User>(query); //Execução da Query
 
       return rows || [];
@@ -29,10 +29,10 @@ class UserRepository {
   public async findUserById(uuid: string): Promise<User> {
     try {
       const query = `SELECT UUID,
-                                  USERNAME,
-                                  EMAIL                      
-                             FROM APPLICATION_USER
-                            WHERE UUID = $1`;
+                            USERNAME,
+                            EMAIL                      
+                       FROM APPLICATION_USER
+                      WHERE UUID = $1`;
       const params = [uuid];
 
       const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
@@ -46,9 +46,9 @@ class UserRepository {
 
   public async findUserByUsername(username: string): Promise<string> {
     try {
-      const query = `SELECT UUID                    
-                             FROM APPLICATION_USER
-                            WHERE USERNAME = $1`;
+      const query = `SELECT UUID 
+                       FROM APPLICATION_USER 
+                      WHERE USERNAME = $1`;
       const params = [username];
 
       const { rows } = await db.query<{ uuid: string }>(query, params); //Execução da Query passando os parâmetros
@@ -63,8 +63,8 @@ class UserRepository {
   public async findUserExists(username: string): Promise<boolean> {
     try {
       const query = `SELECT COUNT(*)                    
-                             FROM APPLICATION_USER
-                            WHERE USERNAME = $1`;
+                       FROM APPLICATION_USER
+                      WHERE USERNAME = $1`;
       const params = [username];
 
       const { rows } = await db.query<{ count: number }>(query, params); //Execução da Query passando os parâmetros
@@ -79,9 +79,9 @@ class UserRepository {
   public async findUserLocked(username: string): Promise<boolean> {
     try {
       const query = `SELECT COUNT(*)                    
-                             FROM APPLICATION_USER
-                            WHERE USERNAME = $1
-                              AND LOCKED_AT IS NOT NULL`;
+                       FROM APPLICATION_USER
+                      WHERE USERNAME = $1
+                        AND LOCKED_AT IS NOT NULL`;
       const params = [username];
 
       const { rows } = await db.query<{ count: number }>(query, params); //Execução da Query passando os parâmetros
@@ -98,8 +98,8 @@ class UserRepository {
   ): Promise<boolean> {
     try {
       const query = `SELECT COUNT(*)
-                             FROM APPLICATION_USER
-                            WHERE SECURITY_CODE = $1`;
+                       FROM APPLICATION_USER
+                      WHERE SECURITY_CODE = $1`;
       const params = [securityCode];
 
       const { rows } = await db.query<{ count: number }>(query, params); //Execução da Query passando os parâmetros
@@ -114,8 +114,8 @@ class UserRepository {
   public async findSecurityCode(username: string): Promise<string> {
     try {
       const query = `SELECT SECURITY_CODE
-                             FROM APPLICATION_USER
-                            WHERE USERNAME = $1`;
+                       FROM APPLICATION_USER
+                      WHERE USERNAME = $1`;
       const params = [username];
 
       const { rows } = await db.query<{ security_code: string }>(query, params); //Execução da Query passando os parâmetros
@@ -134,11 +134,11 @@ class UserRepository {
       const passwordCrypt = this.getPasswordCrypt();
 
       const query = `SELECT UUID,
-                                  USERNAME,
-                                  EMAIL                    
-                             FROM APPLICATION_USER
-                            WHERE USERNAME = $1
-                              AND PASSWORD = crypt($2, $3)`;
+                            USERNAME,
+                            EMAIL                    
+                       FROM APPLICATION_USER
+                      WHERE USERNAME = $1
+                        AND PASSWORD = crypt($2, $3)`;
       const params = [username, password, passwordCrypt];
 
       const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
@@ -157,16 +157,16 @@ class UserRepository {
     try {
       const passwordCrypt = this.getPasswordCrypt();
       const script = `INSERT INTO APPLICATION_USER (
-                                                           USERNAME, 
-                                                           PASSWORD,
-                                                           EMAIL
-                                                         ) 
-                                                  VALUES (
-                                                           $1,
-                                                           crypt($2, $3),
-                                                           $4
-                                                         )
-                                                         RETURNING uuid`;
+                                                    USERNAME, 
+                                                    PASSWORD,
+                                                    EMAIL
+                                                   ) 
+                                            VALUES (
+                                                    $1,
+                                                    crypt($2, $3),
+                                                    $4
+                                                   )
+                                                   RETURNING uuid`;
       const params = [user.username, user.password, passwordCrypt, user.email];
 
       const { rows } = await db.query<{ uuid: string }>(script, params); //Execução da Query passando os parâmetros
@@ -183,11 +183,11 @@ class UserRepository {
       const passwordCrypt = this.getPasswordCrypt();
 
       const script = `UPDATE APPLICATION_USER
-                               SET USERNAME = $1,
-                                   PASSWORD = crypt($2, $3),
-                                   EMAIL = $4,
-                                   UPDATED_AT = CURRENT_TIMESTAMP
-                             WHERE UUID = $5`;
+                         SET USERNAME = $1,
+                             PASSWORD = crypt($2, $3),
+                             EMAIL = $4,
+                             UPDATED_AT = CURRENT_TIMESTAMP
+                       WHERE UUID = $5`;
       const params = [
         user.username,
         user.password,
@@ -230,12 +230,12 @@ class UserRepository {
   public async updateFailedAttempt(username: string): Promise<void> {
     try {
       const script = `UPDATE "public"."application_user" 
-                                SET FAILED_ATTEMP = FAILED_ATTEMP + 1,
-                                    LOCKED_AT = CASE 
-                                                 WHEN (FAILED_ATTEMP + 1) >= 3 THEN CURRENT_TIMESTAMP
-                                                 ELSE NULL
-                                                END  
-                              WHERE username = $1`;
+                         SET FAILED_ATTEMP = FAILED_ATTEMP + 1,
+                             LOCKED_AT = CASE 
+                                            WHEN (FAILED_ATTEMP + 1) >= 3 THEN CURRENT_TIMESTAMP
+                                            ELSE NULL
+                                        END  
+                       WHERE username = $1`;
       const params = [username];
 
       await db.query(script, params); //Execução da Query passando os parâmetros
@@ -247,10 +247,10 @@ class UserRepository {
   public async updateSuccessLogin(username: string): Promise<void> {
     try {
       const script = `UPDATE "public"."application_user" 
-                               SET FAILED_ATTEMP = 0,
-                                   LOCKED_AT     = NULL,
-                                   LAST_LOGIN_AT = CURRENT_TIMESTAMP
-                             WHERE USERNAME  = $1`;
+                         SET FAILED_ATTEMP = 0,
+                             LOCKED_AT     = NULL,
+                             LAST_LOGIN_AT = CURRENT_TIMESTAMP
+                       WHERE USERNAME  = $1`;
       const params = [username];
 
       await db.query(script, params); //Execução da Query passando os parâmetros
@@ -268,9 +268,9 @@ class UserRepository {
       const passwordCrypt = this.getPasswordCrypt();
 
       const script = `UPDATE "public"."application_user" 
-                               SET PASSWORD      = crypt($1, $2),
-                                   SECURITY_CODE = $3 
-                             WHERE USERNAME  = $4`;
+                         SET PASSWORD      = crypt($1, $2),
+                             SECURITY_CODE = $3 
+                       WHERE USERNAME  = $4`;
       const params = [passwordSecurity, passwordCrypt, securityCode, username];
 
       await db.query(script, params); //Execução da Query passando os parâmetros
@@ -287,12 +287,12 @@ class UserRepository {
       const passwordCrypt = this.getPasswordCrypt();
 
       const script = `UPDATE "public"."application_user" 
-                               SET PASSWORD      = crypt($1, $2),
-                                   SECURITY_CODE = null,
-                                   FAILED_ATTEMP = 0,
-                                   LOCKED_AT     = NULL,
-                                   LAST_LOGIN_AT = CURRENT_TIMESTAMP
-                             WHERE SECURITY_CODE = $3`;
+                         SET PASSWORD      = crypt($1, $2),
+                             SECURITY_CODE = null,
+                             FAILED_ATTEMP = 0,
+                             LOCKED_AT     = NULL,
+                             LAST_LOGIN_AT = CURRENT_TIMESTAMP
+                       WHERE SECURITY_CODE = $3`;
       const params = [newPassword, passwordCrypt, securityCode];
 
       await db.query(script, params); //Execução da Query passando os parâmetros

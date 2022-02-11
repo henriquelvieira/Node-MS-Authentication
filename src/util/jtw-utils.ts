@@ -1,18 +1,15 @@
-import * as dotenv from 'dotenv';
 import JWT, { SignOptions } from 'jsonwebtoken';
 
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import User from '../models/user.model';
-dotenv.config();
 import Configs from '../util/configs';
+import Env from '../util/env';
 
 class JWTToken {
   readonly configs = Configs.get('App');
 
   private findSecretKey(): string {
-    return process.env[
-      this.configs.get('envs.JWT.SecretKey') as string
-    ] as string;
+    return Env.get(this.configs.get('envs.JWT.SecretKey') as string) as string;
   }
 
   public validate(token: string): JWT.JwtPayload {

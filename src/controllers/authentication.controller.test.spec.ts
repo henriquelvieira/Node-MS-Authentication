@@ -24,6 +24,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
   const mockRequest = {
     body: {
       user: '',
+      refreshToken: '123',
     },
   } as Request;
 
@@ -93,7 +94,17 @@ describe("(authenticationController) - Authentication Controller's", () => {
     expect(mockNext).toBeCalled();
   });
 
-  it('(createRefreshToken) - Should bit be able generate a refresh token without a user', async () => {
+  it('(createRefreshToken) - Should not be able generate a refresh token without a user', async () => {
+    await authenticationController.createRefreshToken(
+      mockRequest,
+      mockResponse as Response,
+      mockNext
+    );
+
+    expect(mockNext).toBeCalled();
+  });
+
+  it('(createRefreshToken) - Should not be able generate a refresh token without a user', async () => {
     await authenticationController.createRefreshToken(
       mockRequest,
       mockResponse as Response,

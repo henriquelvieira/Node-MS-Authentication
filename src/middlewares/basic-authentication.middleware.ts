@@ -5,7 +5,7 @@ import UserRepository from '../repositories/user.repositorie';
 
 async function basicAuthenticationMiddleware(
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) {
   try {

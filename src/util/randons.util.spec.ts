@@ -6,6 +6,7 @@ describe('(GenerateRandom)', () => {
     const uuid = generateRandom.UUID();
     expect(uuid.length).toBeGreaterThan(1);
   });
+
   it('(randomCode) - Should be able generate a new Random Code', () => {
     const generateRandom = new GenerateRandom();
     const random = generateRandom.randomCode();

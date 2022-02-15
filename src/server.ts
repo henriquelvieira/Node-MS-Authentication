@@ -22,7 +22,8 @@ class SetupServer {
     this.app.use(express.json()); //Middleware p/ lidar c/ o JSON no Content-Type
     this.app.use(express.urlencoded({ extended: true })); //Middleware p/ realizar o parsing do conteúdo das requisições
 
-    const enableLogReqs = this.configs.get('logger.enabledLogReqs') as boolean;
+    const enableLogReqs: boolean =
+      this.configs.get('logger.enabledLogReqs') || true;
     if (enableLogReqs) {
       this.app.use(expressPino({ logger }));
     }
@@ -45,15 +46,16 @@ class SetupServer {
     this.setupControllers();
     this.setupErrorHandlers();
 
-    this.app.use('/', (req: Request, res: Response) => {
-      res.json({ message: 'ok' });
-    });
+    // this.app.use('/', (req: Request, res: Response) => {
+    //   res.json({ message: 'ok' });
+    // });
   }
 
-  public start(): void {
+  public start(): boolean {
     this.app.listen(this.port, () => {
-      logger.info(`Server is running on port  ${this.port}`);
+      logger.info(`Server is running on port ${this.port}`);
     });
+    return true;
   }
 
   public getApp(): express.Express {

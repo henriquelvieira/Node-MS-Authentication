@@ -8,7 +8,7 @@ import UserRepository from '../repositories/user.repositorie';
 import GenerateRandom from '../util/randons.util';
 
 class UserController {
-  public async listUsers(req: Request, res: Response, next: NextFunction) {
+  public async listUsers(_req: Request, res: Response, next: NextFunction) {
     try {
       const users = await UserRepository.findAllUsers(); //Classe para realizar o SELECT de todos os usuários
 

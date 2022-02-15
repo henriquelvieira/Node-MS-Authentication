@@ -41,7 +41,7 @@ class AuthenticationController {
       //Verifica se o Refresh Token foi informadom na requisição
       const refreshTokenRequest: RefreshToken = req.body;
 
-      if (!refreshTokenRequest) {
+      if (!refreshTokenRequest || !refreshTokenRequest.refreshToken) {
         throw new ForbiddenError('Refresh Token não informado!');
       }
 

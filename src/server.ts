@@ -23,7 +23,7 @@ class SetupServer {
     this.app.use(express.urlencoded({ extended: true })); //Middleware p/ realizar o parsing do conteúdo das requisições
 
     const enableLogReqs: boolean =
-      this.configs.get('logger.enabledLogReqs') || true;
+      this.configs.get('logger.enabledLogReqs') ?? true;
     if (enableLogReqs) {
       this.app.use(expressPino({ logger }));
     }

@@ -1,3 +1,6 @@
+import { Request, Response, NextFunction } from 'express';
+
+import AuthenticationController from '../controllers/authentication.controller';
 import DatabaseError from '../models/errors/database.error.model';
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import RefreshToken from '../models/refreshToken.model';
@@ -11,6 +14,20 @@ describe("(authenticationController) - Authentication Controller's", () => {
   let uuid: string;
   let newRefreshToken: string;
   const refreshTokenRepository = new RefreshTokenRepository();
+  const authenticationController = new AuthenticationController();
+
+  const mockResponse: any = {
+    status: jest.fn().mockReturnThis(),
+    send: jest.fn(),
+  };
+
+  const mockRequest = {
+    body: {
+      user: '',
+    },
+  } as Request;
+
+  const mockNext: NextFunction = jest.fn();
 
   beforeAll(async () => {
     uuid = await UserRepository.findUserByUsername(username); //Remover o usuário de teste
@@ -64,5 +81,25 @@ describe("(authenticationController) - Authentication Controller's", () => {
         refreshTokenRequest.refreshToken
       )
     ).rejects.toEqual(new DatabaseError('Erro na consulta do Refresh Token'));
+  });
+
+  it('(createToken) - Should bit be able generate a token without a user', async () => {
+    await authenticationController.createToken(
+      mockRequest,
+      mockResponse as Response,
+      mockNext
+    );
+
+    expect(mockNext).toBeCalled();
+  });
+
+  it('(createRefreshToken) - Should bit be able generate a refresh token without a user', async () => {
+    await authenticationController.createRefreshToken(
+      mockRequest,
+      mockResponse as Response,
+      mockNext
+    );
+
+    expect(mockNext).toBeCalled();
   });
 });

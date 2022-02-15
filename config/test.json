@@ -9,8 +9,9 @@
       "origin": "*"
     },
     "logger": {
-      "enabled": true,
-      "level": "info"
+        "enabled": true,
+        "level": "info",
+        "enabledLogReqs": false
     },
     "envs": {
       "PostgreSQL": {

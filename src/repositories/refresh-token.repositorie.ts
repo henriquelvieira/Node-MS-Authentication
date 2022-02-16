@@ -32,6 +32,7 @@ class RefreshTokenRepository {
 
       return refreshToken || null;
     } catch (error) {
+      //   return null;
       throw new DatabaseError('Erro na consulta do Refresh Token', error);
     }
   }

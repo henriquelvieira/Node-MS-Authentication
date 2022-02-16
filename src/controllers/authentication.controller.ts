@@ -53,10 +53,6 @@ class AuthenticationController {
           refreshTokenRequest.refreshToken
         );
 
-      if (!refreshTokenUserData) {
-        throw new ForbiddenError('Refresh Token inválido!');
-      }
-
       //Montagem do objeto c/ as informações do user para geração do Token
       const userData: User = {
         uuid: refreshTokenUserData.uuid,
@@ -82,7 +78,7 @@ class AuthenticationController {
 
       return res.status(StatusCodes.CREATED).json(response); //Retorar o Token gerado
     } catch (error) {
-      next(error); //Chamada do Handler 'de Erro
+      next(error); //Chamada do Handler de Erro
     }
   }
 }

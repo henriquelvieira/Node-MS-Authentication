@@ -6,6 +6,7 @@ import ForbiddenError from '../models/errors/forbidden.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
 import RefreshTokenRepository from '../repositories/refresh-token.repositorie';
+import userRepositorie from '../repositories/user.repositorie';
 import UserRepository from '../repositories/user.repositorie';
 import JWTToken from '../util/jtw-utils';
 
@@ -96,6 +97,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
 
   it('(createRefreshToken) - Should not be able generate a refresh token without a user', async () => {
     const mockRequest = {} as Request; //Não enviar o body na requisção
+
     await authenticationController.createRefreshToken(
       mockRequest,
       mockResponse as Response,
@@ -105,7 +107,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
     expect(mockNext).toBeCalled();
   });
 
-  it('(createRefreshToken) - Should not be able generate a refresh token without a user', async () => {
+  it('(createRefreshToken) - Should not be able generate a refresh token with a invalide refresh token', async () => {
     await authenticationController.createRefreshToken(
       mockRequest,
       mockResponse as Response,

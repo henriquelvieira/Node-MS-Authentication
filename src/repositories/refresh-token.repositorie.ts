@@ -20,10 +20,10 @@ class RefreshTokenRepository {
   public async findRefreshTokenByID(id: string): Promise<RefreshToken> {
     try {
       const query = `SELECT UUID,
-                                  USERNAME,
-                                  EXPIRESIN                   
-                             FROM "public"."refresh_token"
-                            WHERE ID = $1`;
+                            USERNAME,
+                            EXPIRESIN                   
+                       FROM "public"."refresh_token"
+                      WHERE ID = $1`;
       const params = [id];
 
       const { rows } = await db.query<RefreshToken>(query, params); //Execução da Query passando os parâmetros
@@ -49,7 +49,7 @@ class RefreshTokenRepository {
         .unix();
 
       const script = `INSERT INTO REFRESH_TOKEN (UUID, USERNAME, EXPIRESIN)  
-                                               VALUES ($1, $2, $3)
+                                         VALUES ($1, $2, $3)
                             RETURNING ID`;
       const params = [user.uuid, user.username, expiresin];
 

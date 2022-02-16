@@ -97,7 +97,6 @@ describe("(authenticationController) - Authentication Controller's", () => {
 
   it('(createRefreshToken) - Should not be able generate a refresh token without a user', async () => {
     const mockRequest = {} as Request; //Não enviar o body na requisção
-
     await authenticationController.createRefreshToken(
       mockRequest,
       mockResponse as Response,

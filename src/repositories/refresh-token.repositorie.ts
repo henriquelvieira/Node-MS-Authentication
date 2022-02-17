@@ -16,7 +16,7 @@ class RefreshTokenRepository {
     }
   }
 
-  public async findRefreshTokenByID(id: string): Promise<RefreshToken> {
+  public async findRefreshTokenByID(id: string): Promise<User> {
     try {
       const query = `SELECT UUID,
                             USERNAME,
@@ -25,11 +25,17 @@ class RefreshTokenRepository {
                       WHERE ID = $1`;
       const params = [id];
 
-      const { rows } = await db.query<RefreshToken>(query, params); //Execução da Query passando os parâmetros
+      const { rows } = await db.query<User>(query, params); //Execução da Query passando os parâmetros
 
       const [refreshToken] = rows;
 
-      return refreshToken || null;
+      const userData: User = {
+        uuid: refreshToken.uuid,
+        username: refreshToken.username as string,
+        expiresin: refreshToken.expiresin as number,
+      };
+
+      return userData;
     } catch (error) {
       //   return null;
       throw new DatabaseError('Erro na consulta do Refresh Token', error);

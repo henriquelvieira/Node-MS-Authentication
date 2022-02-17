@@ -115,4 +115,10 @@ describe("(authenticationController) - Authentication Controller's", () => {
 
     expect(mockNext).toBeCalled();
   });
+
+  it('(createRefreshToken) - Should not be able generate a refresh token with a invalide refresh token', async () => {
+    const mockRepository = {
+      findRefreshTokenByID: jest.fn().mockReturnValue({}),
+    };
+  });
 });

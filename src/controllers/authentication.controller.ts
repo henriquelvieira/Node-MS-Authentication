@@ -11,7 +11,7 @@ import JWTToken from '../util/jtw-utils';
 class AuthenticationController {
   public async createToken(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = req.user; //Pega o objeto User que está na requisição e que foi adicionado pelo Middleware basicAuthenticationMiddleware
+      const user: User = req.user; //Pega o objeto User que está na requisição e que foi adicionado pelo Middleware basicAuthenticationMiddleware
 
       if (!user) {
         throw new ForbiddenError('Usuário não informado!');
@@ -19,10 +19,8 @@ class AuthenticationController {
 
       const jwt = await JWTToken.create(user); //Chamada da classe p/ geração do Token
 
-      const refreshTokenRepository = new RefreshTokenRepository();
-      const newRefreshToken = await refreshTokenRepository.generateRefreshToken(
-        user
-      );
+      const repository = new RefreshTokenRepository();
+      const newRefreshToken = await repository.generateRefreshToken(user);
 
       const response = { token: jwt, refreshToken: newRefreshToken };
 
@@ -39,38 +37,31 @@ class AuthenticationController {
   ) {
     try {
       //Verifica se o Refresh Token foi informadom na requisição
-      const refreshTokenRequest: RefreshToken = req.body;
+      const request: RefreshToken = req.body;
 
-      if (!refreshTokenRequest || !refreshTokenRequest.refreshToken) {
+      if (!request || !request.refreshToken) {
         throw new ForbiddenError('Refresh Token não informado!');
       }
 
-      const refreshTokenRepository = new RefreshTokenRepository();
+      const repository = new RefreshTokenRepository();
 
       //Verifica se existe um Refresh Token válido p/ o Usuário
-      const refreshTokenUserData =
-        await refreshTokenRepository.findRefreshTokenByID(
-          refreshTokenRequest.refreshToken
-        );
-
-      //Montagem do objeto c/ as informações do user para geração do Token
-      const userData: User = {
-        uuid: refreshTokenUserData.uuid,
-        username: refreshTokenUserData.username as string,
-      };
+      const userData = await repository.findRefreshTokenByID(
+        request.refreshToken
+      );
 
       //Geração do novo Token
       const jwt = await JWTToken.create(userData);
 
       //Verifica se o Refresh Token está expirado
-      const expiresIn = refreshTokenUserData.expiresin as number;
-      const refreshTokenExpired = dateutil.isAfter(expiresIn);
+      const refreshTokenExpired = dateutil.isAfter(
+        userData.expiresin as number
+      );
 
       let response;
 
       if (refreshTokenExpired) {
-        const newRefreshToken =
-          await refreshTokenRepository.generateRefreshToken(userData); //Geração do Refresh Token
+        const newRefreshToken = await repository.generateRefreshToken(userData); //Geração do Refresh Token
         response = { token: jwt, refreshToken: newRefreshToken };
       } else {
         response = { token: jwt };

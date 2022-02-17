@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
@@ -6,6 +5,7 @@ import ForbiddenError from '../models/errors/forbidden.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
 import RefreshTokenRepository from '../repositories/refresh-token.repositorie';
+import dateutil from '../util/dateutil';
 import JWTToken from '../util/jtw-utils';
 
 class AuthenticationController {
@@ -64,7 +64,7 @@ class AuthenticationController {
 
       //Verifica se o Refresh Token está expirado
       const expiresIn = refreshTokenUserData.expiresin as number;
-      const refreshTokenExpired = dayjs().isAfter(dayjs.unix(expiresIn));
+      const refreshTokenExpired = dateutil.isAfter(expiresIn);
 
       let response;
 

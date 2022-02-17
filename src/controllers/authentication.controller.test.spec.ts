@@ -6,7 +6,6 @@ import ForbiddenError from '../models/errors/forbidden.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
 import RefreshTokenRepository from '../repositories/refresh-token.repositorie';
-import userRepositorie from '../repositories/user.repositorie';
 import UserRepository from '../repositories/user.repositorie';
 import JWTToken from '../util/jtw-utils';
 
@@ -17,6 +16,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
   const refreshTokenRepository = new RefreshTokenRepository();
   const authenticationController = new AuthenticationController();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mockResponse: any = {
     status: jest.fn().mockReturnThis(),
     send: jest.fn(),

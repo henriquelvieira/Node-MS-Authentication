@@ -1,5 +1,5 @@
 import cors from 'cors';
-import express, { Request, Response } from 'express';
+import express from 'express';
 import expressPino from 'express-pino-logger';
 
 import logger from './logger';

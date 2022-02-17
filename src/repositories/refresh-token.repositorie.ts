@@ -1,10 +1,9 @@
-import dayjs from 'dayjs';
-
 import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
 import Configs from '../util/configs';
+import dateutil from '../util/dateutil';
 
 class RefreshTokenRepository {
   public async generateRefreshToken(user: User): Promise<string> {
@@ -45,9 +44,10 @@ class RefreshTokenRepository {
       const [expirationTimeValue, expirationTimeUnit] =
         expirationTime.split(' ');
 
-      const expiresin = dayjs()
-        .add(Number(expirationTimeValue), expirationTimeUnit)
-        .unix();
+      const expiresin = dateutil.addDate(
+        Number(expirationTimeValue),
+        expirationTimeUnit
+      );
 
       const script = `INSERT INTO REFRESH_TOKEN (UUID, USERNAME, EXPIRESIN)  
                                          VALUES ($1, $2, $3)

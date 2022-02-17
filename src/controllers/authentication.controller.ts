@@ -36,7 +36,7 @@ class AuthenticationController {
     next: NextFunction
   ) {
     try {
-      //Verifica se o Refresh Token foi informadom na requisição
+      //Verifica se o Refresh Token foi informado na requisição
       const request: RefreshToken = req.body;
 
       if (!request || !request.refreshToken) {
@@ -58,14 +58,12 @@ class AuthenticationController {
         userData.expiresin as number
       );
 
-      let response;
-
       if (refreshTokenExpired) {
-        const newRefreshToken = await repository.generateRefreshToken(userData); //Geração do Refresh Token
-        response = { token: jwt, refreshToken: newRefreshToken };
-      } else {
-        response = { token: jwt };
+        throw new ForbiddenError('Refresh Token Expirado');
       }
+
+      const newRefreshToken = await repository.generateRefreshToken(userData); //Geração do Refresh Token
+      const response = { token: jwt, refreshToken: newRefreshToken };
 
       return res.status(StatusCodes.CREATED).json(response); //Retorar o Token gerado
     } catch (error) {

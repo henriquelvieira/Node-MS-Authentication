@@ -23,7 +23,7 @@ authenticationRoute.post(
 authenticationRoute.post(
   '/token/validade',
   jwtAuthenticationMiddleware,
-  (req: Request, res: Response, next: NextFunction) => {
+  (_req: Request, res: Response, next: NextFunction) => {
     /*
     Antes do acesso à esta rota será feita a chamada ao Middleware de 
     autenticação em JWT, caso nenhum erro seja retornado pelo mesmo significa 

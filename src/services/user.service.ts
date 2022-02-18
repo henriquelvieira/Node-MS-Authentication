@@ -35,6 +35,7 @@ class UserService {
   }
 
   public async forgotPassword(user: User): Promise<void> {
+    //Verificar se o usuário existe
     const userExists: boolean = await UserRepository.findUserExists(
       user.username
     );

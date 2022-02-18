@@ -37,7 +37,7 @@ class RefreshTokenRepository {
 
       return userData;
     } catch (error) {
-      throw new DatabaseError('Erro na consulta do Refresh Token', error);
+      throw new DatabaseError('Refresh Token inválido', error);
     }
   }
 

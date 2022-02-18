@@ -53,6 +53,7 @@ class UserController {
       const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
       const uuidToken = req.user.uuid as string;
 
+      //TODO: MIGRAR P/ O SERVICE
       if (uuid !== uuidToken) {
         throw new ForbiddenError('Não é possível alterar outro usuário');
       }
@@ -98,6 +99,7 @@ class UserController {
         userData.username
       );
 
+      //TODO: MIGRAR MIGRAR P/ O SERVICE
       if (userExists) {
         const generateRandom = new GenerateRandom();
 

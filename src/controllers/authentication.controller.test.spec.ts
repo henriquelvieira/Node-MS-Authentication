@@ -82,7 +82,7 @@ describe("(authenticationController) - Authentication Controller's", () => {
       refreshTokenRepository.findRefreshTokenByID(
         refreshTokenRequest.refreshToken
       )
-    ).rejects.toEqual(new DatabaseError('Erro na consulta do Refresh Token'));
+    ).rejects.toEqual(new DatabaseError('Refresh Token inválido'));
   });
 
   it('(createToken) - Should bit be able generate a token without a user', async () => {

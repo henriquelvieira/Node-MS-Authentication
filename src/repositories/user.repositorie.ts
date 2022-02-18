@@ -1,5 +1,6 @@
 import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
+import ForgotPassword from '../models/forgotPassword.model';
 import User from '../models/user.model';
 import Configs from '../util/configs';
 import Env from '../util/env';
@@ -280,8 +281,7 @@ class UserRepository {
   }
 
   public async updateResetPassword(
-    securityCode: string,
-    newPassword: string
+    forgotPassword: ForgotPassword
   ): Promise<void> {
     try {
       const passwordCrypt = this.getPasswordCrypt();
@@ -293,7 +293,11 @@ class UserRepository {
                              LOCKED_AT     = NULL,
                              LAST_LOGIN_AT = CURRENT_TIMESTAMP
                        WHERE SECURITY_CODE = $3`;
-      const params = [newPassword, passwordCrypt, securityCode];
+      const params = [
+        forgotPassword.newPassword,
+        passwordCrypt,
+        forgotPassword.securityCode,
+      ];
 
       await db.query(script, params); //Execução da Query passando os parâmetros
     } catch (error) {

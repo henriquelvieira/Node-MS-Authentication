@@ -1,6 +1,5 @@
 import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
-import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
 import Configs from '../util/configs';
 import dateutil from '../util/dateutil';

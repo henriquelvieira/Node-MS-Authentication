@@ -4,13 +4,13 @@ import { StatusCodes } from 'http-status-codes';
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import ForgotPassword from '../models/forgotPassword.model';
 import User from '../models/user.model';
-import UserRepository from '../repositories/user.repositorie';
-import GenerateRandom from '../util/randons.util';
+import UserService from '../services/user.service';
 
 class UserController {
   public async listUsers(_req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await UserRepository.findAllUsers(); //Classe para realizar o SELECT de todos os usuários
+      const userService = new UserService();
+      const users = await userService.listUsers();
 
       return res.status(StatusCodes.OK).json({ users });
     } catch (error) {
@@ -25,7 +25,9 @@ class UserController {
   ) {
     try {
       const uuid: string = req.params.uuid; //Pegar o parametro enviado na URL da request
-      const user: User = await UserRepository.findUserById(uuid); //Classe para realizar o SELECT do usuário
+
+      const userService = new UserService();
+      const user = await userService.listUserById(uuid);
 
       return res.status(StatusCodes.OK).json(user);
     } catch (error) {
@@ -36,7 +38,9 @@ class UserController {
   public async createUser(req: Request, res: Response, next: NextFunction) {
     try {
       const newUser: User = req.body; //Pegar o Body enviado na Request
-      const uuid = await UserRepository.create(newUser); //Classe p/ realizar o Insert
+
+      const userService = new UserService();
+      const uuid = await userService.createUser(newUser);
 
       return res.status(StatusCodes.CREATED).json({ uuid });
     } catch (error) {
@@ -50,22 +54,20 @@ class UserController {
     next: NextFunction
   ) {
     try {
-      const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
+      const uuidParam = req.params.uuid; //Pegar o parametro enviado na URL da request
       const uuidToken = req.user.uuid as string;
 
-      //TODO: MIGRAR P/ O SERVICE
-      if (uuid !== uuidToken) {
+      //Validar se a alteração está sendo feita pelo proprio usuário
+      if (uuidParam !== uuidToken) {
         throw new ForbiddenError('Não é possível alterar outro usuário');
       }
 
       const modifiedUser: User = req.body; //Pegar o Body enviado na Request
-      modifiedUser.uuid = uuid; //Adicionar o UUID ao JSON enviado na requisição
 
-      await UserRepository.update(modifiedUser); //Classe p/ realizar o Update
+      const userService = new UserService();
+      const response = await userService.modifiedUser(uuidParam, modifiedUser);
 
-      const user = await UserRepository.findUserById(uuid); //Classe para realizar o SELECT do usuário
-
-      return res.status(StatusCodes.OK).json(user);
+      return res.status(StatusCodes.OK).json(response);
     } catch (error) {
       next(error); //Chamada do Handler de Erro
     }
@@ -79,7 +81,8 @@ class UserController {
     try {
       const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
 
-      await UserRepository.remove(uuid); //Classe p/ realizar o DELETE
+      const userService = new UserService();
+      await userService.removeUser(uuid);
 
       res.status(StatusCodes.OK).json({ uuid });
     } catch (error) {
@@ -95,26 +98,8 @@ class UserController {
         throw new ForbiddenError('Usuário ou E-mail não informado');
       }
 
-      const userExists: boolean = await UserRepository.findUserExists(
-        userData.username
-      );
-
-      //TODO: MIGRAR MIGRAR P/ O SERVICE
-      if (userExists) {
-        const generateRandom = new GenerateRandom();
-
-        //Gerar código de segurança e nova senha
-        const securityCode: string = generateRandom.randomCode();
-        const securityPassword: string = generateRandom.randomCode();
-
-        await UserRepository.updateforgotPassword(
-          userData.username,
-          securityCode,
-          securityPassword
-        );
-      }
-
-      //TO DO: ENVIAR CÓDIGO GERADO POR EMAIL
+      const userService = new UserService();
+      await userService.forgotPassword(userData);
 
       res.status(StatusCodes.OK).json(); //Retornar sempre OK por segurança, mesmo quando o usuário não exista, isto impedirá a detecção de quais usuários existem ou não no banco
     } catch (error) {
@@ -135,17 +120,8 @@ class UserController {
         throw new ForbiddenError('Nova senha não informada');
       }
 
-      const valideSecurityCode = await UserRepository.findValidateSecurityCode(
-        securityCode
-      );
-      if (!valideSecurityCode) {
-        throw new ForbiddenError('Código de segurança inválido');
-      }
-
-      await UserRepository.updateResetPassword(
-        securityCode,
-        requestBody.newPassword
-      ); //Alterar a senha vinculada ao código de segurança
+      const userService = new UserService();
+      await userService.resetPassword(requestBody);
 
       res.status(StatusCodes.OK).json();
     } catch (error) {

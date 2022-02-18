@@ -17,10 +17,11 @@ class AuthenticationController {
         throw new ForbiddenError('Usuário não informado!');
       }
 
-      const jwt = await JWTToken.create(user); //Chamada da classe p/ geração do Token
-
       const repository = new RefreshTokenRepository();
+
       const newRefreshToken = await repository.generateRefreshToken(user);
+
+      const jwt = await JWTToken.create(user); //Chamada da classe p/ geração do Token
 
       const response = { token: jwt, refreshToken: newRefreshToken };
 
@@ -50,9 +51,6 @@ class AuthenticationController {
         request.refreshToken
       );
 
-      //Geração do novo Token
-      const jwt = await JWTToken.create(userData);
-
       //Verifica se o Refresh Token está expirado
       const refreshTokenExpired = dateutil.isAfter(
         userData.expiresin as number
@@ -62,7 +60,11 @@ class AuthenticationController {
         throw new ForbiddenError('Refresh Token Expirado');
       }
 
-      const newRefreshToken = await repository.generateRefreshToken(userData); //Geração do Refresh Token
+      const newRefreshToken = await repository.generateRefreshToken(userData); //Geração do novo Refresh Token
+
+      //Geração do novo Token
+      const jwt = await JWTToken.create(userData);
+
       const response = { token: jwt, refreshToken: newRefreshToken };
 
       return res.status(StatusCodes.CREATED).json(response); //Retorar o Token gerado

@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "node ./",
-    "test": "jest --coverage",
+    "test": "jest",
     "test:functional": "jest --projects ./src/routes--runInBand",
     "test:unit": "jest --projects ./src --runInBand --coverage --verbose",
     "test:start": "yarn test && yarn start",

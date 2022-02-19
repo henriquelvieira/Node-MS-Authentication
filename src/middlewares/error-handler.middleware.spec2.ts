@@ -1,8 +1,8 @@
 import { Request, NextFunction } from 'express';
 
-import errorHandlerMiddleware from '../middlewares/error-handler.middleware';
 import DatabaseError from '../models/errors/database.error.model';
 import ForbiddenError from '../models/errors/forbidden.error.model';
+import errorHandlerMiddleware from './error-handler.middleware';
 
 describe('errorHandlerMiddleware', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,16 +18,26 @@ describe('errorHandlerMiddleware', () => {
 
   const mockNext: NextFunction = jest.fn();
 
+  beforeEach(() => {
+    mockResponse.status.mockClear();
+    mockResponse.send.mockClear();
+    mockResponse.json.mockClear();
+  });
+
   it('(formatURL) - Should not be able to format a url', async () => {
-    let erro = new DatabaseError('Teste Error');
+    const erro = new DatabaseError('Teste Error');
     errorHandlerMiddleware(erro, mockRequest, mockResponse, mockNext);
     expect(mockResponse.status).toBeCalledWith(400);
+  });
 
-    erro = new ForbiddenError('Teste Error');
+  it('(formatURL) - Should not be able to format a url', async () => {
+    const erro = new ForbiddenError('Teste Error');
     errorHandlerMiddleware(erro, mockRequest, mockResponse, mockNext);
     expect(mockResponse.status).toBeCalledWith(403);
+  });
 
-    erro = new Error('');
+  it('(formatURL) - Should not be able to format a url', async () => {
+    const erro = new Error('');
     errorHandlerMiddleware(erro, mockRequest, mockResponse, mockNext);
     expect(mockResponse.status).toBeCalledWith(500);
   });

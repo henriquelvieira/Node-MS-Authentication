@@ -54,7 +54,9 @@ class SetupServer {
 
   public start(): boolean {
     this.app.listen(this.port, () => {
-      logger.info(`Server is running on port ${this.port}`);
+      if (this.port != 9999) {
+        logger.info(`Server is running on port ${this.port}`);
+      }
     });
     return true;
   }

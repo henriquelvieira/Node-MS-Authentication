@@ -5,6 +5,6 @@ describe('SetupServer', () => {
   it('(start) - Should be able start the server', async () => {
     await server.init();
     expect(server.start()).toBe(true);
-    // await server.close(); //TODO: DESCOMENTAR
+    await server.close();
   });
 });

@@ -12,10 +12,11 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
   let refreshToken: string;
   let token: string;
   let app: express.Express;
+  let server: SetupServer;
 
   beforeAll(async () => {
     const configs = Configs.get('App');
-    const server = new SetupServer(configs.get('port'));
+    server = new SetupServer(configs.get('port'));
     await server.init();
     app = server.getApp();
 
@@ -139,5 +140,6 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
   afterAll(async () => {
     //Desbloquear o usuário
     await UserRepository.updateSuccessLogin(username);
+    server.close();
   });
 });

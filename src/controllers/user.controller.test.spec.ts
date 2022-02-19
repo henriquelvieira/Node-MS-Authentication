@@ -1,3 +1,4 @@
+import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
 import User from '../models/user.model';
 import UserRepository from '../repositories/user.repositorie';
@@ -94,5 +95,6 @@ describe("(userController) - Users Controller's", () => {
   afterAll(async () => {
     //Remover o usuário de teste
     await UserRepository.removeByUsername(username);
+    db.end();
   });
 });

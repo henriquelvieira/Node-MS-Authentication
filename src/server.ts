@@ -2,6 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import expressPino from 'express-pino-logger';
 
+import db from './database/db';
 import logger from './logger';
 import errorHandlerMiddleware from './middlewares/error-handler.middleware';
 import jwtAuthenticationMiddleware from './middlewares/jwt-authentication.middleware';
@@ -60,6 +61,10 @@ class SetupServer {
 
   public getApp(): express.Express {
     return this.app;
+  }
+
+  public async close(): Promise<void> {
+    await db.end();
   }
 }
 

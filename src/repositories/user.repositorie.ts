@@ -21,7 +21,7 @@ class UserRepository {
                        FROM APPLICATION_USER`;
       const { rows } = await db.query<User>(query); //Execução da Query
 
-      return rows || [];
+      return rows;
     } catch (error) {
       throw new DatabaseError('Erro na consulta dos usuários', error);
     }

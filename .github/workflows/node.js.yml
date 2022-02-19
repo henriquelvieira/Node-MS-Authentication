@@ -19,6 +19,11 @@ jobs:
         # node-version: [12.x, 14.x, 16.x]
         node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    
+    env:
+        POSTGRESQL_CONNECTIONSTRING: ${{ secrets.POSTGRESQL_CONNECTIONSTRING }}
+        POSTGRESQL_PASSWORD_CRYPT: ${{ secrets.POSTGRESQL_PASSWORD_CRYPT }}
+        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
     steps:
     - uses: actions/checkout@v2
@@ -27,10 +32,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-      env:
-        POSTGRESQL_CONNECTIONSTRING: ${{ secrets.POSTGRESQL_CONNECTIONSTRING }}
-        POSTGRESQL_PASSWORD_CRYPT: ${{ secrets.POSTGRESQL_PASSWORD_CRYPT }}
-        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test

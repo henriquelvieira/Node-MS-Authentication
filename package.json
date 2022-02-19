@@ -21,9 +21,9 @@
   },
   "scripts": {
     "start": "node ./",
-    "test": "jest --detectOpenHandles",
-    "test:functional": "jest --projects ./src/routes--runInBand",
-    "test:unit": "jest --projects ./src --runInBand --coverage --verbose",
+    "test": "jest",
+    "test:functional": "jest --projects ./src/routes--runInBand --detectOpenHandles",
+    "test:unit": "jest --projects ./src --runInBand --coverage --verbose --detectOpenHandles",
     "test:start": "yarn test && yarn start",
     "test:report": "jest --coverage",
     "start:local": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/app.ts | pino-pretty -c",

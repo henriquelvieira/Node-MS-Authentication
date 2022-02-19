@@ -1,6 +1,5 @@
 import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
-import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
 import Configs from '../util/configs';
 import dateutil from '../util/dateutil';
@@ -37,7 +36,7 @@ class RefreshTokenRepository {
 
       return userData;
     } catch (error) {
-      throw new DatabaseError('Erro na consulta do Refresh Token', error);
+      throw new DatabaseError('Refresh Token inválido', error);
     }
   }
 

@@ -21,6 +21,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     
     env:
+        API_PORT: ${{ secrets.API_PORT }}
         POSTGRESQL_CONNECTIONSTRING: ${{ secrets.POSTGRESQL_CONNECTIONSTRING }}
         POSTGRESQL_PASSWORD_CRYPT: ${{ secrets.POSTGRESQL_PASSWORD_CRYPT }}
         JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}

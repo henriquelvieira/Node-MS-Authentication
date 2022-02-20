@@ -4,6 +4,7 @@ import request from 'supertest';
 import UserRepository from '../repositories/user.repositorie';
 import SetupServer from '../server';
 import Configs from '../util/configs';
+import Env from '../util/env';
 
 //Testes de Integração
 describe("(/authenticationRoute) - Authentication Route's", () => {
@@ -16,7 +17,8 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
 
   beforeAll(async () => {
     const configs = Configs.get('App');
-    server = new SetupServer(configs.get('port'));
+    const port = Number(Env.get(configs.get('envs.APP.Port')));
+    server = new SetupServer(port);
     await server.init();
     app = server.getApp();
 

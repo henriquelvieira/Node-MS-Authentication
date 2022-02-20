@@ -7,7 +7,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
-COPY src ./src
+# Copy all files
+COPY . .
 
 FROM node:16-alpine
 
@@ -17,6 +18,8 @@ WORKDIR /usr/src/app
 
 COPY --from=BUILDER /usr/src/app/ ./
 
-EXPOSE 3000
+RUN npm run build
+
+# EXPOSE 3001
 
 CMD [ "npm", "start" ]

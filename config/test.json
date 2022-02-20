@@ -1,6 +1,5 @@
 {
   "App": {
-    "port": 3002,
     "jwt": {
       "tokenExpiresIn": "20m",
       "refreshTokenExpiresIn": "2 hour"
@@ -14,7 +13,10 @@
         "enabledLogReqs": false
     },
     "envs": {
-      "PostgreSQL": {
+        "APP": {
+            "Port": "API_PORT"
+        },
+        "PostgreSQL": {
         "connectionString": "POSTGRESQL_CONNECTIONSTRING",
         "passwordCRYPT": "POSTGRESQL_PASSWORD_CRYPT"
       },

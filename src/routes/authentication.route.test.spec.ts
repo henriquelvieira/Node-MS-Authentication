@@ -1,7 +1,9 @@
 import express from 'express';
 import request from 'supertest';
 
-import UserRepository from '../repositories/user.repositorie';
+import UserRepository, {
+  IUserRepository,
+} from '../repositories/user.repositorie';
 import SetupServer from '../server';
 import Configs from '../util/configs';
 import Env from '../util/env';
@@ -14,6 +16,7 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
   let token: string;
   let app: express.Express;
   let server: SetupServer;
+  let userRepository: IUserRepository;
 
   beforeAll(async () => {
     const configs = Configs.get('App');
@@ -23,7 +26,8 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
     app = server.getApp();
 
     //Desbloquear o usuário
-    await UserRepository.updateSuccessLogin(username);
+    userRepository = new UserRepository();
+    await userRepository.updateSuccessLogin(username);
   });
 
   it('(POST /authentication/token) - Should be able generate a new Token', async () => {
@@ -141,7 +145,7 @@ describe("(/authenticationRoute) - Authentication Route's", () => {
 
   afterAll(async () => {
     //Desbloquear o usuário
-    await UserRepository.updateSuccessLogin(username);
+    await userRepository.updateSuccessLogin(username);
     server.close();
   });
 });

@@ -1,15 +1,15 @@
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
-import RefreshTokenRepository from '../repositories/refresh-token.repositorie';
+import RefreshTokenRepository, {
+  IRefreshTokenRepository,
+} from '../repositories/refresh-token.repositorie';
 import dateutil from '../util/dateutil';
 import JWTToken from '../util/jtw-utils';
 
 class AuthenticationService {
-  //   constructor(
-  //     private readonly refreshTokenRepository: RefreshTokenRepository
-  //   ) {}
-  refreshTokenRepository = new RefreshTokenRepository();
+  readonly refreshTokenRepository: IRefreshTokenRepository =
+    new RefreshTokenRepository();
 
   public async createToken(user: User): Promise<RefreshToken> {
     const newRefreshToken =

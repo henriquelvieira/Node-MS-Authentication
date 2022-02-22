@@ -6,7 +6,31 @@ import User from '../models/user.model';
 import Configs from '../util/configs';
 import Env from '../util/env';
 
-class UserRepository {
+// Repository interface
+export interface IUserRepository {
+  findAllUsers(): Promise<User[]>;
+  findUserById(uuid: string): Promise<User>;
+  findUserByUsername(username: string): Promise<string>;
+  findUserExists(username: string): Promise<boolean>;
+  findUserLocked(username: string): Promise<boolean>;
+  findValidateSecurityCode(securityCode: string): Promise<boolean>;
+  findSecurityCode(username: string): Promise<string>;
+  findUsernameAndPassword(username: string, password: string): Promise<User>;
+  create(user: User): Promise<string>;
+  update(user: User): Promise<boolean>;
+  remove(uuid: string): Promise<boolean>;
+  removeByUsername(username: string): Promise<void>;
+  updateFailedAttempt(username: string): Promise<void>;
+  updateSuccessLogin(username: string): Promise<void>;
+  updateforgotPassword(
+    username: string,
+    securityCode: string,
+    passwordSecurity: string
+  ): Promise<void>;
+  updateResetPassword(forgotPassword: ForgotPassword): Promise<void>;
+}
+
+class UserRepository implements IUserRepository {
   private getPasswordCrypt(): string {
     const configs = Configs.get('App.envs.PostgreSQL');
 
@@ -325,4 +349,5 @@ class UserRepository {
   }
 }
 
-export default new UserRepository();
+// export default new UserRepository();
+export default UserRepository;

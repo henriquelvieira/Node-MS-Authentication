@@ -5,7 +5,13 @@ import User from '../models/user.model';
 import Configs from '../util/configs';
 import dateutil from '../util/dateutil';
 
-class RefreshTokenRepository {
+// Repository interface
+export interface IRefreshTokenRepository {
+  generateRefreshToken(user: User): Promise<string>;
+  findRefreshTokenByID(id: string): Promise<User>;
+}
+
+class RefreshTokenRepository implements IRefreshTokenRepository {
   public async generateRefreshToken(user: User): Promise<string> {
     try {
       await this.remove(user.uuid as string); //Chamada da classe p/ remover os Refresh Token's do usuário

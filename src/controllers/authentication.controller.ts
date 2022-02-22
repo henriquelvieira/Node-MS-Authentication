@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+import StaticStringKeys from '../common/constants';
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
@@ -12,7 +13,7 @@ class AuthenticationController {
       const user: User = req.user; //Pega o objeto User que está na requisição e que foi adicionado pelo Middleware basicAuthenticationMiddleware
 
       if (!user) {
-        throw new ForbiddenError('Usuário não informado!');
+        throw new ForbiddenError(StaticStringKeys.INVALID_USERNAME);
       }
 
       const authenticationService = new AuthenticationService();
@@ -35,7 +36,7 @@ class AuthenticationController {
       const request: RefreshToken = req.body;
 
       if (!request || !request.refreshToken) {
-        throw new ForbiddenError('Refresh Token não informado!');
+        throw new ForbiddenError(StaticStringKeys.INVALID_REFRESH_TOKEN);
       }
 
       const authenticationService = new AuthenticationService();

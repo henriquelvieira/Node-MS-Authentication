@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
+import StaticStringKeys from '../common/constants';
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import UserRepository from '../repositories/user.repositorie';
 
@@ -13,7 +14,7 @@ async function basicAuthenticationMiddleware(
 
     //Verificar se o header authorization foi informado na requisição
     if (!authorizationHeader) {
-      throw new ForbiddenError('Credenciais não informadas');
+      throw new ForbiddenError(StaticStringKeys.UNKNOWN_CREDENTIAL);
     }
 
     //Separa a string, pegando o tipo da autenticação e o token
@@ -21,7 +22,7 @@ async function basicAuthenticationMiddleware(
 
     //Verifica se o tipo da autenticação é diferente de Basic e se o token foi informado
     if (authenticationType !== 'Basic' || !token) {
-      throw new ForbiddenError('Tipo de autenticação inválido');
+      throw new ForbiddenError(StaticStringKeys.INVALID_AUTHENTICATION_TYPE);
     }
 
     //Converte o Token de Base64 p/ texto
@@ -30,13 +31,13 @@ async function basicAuthenticationMiddleware(
 
     //Verifica se o usuário e senha foram informados na requisição
     if (!username || !password) {
-      throw new ForbiddenError('Credenciais não Preenchidas');
+      throw new ForbiddenError(StaticStringKeys.UNKNOWN_USERNAME_OR_PASSWORD);
     }
 
     //Validar se o Usuário está bloqueado
     const userLocked: boolean = await UserRepository.findUserLocked(username);
     if (userLocked) {
-      throw new ForbiddenError('Usuário bloqueado');
+      throw new ForbiddenError(StaticStringKeys.LOCKED_USER);
     }
 
     const user = await UserRepository.findUsernameAndPassword(
@@ -46,7 +47,7 @@ async function basicAuthenticationMiddleware(
 
     if (!user) {
       await UserRepository.updateFailedAttempt(username); //Registrar a tentativa incorreta
-      throw new ForbiddenError('Usuário ou Senha inválidos');
+      throw new ForbiddenError(StaticStringKeys.INVALID_USERNAME_OR_PASSWORD);
     } else {
       await UserRepository.updateSuccessLogin(username); //Registrar o login
     }

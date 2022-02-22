@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
+import StaticStringKeys from '../common/constants';
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import JWTToken from '../util/jtw-utils';
 
@@ -13,7 +14,7 @@ async function jwtAuthenticationMiddleware(
 
     //Verificar se o header authorization foi informado na requisição
     if (!authorizationHeader) {
-      throw new ForbiddenError('Credenciais não informadas');
+      throw new ForbiddenError(StaticStringKeys.UNKNOWN_CREDENTIAL);
     }
 
     //Separa a string, pegando o tipo da autenticação e o token
@@ -21,7 +22,7 @@ async function jwtAuthenticationMiddleware(
 
     //Verifica se o tipo da autenticação é diferente de Basic e se o token foi informado
     if (authenticationType !== 'Bearer' || !token) {
-      throw new ForbiddenError('Tipo de autenticação inválido');
+      throw new ForbiddenError(StaticStringKeys.INVALID_AUTHENTICATION_TYPE);
     }
 
     try {
@@ -38,7 +39,7 @@ async function jwtAuthenticationMiddleware(
       req.user = user; //Adiciona o objeto user dentro da requisição
       next();
     } catch (error) {
-      throw new ForbiddenError('Token inválido');
+      throw new ForbiddenError(StaticStringKeys.INVALID_TOKEN);
     }
   } catch (error) {
     next(error);

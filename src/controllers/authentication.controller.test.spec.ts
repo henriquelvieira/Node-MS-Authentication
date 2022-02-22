@@ -6,7 +6,9 @@ import ForbiddenError from '../models/errors/forbidden.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
 import RefreshTokenRepository from '../repositories/refresh-token.repositorie';
-import UserRepository from '../repositories/user.repositorie';
+import UserRepository, {
+  IUserRepository,
+} from '../repositories/user.repositorie';
 import JWTToken from '../util/jtw-utils';
 
 describe("(authenticationController) - Authentication Controller's", () => {
@@ -32,7 +34,9 @@ describe("(authenticationController) - Authentication Controller's", () => {
   const mockNext: NextFunction = jest.fn();
 
   beforeAll(async () => {
-    uuid = await UserRepository.findUserByUsername(username); //Remover o usuário de teste
+    const userRepository: IUserRepository = new UserRepository();
+
+    uuid = await userRepository.findUserByUsername(username); //Remover o usuário de teste
   });
 
   it('(createToken) - Should be able generate a new token', async () => {

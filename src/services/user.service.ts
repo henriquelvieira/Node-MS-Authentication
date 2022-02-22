@@ -1,22 +1,37 @@
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import ForgotPassword from '../models/forgotPassword.model';
 import User from '../models/user.model';
-import UserRepository from '../repositories/user.repositorie';
+import UserRepository, {
+  IUserRepository,
+} from '../repositories/user.repositorie';
 import GenerateRandom from '../util/randons.util';
 
-class UserService {
+// Service interface
+export interface IUserService {
+  listUsers(): Promise<User[]>;
+  listUserById(uuid: string): Promise<User>;
+  createUser(user: User): Promise<string>;
+  modifiedUser(uuidParam: string, user: User): Promise<User>;
+  removeUser(uuid: string): Promise<void>;
+  forgotPassword(user: User): Promise<void>;
+  resetPassword(forgotPassword: ForgotPassword): Promise<void>;
+}
+
+class UserService implements IUserService {
+  readonly userRepository: IUserRepository = new UserRepository();
+
   public async listUsers(): Promise<User[]> {
-    const users = await UserRepository.findAllUsers(); //Classe para realizar o SELECT de todos os usuários
+    const users = await this.userRepository.findAllUsers(); //Classe para realizar o SELECT de todos os usuários
     return users;
   }
 
   public async listUserById(uuid: string): Promise<User> {
-    const user: User = await UserRepository.findUserById(uuid); //Classe para realizar o SELECT do usuário
+    const user: User = await this.userRepository.findUserById(uuid); //Classe para realizar o SELECT do usuário
     return user;
   }
 
   public async createUser(user: User): Promise<string> {
-    const uuid = await UserRepository.create(user); //Classe p/ realizar o Insert
+    const uuid = await this.userRepository.create(user); //Classe p/ realizar o Insert
     return uuid;
   }
 
@@ -24,19 +39,19 @@ class UserService {
     const modifiedUser: User = user; //Pegar o Body enviado na Request
     modifiedUser.uuid = uuidParam; //Adicionar o UUID ao JSON enviado na requisição
 
-    await UserRepository.update(modifiedUser); //Classe p/ realizar o Update
+    await this.userRepository.update(modifiedUser); //Classe p/ realizar o Update
 
-    const response = await UserRepository.findUserById(modifiedUser.uuid); //Classe para realizar o SELECT do usuários
+    const response = await this.userRepository.findUserById(modifiedUser.uuid); //Classe para realizar o SELECT do usuários
     return response;
   }
 
   public async removeUser(uuid: string): Promise<void> {
-    await UserRepository.remove(uuid); //Classe p/ realizar o DELETE
+    await this.userRepository.remove(uuid); //Classe p/ realizar o DELETE
   }
 
   public async forgotPassword(user: User): Promise<void> {
     //Verificar se o usuário existe
-    const userExists: boolean = await UserRepository.findUserExists(
+    const userExists: boolean = await this.userRepository.findUserExists(
       user.username
     );
 
@@ -47,7 +62,7 @@ class UserService {
       const securityCode: string = generateRandom.randomCode();
       const securityPassword: string = generateRandom.randomCode();
 
-      await UserRepository.updateforgotPassword(
+      await this.userRepository.updateforgotPassword(
         user.username,
         securityCode,
         securityPassword
@@ -57,15 +72,16 @@ class UserService {
   }
 
   public async resetPassword(forgotPassword: ForgotPassword): Promise<void> {
-    const valideSecurityCode = await UserRepository.findValidateSecurityCode(
-      forgotPassword.securityCode
-    );
+    const valideSecurityCode =
+      await this.userRepository.findValidateSecurityCode(
+        forgotPassword.securityCode
+      );
 
     if (!valideSecurityCode) {
       throw new ForbiddenError('Código de segurança inválido');
     }
 
-    await UserRepository.updateResetPassword(forgotPassword); //Alterar a senha vinculada ao código de segurança
+    await this.userRepository.updateResetPassword(forgotPassword); //Alterar a senha vinculada ao código de segurança
   }
 }
 

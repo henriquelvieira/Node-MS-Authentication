@@ -2,7 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 
 import StaticStringKeys from '../common/constants';
 import ForbiddenError from '../models/errors/forbidden.error.model';
-import UserRepository from '../repositories/user.repositorie';
+import UserRepository, {
+  IUserRepository,
+} from '../repositories/user.repositorie';
 
 async function basicAuthenticationMiddleware(
   req: Request,
@@ -34,22 +36,24 @@ async function basicAuthenticationMiddleware(
       throw new ForbiddenError(StaticStringKeys.UNKNOWN_USERNAME_OR_PASSWORD);
     }
 
+    const userRepository: IUserRepository = new UserRepository();
+
     //Validar se o Usuário está bloqueado
-    const userLocked: boolean = await UserRepository.findUserLocked(username);
+    const userLocked: boolean = await userRepository.findUserLocked(username);
     if (userLocked) {
       throw new ForbiddenError(StaticStringKeys.LOCKED_USER);
     }
 
-    const user = await UserRepository.findUsernameAndPassword(
+    const user = await userRepository.findUsernameAndPassword(
       username,
       password
     ); //Classe para Validar o usuário e senha
 
     if (!user) {
-      await UserRepository.updateFailedAttempt(username); //Registrar a tentativa incorreta
+      await userRepository.updateFailedAttempt(username); //Registrar a tentativa incorreta
       throw new ForbiddenError(StaticStringKeys.INVALID_USERNAME_OR_PASSWORD);
     } else {
-      await UserRepository.updateSuccessLogin(username); //Registrar o login
+      await userRepository.updateSuccessLogin(username); //Registrar o login
     }
 
     req.user = user; //Adicionar o objeto user dentro da requisição

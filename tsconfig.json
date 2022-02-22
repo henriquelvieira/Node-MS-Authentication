@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2019",      
-    "lib": ["es2019"],                            
+    "lib": ["es2019", "es6", "dom"],                           
     "module": "commonjs",   
     "moduleResolution": "node",                           
     "rootDir": "src/", 
@@ -12,13 +12,16 @@
       "./src/@types",
       "./node_modules/@types"
     ],
+    "types": ["reflect-metadata", "jest"],
     "outDir": "dist",
     "removeComments": true,
     "esModuleInterop": true,                              
     "forceConsistentCasingInFileNames": true,            
     "strict": true,                                      
     "skipLibCheck": true, 
-    "sourceMap": true                     
+    "sourceMap": true, 
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": [
     "node_modules", 

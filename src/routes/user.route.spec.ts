@@ -2,7 +2,9 @@ import express from 'express';
 import request from 'supertest';
 
 import User from '../models/user.model';
-import UserRepository from '../repositories/user.repositorie';
+import UserRepository, {
+  IUserRepository,
+} from '../repositories/user.repositorie';
 import SetupServer from '../server';
 import Configs from '../util/configs';
 import Env from '../util/env';
@@ -17,6 +19,7 @@ describe("(/users) - Users Route's", () => {
   let token: string;
   let app: express.Express;
   let server: SetupServer;
+  let userRepository: IUserRepository;
 
   beforeAll(async () => {
     const configs = Configs.get('App');
@@ -25,10 +28,12 @@ describe("(/users) - Users Route's", () => {
     await server.init();
     app = server.getApp();
 
-    await UserRepository.removeByUsername(newUsername); //Remover o usuário criando pelo teste
+    userRepository = new UserRepository();
+
+    await userRepository.removeByUsername(newUsername); //Remover o usuário criando pelo teste
 
     //Gerar um Token valido p/ os testes
-    valideUuid = await UserRepository.findUserByUsername(valideUsername);
+    valideUuid = await userRepository.findUserByUsername(valideUsername);
     const userValide: User = { uuid: valideUuid, username: valideUsername };
     token = await JWTToken.create(userValide);
   });
@@ -109,13 +114,13 @@ describe("(/users) - Users Route's", () => {
       .set('Content-Type', 'application/json')
       .send(requestBody);
 
-    const securityCode = await UserRepository.findSecurityCode(newUsername);
+    const securityCode = await userRepository.findSecurityCode(newUsername);
     expect(response.status).toBe(200);
     expect(securityCode.length).toBeGreaterThan(0);
   });
 
   it('(POST /users/reset-password) - Should be able reset the password', async () => {
-    const securityCode = await UserRepository.findSecurityCode(newUsername);
+    const securityCode = await userRepository.findSecurityCode(newUsername);
 
     const requestBody = {
       securityCode: securityCode,
@@ -220,7 +225,7 @@ describe("(/users) - Users Route's", () => {
       .set('Content-Type', 'application/json')
       .send(requestBody);
 
-    const securityCode = await UserRepository.findSecurityCode(
+    const securityCode = await userRepository.findSecurityCode(
       newUsername + '123'
     );
     expect(response.status).toBe(200);
@@ -245,7 +250,7 @@ describe("(/users) - Users Route's", () => {
   });
 
   afterAll(async () => {
-    await UserRepository.removeByUsername(newUsername); //Remover o usuário criando pelo teste
+    await userRepository.removeByUsername(newUsername); //Remover o usuário criando pelo teste
     server.close();
   });
 });

@@ -5,12 +5,14 @@ import StaticStringKeys from '../common/constants';
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import ForgotPassword from '../models/forgotPassword.model';
 import User from '../models/user.model';
-import UserService from '../services/user.service';
+import UserService, { IUserService } from '../services/user.service';
 
 class UserController {
+  //   readonly userService: IUserService = new UserService();
+
   public async listUsers(_req: Request, res: Response, next: NextFunction) {
     try {
-      const userService = new UserService();
+      const userService: IUserService = new UserService();
       const users = await userService.listUsers();
 
       return res.status(StatusCodes.OK).json({ users });
@@ -27,7 +29,7 @@ class UserController {
     try {
       const uuid: string = req.params.uuid; //Pegar o parametro enviado na URL da request
 
-      const userService = new UserService();
+      const userService: IUserService = new UserService();
       const user = await userService.listUserById(uuid);
 
       return res.status(StatusCodes.OK).json(user);
@@ -40,7 +42,7 @@ class UserController {
     try {
       const newUser: User = req.body; //Pegar o Body enviado na Request
 
-      const userService = new UserService();
+      const userService: IUserService = new UserService();
       const uuid = await userService.createUser(newUser);
 
       return res.status(StatusCodes.CREATED).json({ uuid });
@@ -65,7 +67,7 @@ class UserController {
 
       const modifiedUser: User = req.body; //Pegar o Body enviado na Request
 
-      const userService = new UserService();
+      const userService: IUserService = new UserService();
       const response = await userService.modifiedUser(uuidParam, modifiedUser);
 
       return res.status(StatusCodes.OK).json(response);
@@ -82,7 +84,7 @@ class UserController {
     try {
       const uuid = req.params.uuid; //Pegar o parametro enviado na URL da request
 
-      const userService = new UserService();
+      const userService: IUserService = new UserService();
       await userService.removeUser(uuid);
 
       res.status(StatusCodes.OK).json({ uuid });
@@ -99,7 +101,7 @@ class UserController {
         throw new ForbiddenError(StaticStringKeys.INVALID_USERNAME_OR_EMAIL);
       }
 
-      const userService = new UserService();
+      const userService: IUserService = new UserService();
       await userService.forgotPassword(userData);
 
       res.status(StatusCodes.OK).json(); //Retornar sempre OK por segurança, mesmo quando o usuário não exista, isto impedirá a detecção de quais usuários existem ou não no banco
@@ -121,7 +123,7 @@ class UserController {
         throw new ForbiddenError(StaticStringKeys.UNKNOWN_NEW_PASSWORD);
       }
 
-      const userService = new UserService();
+      const userService: IUserService = new UserService();
       await userService.resetPassword(requestBody);
 
       res.status(StatusCodes.OK).json();

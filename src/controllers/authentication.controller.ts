@@ -5,7 +5,9 @@ import StaticStringKeys from '../common/constants';
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import RefreshToken from '../models/refreshToken.model';
 import User from '../models/user.model';
-import AuthenticationService from '../services/authentication.service';
+import AuthenticationService, {
+  IAuthenticationService,
+} from '../services/authentication.service';
 
 class AuthenticationController {
   public async createToken(req: Request, res: Response, next: NextFunction) {
@@ -16,7 +18,8 @@ class AuthenticationController {
         throw new ForbiddenError(StaticStringKeys.INVALID_USERNAME);
       }
 
-      const authenticationService = new AuthenticationService();
+      const authenticationService: IAuthenticationService =
+        new AuthenticationService();
 
       const response = await authenticationService.createToken(user);
 
@@ -39,7 +42,8 @@ class AuthenticationController {
         throw new ForbiddenError(StaticStringKeys.UNKNOWN_REFRESH_TOKEN);
       }
 
-      const authenticationService = new AuthenticationService();
+      const authenticationService: IAuthenticationService =
+        new AuthenticationService();
 
       const response = await authenticationService.createRefreshToken(
         request.refreshToken

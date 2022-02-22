@@ -36,7 +36,7 @@ class AuthenticationController {
       const request: RefreshToken = req.body;
 
       if (!request || !request.refreshToken) {
-        throw new ForbiddenError(StaticStringKeys.INVALID_REFRESH_TOKEN);
+        throw new ForbiddenError(StaticStringKeys.UNKNOWN_REFRESH_TOKEN);
       }
 
       const authenticationService = new AuthenticationService();

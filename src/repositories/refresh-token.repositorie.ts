@@ -1,3 +1,4 @@
+import StaticStringKeys from '../common/constants';
 import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
 import User from '../models/user.model';
@@ -11,7 +12,10 @@ class RefreshTokenRepository {
       const refreshToken = await this.create(user); //Chamada da classe p/ geração do refresh Token
       return refreshToken;
     } catch (error) {
-      throw new DatabaseError('Erro na geração do Refresh Token', error);
+      throw new DatabaseError(
+        StaticStringKeys.FAIL_GENERATE_REFRESH_TOKEN,
+        error
+      );
     }
   }
 
@@ -36,7 +40,7 @@ class RefreshTokenRepository {
 
       return userData;
     } catch (error) {
-      throw new DatabaseError('Refresh Token inválido', error);
+      throw new DatabaseError(StaticStringKeys.INVALID_REFRESH_TOKEN, error);
     }
   }
 
@@ -62,7 +66,10 @@ class RefreshTokenRepository {
       const [newRefreshToken] = rows;
       return newRefreshToken.id;
     } catch (error) {
-      throw new DatabaseError('Erro ao gerar o Refresh Token', error);
+      throw new DatabaseError(
+        StaticStringKeys.FAIL_GENERATE_REFRESH_TOKEN,
+        error
+      );
     }
   }
 
@@ -73,7 +80,10 @@ class RefreshTokenRepository {
 
       await db.query(script, params); //Execução da Query passando os parâmetros
     } catch (error) {
-      throw new DatabaseError('Erro ao Remover o Refresh Token', error);
+      throw new DatabaseError(
+        StaticStringKeys.FAIL_REMOVE_REFRESH_TOKEN,
+        error
+      );
     }
   }
 }

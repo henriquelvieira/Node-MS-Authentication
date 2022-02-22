@@ -1,3 +1,4 @@
+import StaticStringKeys from '../common/constants';
 import db from '../database/db';
 import DatabaseError from '../models/errors/database.error.model';
 import ForgotPassword from '../models/forgotPassword.model';
@@ -23,7 +24,7 @@ class UserRepository {
 
       return rows;
     } catch (error) {
-      throw new DatabaseError('Erro na consulta dos usuários', error);
+      throw new DatabaseError(StaticStringKeys.FAIL_FIND_USERS, error);
     }
   }
 
@@ -41,7 +42,7 @@ class UserRepository {
 
       return user;
     } catch (error) {
-      throw new DatabaseError('Erro na consulta por ID', error);
+      throw new DatabaseError(StaticStringKeys.FAIL_FIND_USERS_BY_ID, error);
     }
   }
 
@@ -57,7 +58,10 @@ class UserRepository {
 
       return uuid.uuid;
     } catch (error) {
-      throw new DatabaseError('Erro na consulta por Username', error);
+      throw new DatabaseError(
+        StaticStringKeys.FAIL_FIND_USERS_BY_USERNAME,
+        error
+      );
     }
   }
 
@@ -73,7 +77,10 @@ class UserRepository {
 
       return Number(response.count) > 0 ? true : false;
     } catch (error) {
-      throw new DatabaseError('Erro na consulta por Username', error);
+      throw new DatabaseError(
+        StaticStringKeys.FAIL_FIND_USERS_BY_USERNAME,
+        error
+      );
     }
   }
 
@@ -90,7 +97,10 @@ class UserRepository {
 
       return Number(response.count) > 0 ? true : false;
     } catch (error) {
-      throw new DatabaseError('Erro na consulta por Username', error);
+      throw new DatabaseError(
+        StaticStringKeys.FAIL_FIND_USERS_BY_USERNAME,
+        error
+      );
     }
   }
 
@@ -108,7 +118,10 @@ class UserRepository {
 
       return Number(response.count) > 0 ? true : false;
     } catch (error) {
-      throw new DatabaseError('Erro na consulta por Username', error);
+      throw new DatabaseError(
+        StaticStringKeys.FAIL_FIND_USERS_BY_USERNAME,
+        error
+      );
     }
   }
 
@@ -123,7 +136,10 @@ class UserRepository {
       const [response] = rows;
       return response ? response.security_code : '';
     } catch (error) {
-      throw new DatabaseError('Erro na consulta do SECURITY_CODE', error);
+      throw new DatabaseError(
+        StaticStringKeys.FAIL_FIND_USER_BY_SECURITY_CODE,
+        error
+      );
     }
   }
 
@@ -148,7 +164,7 @@ class UserRepository {
       return user;
     } catch (error) {
       throw new DatabaseError(
-        'Erro na consulta por username e password',
+        StaticStringKeys.FAIL_FIND_USERS_BY_USERNAME_PASSWORD,
         error
       );
     }
@@ -175,7 +191,7 @@ class UserRepository {
 
       return newUser.uuid;
     } catch (error) {
-      throw new DatabaseError('Erro ao Gravar o Usuário', error);
+      throw new DatabaseError(StaticStringKeys.FAIL_SAVE_USER, error);
     }
   }
 
@@ -199,7 +215,7 @@ class UserRepository {
 
       await db.query(script, params); //Execução da Query passando os parâmetros
     } catch (error) {
-      throw new DatabaseError('Erro ao Alterar o Usuário', error);
+      throw new DatabaseError(StaticStringKeys.FAIL_UPDATE_USER, error);
     }
 
     return true;
@@ -213,7 +229,7 @@ class UserRepository {
       await db.query(script, params); //Execução da Query passando os parâmetros
       return true;
     } catch (error) {
-      throw new DatabaseError('Erro ao Remover o Usuário', error);
+      throw new DatabaseError(StaticStringKeys.FAIL_REMOVE_USER, error);
     }
   }
 
@@ -224,7 +240,7 @@ class UserRepository {
 
       await db.query(script, params); //Execução da Query passando os parâmetros
     } catch (error) {
-      throw new DatabaseError('Erro ao Remover o Usuário', error);
+      throw new DatabaseError(StaticStringKeys.FAIL_REMOVE_USER, error);
     }
   }
 
@@ -241,7 +257,7 @@ class UserRepository {
 
       await db.query(script, params); //Execução da Query passando os parâmetros
     } catch (error) {
-      throw new DatabaseError('Erro ao Registrar a falha de login', error);
+      throw new DatabaseError(StaticStringKeys.FAIL_REGISTER_LOGIN, error);
     }
   }
 
@@ -256,7 +272,7 @@ class UserRepository {
 
       await db.query(script, params); //Execução da Query passando os parâmetros
     } catch (error) {
-      throw new DatabaseError('Erro ao Registrar a falha de login', error);
+      throw new DatabaseError(StaticStringKeys.FAIL_REGISTER_LOGIN, error);
     }
   }
 
@@ -276,7 +292,10 @@ class UserRepository {
 
       await db.query(script, params); //Execução da Query passando os parâmetros
     } catch (error) {
-      throw new DatabaseError('Erro ao Solicitar recuperação de senha', error);
+      throw new DatabaseError(
+        StaticStringKeys.FAIL_GENERATE_RECOVER_PASSWORD,
+        error
+      );
     }
   }
 
@@ -301,7 +320,7 @@ class UserRepository {
 
       await db.query(script, params); //Execução da Query passando os parâmetros
     } catch (error) {
-      throw new DatabaseError('Erro ao recuperar a senha', error);
+      throw new DatabaseError(StaticStringKeys.FAIL_RECOVER_PASSWORD, error);
     }
   }
 }

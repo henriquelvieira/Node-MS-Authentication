@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+import StaticStringKeys from '../common/constants';
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import ForgotPassword from '../models/forgotPassword.model';
 import User from '../models/user.model';
@@ -59,7 +60,7 @@ class UserController {
 
       //Validar se a alteração está sendo feita pelo proprio usuário
       if (uuidParam !== uuidToken) {
-        throw new ForbiddenError('Não é possível alterar outro usuário');
+        throw new ForbiddenError(StaticStringKeys.INVALID_MODIFIED_USER);
       }
 
       const modifiedUser: User = req.body; //Pegar o Body enviado na Request
@@ -95,7 +96,7 @@ class UserController {
       const userData: User = req.body;
 
       if (!userData.username && !userData.email) {
-        throw new ForbiddenError('Usuário ou E-mail não informado');
+        throw new ForbiddenError(StaticStringKeys.INVALID_USERNAME_OR_EMAIL);
       }
 
       const userService = new UserService();
@@ -113,11 +114,11 @@ class UserController {
       const securityCode: string = requestBody.securityCode;
 
       if (!securityCode) {
-        throw new ForbiddenError('Código de segurança não informado');
+        throw new ForbiddenError(StaticStringKeys.UNKNOWN_SECURITY_CODE);
       }
 
       if (!requestBody.newPassword) {
-        throw new ForbiddenError('Nova senha não informada');
+        throw new ForbiddenError(StaticStringKeys.UNKNOWN_NEW_PASSWORD);
       }
 
       const userService = new UserService();

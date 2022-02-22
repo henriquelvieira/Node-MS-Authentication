@@ -7,7 +7,13 @@ import RefreshTokenRepository, {
 import dateutil from '../util/dateutil';
 import JWTToken from '../util/jtw-utils';
 
-class AuthenticationService {
+// Service interface
+export interface IAuthenticationService {
+  createToken(user: User): Promise<RefreshToken>;
+  createRefreshToken(refreshToken: string): Promise<RefreshToken>;
+}
+
+class AuthenticationService implements IAuthenticationService {
   readonly refreshTokenRepository: IRefreshTokenRepository =
     new RefreshTokenRepository();
 

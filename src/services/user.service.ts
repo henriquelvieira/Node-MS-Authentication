@@ -6,7 +6,18 @@ import UserRepository, {
 } from '../repositories/user.repositorie';
 import GenerateRandom from '../util/randons.util';
 
-class UserService {
+// Service interface
+export interface IUserService {
+  listUsers(): Promise<User[]>;
+  listUserById(uuid: string): Promise<User>;
+  createUser(user: User): Promise<string>;
+  modifiedUser(uuidParam: string, user: User): Promise<User>;
+  removeUser(uuid: string): Promise<void>;
+  forgotPassword(user: User): Promise<void>;
+  resetPassword(forgotPassword: ForgotPassword): Promise<void>;
+}
+
+class UserService implements IUserService {
   readonly userRepository: IUserRepository = new UserRepository();
 
   public async listUsers(): Promise<User[]> {

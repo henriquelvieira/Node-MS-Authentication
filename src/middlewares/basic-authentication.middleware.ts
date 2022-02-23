@@ -12,11 +12,11 @@ export type authorizationHeader = {
   password: string;
 };
 
-function validadeAuthorizationHeader(
+export function validateAuthorizationHeader(
   authorizationHeader: string | undefined
 ): authorizationHeader {
-  //Verificar se o header authorization foi informado na requisição
-  if (!authorizationHeader) {
+  //Verifica se o header authorization foi informado na requisição
+  if (!authorizationHeader || authorizationHeader.length === 0) {
     throw new ForbiddenError(StaticStringKeys.UNKNOWN_CREDENTIAL);
   }
 
@@ -24,7 +24,7 @@ function validadeAuthorizationHeader(
   const [authenticationType, token] = authorizationHeader.split(' ');
 
   //Verifica se o tipo da autenticação é diferente de Basic e se o token foi informado
-  if (authenticationType !== 'Basic' || !token) {
+  if (authenticationType !== 'Basic') {
     throw new ForbiddenError(StaticStringKeys.INVALID_AUTHENTICATION_TYPE);
   }
 
@@ -45,7 +45,7 @@ function validadeAuthorizationHeader(
   return authorizationData;
 }
 
-async function validadeUser(
+export async function validateUser(
   authorizationData: authorizationHeader
 ): Promise<User> {
   const userRepository: IUserRepository = new UserRepository();
@@ -85,11 +85,12 @@ async function basicAuthenticationMiddleware(
   try {
     const authorizationHeader = req.headers['authorization'];
 
-    const authorizationData = validadeAuthorizationHeader(authorizationHeader);
+    const authorizationData = validateAuthorizationHeader(authorizationHeader);
 
-    const user = await validadeUser(authorizationData);
+    const user = await validateUser(authorizationData);
 
     req.user = user; //Adicionar o objeto user dentro da requisição
+
     next(); //Chamada da requisição original que disparou o Middleware
   } catch (error) {
     next(error); //Chamada do Handler de Erro

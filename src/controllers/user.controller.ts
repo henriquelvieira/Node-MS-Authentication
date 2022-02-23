@@ -7,6 +7,14 @@ import ForgotPassword from '../models/forgotPassword.model';
 import User from '../models/user.model';
 import UserService, { IUserService } from '../services/user.service';
 
+// export interface IUserController {
+//   listUsers(
+//     _req: Request,
+//     res: Response,
+//     next: NextFunction
+//   ): Promise<Response<any, Record<string, any>> | undefined>;
+// }
+
 class UserController {
   //   readonly userService: IUserService = new UserService();
 

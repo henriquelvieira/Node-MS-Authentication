@@ -5,13 +5,9 @@ import { validateAuthorizationHeader } from './basic-authentication.middleware';
 describe('basicAuthenticationMiddleware', () => {
   it('(validateAuthorizationHeader) - Should be validate user with a valide authorization', () => {
     const authorizationHeader = 'Basic dGVzdGU6dGVzdGU=';
-
-    expect(validateAuthorizationHeader(authorizationHeader)).toHaveProperty(
-      'password'
-    );
-    expect(validateAuthorizationHeader(authorizationHeader)).toHaveProperty(
-      'username'
-    );
+    const authorizationData = validateAuthorizationHeader(authorizationHeader);
+    expect(authorizationData).toHaveProperty('password');
+    expect(authorizationData).toHaveProperty('username');
   });
 
   it('(validateAuthorizationHeader) - Should not be validate withot Authorization Header ', () => {
@@ -20,7 +16,6 @@ describe('basicAuthenticationMiddleware', () => {
     try {
       validateAuthorizationHeader(authorizationHeader);
     } catch (error) {
-      console.log(error);
       expect(error).toBeInstanceOf(ForbiddenError);
       expect(error).toHaveProperty(
         'message',
@@ -35,7 +30,6 @@ describe('basicAuthenticationMiddleware', () => {
     try {
       validateAuthorizationHeader(authorizationHeader);
     } catch (error) {
-      console.log(error);
       expect(error).toBeInstanceOf(ForbiddenError);
       expect(error).toHaveProperty(
         'message',
@@ -50,7 +44,6 @@ describe('basicAuthenticationMiddleware', () => {
     try {
       validateAuthorizationHeader(authorizationHeader);
     } catch (error) {
-      console.log(error);
       expect(error).toBeInstanceOf(ForbiddenError);
       expect(error).toHaveProperty(
         'message',

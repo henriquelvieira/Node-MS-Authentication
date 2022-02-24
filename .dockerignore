@@ -1,5 +1,7 @@
-node_modules
-Requests
-sql
-.github
-coverage
+**/node_modules/
+**/Requests
+**/sql
+**/.git
+**/.github
+**/coverage
+**/dist

@@ -14,7 +14,7 @@
     },
     "envs": {
         "APP": {
-            "Port": "API_PORT"
+            "Port": "PORT"
         },
         "PostgreSQL": {
         "connectionString": "POSTGRESQL_CONNECTIONSTRING",

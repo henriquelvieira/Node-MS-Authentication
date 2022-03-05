@@ -19,7 +19,7 @@ jobs:
         node-version: [16.x]
     
     env:
-        API_PORT: ${{ secrets.API_PORT }}
+        PORT: ${{ secrets.PORT }}
         POSTGRESQL_CONNECTIONSTRING: ${{ secrets.POSTGRESQL_CONNECTIONSTRING }}
         POSTGRESQL_PASSWORD_CRYPT: ${{ secrets.POSTGRESQL_PASSWORD_CRYPT }}
         JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
